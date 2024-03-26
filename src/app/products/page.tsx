@@ -2,12 +2,12 @@ import ListComponent from "@/components/listItems/ListItems";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Iniciar sesión",
+  title: "Productos",
 };
 
 export default function LoginPage() {
   return (
-    <div className="flex min-h-screen flex-col justify-center">
+    <div>
       <ListComponent/>
     </div>
   );

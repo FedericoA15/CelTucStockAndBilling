@@ -1,50 +1,30 @@
-"use client"
-import React, { useState } from 'react'
+import Link from 'next/link';
 
-
-function NavBar() {
-    const [open,setOpen]=useState(true);
-    const menuList = [
-        { title: "Dashboard", src: "Chart_fill" },
-        { title: "Inbox", src: "Chat" },
-        { title: "Accounts", src: "User", gap: true },
-        { title: "Schedule ", src: "Calendar" },
-        { title: "Search", src: "Search" },
-        { title: "Analytics", src: "Chart" },
-        { title: "Files ", src: "Folder", gap: true },
-        { title: "Setting", src: "Setting" },
-      ];
+export default function Navbar() {
   return (
-    <div className='flex'>
-        <div className={`${open?'w-72':'w-20'} h-screen transition-all duration-500 relative p-4 bg-dark-purple`}>
-            <img src=""
-            onClick={()=>setOpen(!open)}
-            className={`w-[20px] absolute 
-            -right-3 border-2 rounded-full transition-all duration-500
-             border-dark-purple bg-dark-purple ${!open && "rotate-180"} `}/>
-            <div className='flex gap-4'>
-                <img src=""
-                className={`w-[40px] duration-500 ${!open && "rotate-[360deg]"} `}/>
-               {open? <h3 className='text-white font-bold text-[20px]'>Tubeguruji</h3>:null}
-            </div>
-
-            <ul className='mt-10'>
-                {menuList.map((item)=>(
-                    <li className={`flex gap-4 p-2
-                    cursor-pointer
-                    ${!open && "justify-center"}
-                    group hover:bg-blue-800 rounded-md transition-all duration-300
-                    ${item.gap?"mt-9":"mt-2"} `}>
-                        <img src=""
-                        className="group-hover:scale-110"
-                        />
-                      {open?  <span className='text-white group-hover:font-bold'>{item.title}</span>:null}
-                    </li>
-                ))}
-            </ul>
+    <nav className="flex items-center justify-between flex-wrap bg-teal-500 p-6">
+      <div className="flex items-center flex-shrink-0 text-white mr-6">
+        <span className="font-semibold text-xl tracking-tight">CelTuc Stock</span>
+      </div>
+      <div className="block lg:hidden">
+        <button className="flex items-center px-3 py-2 border rounded text-teal-200 border-teal-400 hover:text-white hover:border-white">
+          <svg className="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v15z"/></svg>
+        </button>
+      </div>
+      <div className="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
+        <div className="text-sm lg:flex-grow">
+          <Link href="/products">
+            <span className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
+              Ruta 1
+            </span>
+          </Link>
+          <Link href="/login">
+            <span className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
+              Ruta 2
+            </span>
+          </Link>
         </div>
-    </div>
-  )
+      </div>
+    </nav>
+  );
 }
-
-export default NavBar
