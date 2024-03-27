@@ -1,31 +1,14 @@
 "use client"
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-
-interface Variant {
-  id: string;
-  color: string;
-  batteryCapacity: number;
-  stock: number;
-  price: number;
-  branchName: string;
-}
-
-interface Item {
-  id: string;
-  name: string;
-  generalStock: number;
-  variants: Variant[];
-}
+import { fetchProducts } from '@/actions/products/getProducts';
 
 const ListComponent: React.FC = () => {
   const [data, setData] = useState<Item[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await axios('http://localhost:8080/api/products');
-      console.log(result);
-      setData(result.data.content);
+      const products = await fetchProducts();
+      setData(products);
     };
 
     fetchData();
