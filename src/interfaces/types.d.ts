@@ -13,3 +13,17 @@ interface Item {
   generalStock: number;
   variants: Variant[];
 }
+
+
+
+
+
+interface PaginationProps {
+  totalPages: number;
+  currentPage: number;
+  onPageChange: (page: number) => void;
+}
+
+interface ButtonProps {
+  onClick: MouseEventHandler<HTMLButtonElement>;
+}
