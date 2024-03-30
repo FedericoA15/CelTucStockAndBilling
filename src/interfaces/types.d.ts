@@ -17,6 +17,15 @@ interface Item {
 
 
 
+interface Field {
+  name: string;
+  label: string;
+  type: string;
+}
+
+interface FormBuilderProps {
+  fields: Field[];
+}
 
 interface PaginationProps {
   totalPages: number;

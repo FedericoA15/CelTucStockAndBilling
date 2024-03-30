@@ -11,6 +11,7 @@ export default function ShopLayout({
       <Navbar />
       <div>
         <ListComponent></ListComponent>
+        {children}
       </div>
     </main>
   );
