@@ -7,7 +7,6 @@ export default function ShopLayout({
 }) {
   return (
     <main className="bg-gray-800">
-      <Navbar />
       <div>
         {children}
       </div>

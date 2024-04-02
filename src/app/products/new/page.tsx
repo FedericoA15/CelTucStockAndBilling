@@ -1,20 +1,30 @@
-import FormBuilder from "@/components/formbuilder/FormBuilder";
-import { Metadata } from "next";
+"use client"
+import dynamic from 'next/dynamic';
+import axiosInstance from "@/utils/axiosInstance";
+const FormBuilder = dynamic(() => import('@/components/formbuilder/FormBuilder'), { ssr: false });
 
 const fields: Field[] = [
-  { name: 'productName', label: 'Product Name', type: 'text' },
-  { name: 'productDescription', label: 'Product Description', type: 'text' },
+  { name: 'name', label: 'Nombre del producto', type: 'text' },
 ];
 
-export const metadata: Metadata = {
-  title: "test",
-};
+export default function NewProduct() {
+  const handleSubmit = async (data: any) => {
+    try {
+      const response = await axiosInstance.post('/products', data);
+      if (response.status === 200) {
+        alert('Producto creado exitosamente');
+      } else {
+        alert('Error al crear el producto');
+      }
+    } catch (error) {
+      alert('Error interno del servidor');
+    }
+  };
 
-export default function newProduct() {
   return (
     <div>
       <h1>New Product</h1>
-      <FormBuilder fields={fields} />
+      <FormBuilder fields={fields} onSubmit={handleSubmit} />
     </div>
   );
 }

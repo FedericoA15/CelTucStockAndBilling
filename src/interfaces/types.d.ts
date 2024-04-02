@@ -14,17 +14,22 @@ interface Item {
   variants: Variant[];
 }
 
-
-
-
 interface Field {
   name: string;
   label: string;
   type: string;
+  options?: { id: string; name: string }[];
 }
 
 interface FormBuilderProps {
   fields: Field[];
+  onSubmit: (data: any) => Promise<void>;
+}
+
+interface ApiResponse {
+  content: Item[];
+  totalPages: number;
+  number: number;
 }
 
 interface PaginationProps {

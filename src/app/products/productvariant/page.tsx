@@ -1,5 +1,4 @@
 import { Metadata } from "next";
-import ListComponent from "./ui/ListItems";
 
 export const metadata: Metadata = {
   title: "Productos",
@@ -8,7 +7,7 @@ export const metadata: Metadata = {
 export default function LoginPage() {
   return (
     <div>
-      <ListComponent/>
+      <h1>hola</h1>
     </div>
   );
 }

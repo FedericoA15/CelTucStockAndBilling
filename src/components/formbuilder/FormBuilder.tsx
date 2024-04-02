@@ -1,34 +1,55 @@
-"use client"
-import { useState, ChangeEvent } from 'react';
+import { useState, ChangeEvent, FormEvent } from 'react';
 
-const FormBuilder: React.FC<FormBuilderProps> = ({ fields }) => {
+const FormBuilder: React.FC<FormBuilderProps> = ({ fields, onSubmit }) => {
   const [form, setForm] = useState(
     fields.reduce((obj, item) => Object.assign(obj, { [item.name]: '' }), {})
   );
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    await onSubmit(form);
+  };
+
   return (
-    <form className="bg-gray-800 text-white p-6 rounded-md">
+    <form onSubmit={handleSubmit} className="bg-gray-800 text-white p-6 rounded-md h-screen flex flex-col justify-start items-center">
       {fields.map((field) => (
-        <div key={field.name} className="mb-4">
+        <div key={field.name} className="mb-4 w-1/2">
           <label className="block text-sm font-medium mb-2">{field.label}</label>
-          <input
-            type={field.type}
-            name={field.name}
-            value={form[field.name]}
-            onChange={handleChange}
-            className="w-full px-3 py-2 text-gray-700 bg-gray-200 rounded-md focus:outline-none"
-          />
+          {field.type === 'select' ? (
+            <select
+              name={field.name}
+              value={form[field.name]}
+              onChange={handleChange}
+              className="w-full px-3 py-2 text-gray-700 bg-gray-200 rounded-md focus:outline-none"
+            >
+              {field.options?.map((option) => (
+                <option key={option.id} value={option.id}>
+                  {option.name}
+                </option>
+              ))}
+            </select>
+          ) : (
+            <input
+              type={field.type}
+              name={field.name}
+              value={form[field.name]}
+              onChange={handleChange}
+              className="w-full px-3 py-2 text-gray-700 bg-gray-200 rounded-md focus:outline-none"
+            />
+          )}
         </div>
       ))}
-      <button type="submit" className="w-full py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-md">
-        Submit
-      </button>
+      <div className="w-1/2 self-end flex justify-end">
+        <button type="submit" className="w-1/2 py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-md">
+          Submit
+        </button>
+      </div>
     </form>
   );
 };
 
-export default FormBuilder
+export default FormBuilder;
