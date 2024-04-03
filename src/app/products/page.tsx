@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   title: "Productos",
 };
 
-export default function LoginPage() {
+export default function productPage() {
   return (
     <div>
       <ListComponent/>

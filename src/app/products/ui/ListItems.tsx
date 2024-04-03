@@ -15,7 +15,8 @@ const ListComponent: React.FC = () => {
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
   const router = useRouter();
-  const redirect = () => {
+  
+  const redirectProduct = () => {
     router.push("/products/new");
   };
 
@@ -36,7 +37,7 @@ const ListComponent: React.FC = () => {
       <div className="w-4/5 flex flex-col">
         <div className="flex justify-end items-center mb-4 text-gray-200">
           <p className="font-bold text-xl ">Nuevo Producto</p>
-          <PlusButton onClick={redirect} />
+          <PlusButton onClick={redirectProduct} />
         </div>
         {data.content.map((item) => (
           <ItemComponent key={item.id} item={item} />

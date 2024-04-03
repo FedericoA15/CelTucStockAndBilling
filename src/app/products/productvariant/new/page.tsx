@@ -23,7 +23,6 @@ export default function NewSubProduct() {
     { name: "price", label: 'Precio', type: "number" },
     { name: 'branch', label: 'Sucursal', type: 'select', options: branches },
     { name: 'product', label: 'Producto', type: 'select', options: products },
-    // { name: "product", label: 'Producto', type: "text" },
     { name: "state", label: 'Estado', type: "text" },
     { name: "capacity", label: 'Capacidad', type: "number" },
     { name: "details", label: 'Detalles', type: "text" },
@@ -32,8 +31,12 @@ export default function NewSubProduct() {
 
   const handleSubmit = async (data: any) => {
     try {
-      console.log(data);
-      const response = await axiosInstance.post('/products-variant', data);
+      const transformedData = {
+        ...data,
+        branch: { id: data.branch },
+        product: { id: data.product },
+      };
+      const response = await axiosInstance.post('/products-variant', transformedData);
       if (response.status === 200) {
         alert('Producto creado exitosamente');
       } else {
@@ -46,8 +49,8 @@ export default function NewSubProduct() {
   };
 
   return (
-    <div>
-      <h1>New Product</h1>
+    <div className=' text-gray-200'>
+      <h1 className='justify-center font-bold text-xl'>Nueva Variante de producto</h1>
       <FormBuilder fields={fields} onSubmit={handleSubmit} />
     </div>
   );

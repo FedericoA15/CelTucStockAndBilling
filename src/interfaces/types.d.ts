@@ -1,10 +1,14 @@
 interface Variant {
   id: string;
+  state: string;
   color: string;
   batteryCapacity: number;
   stock: number;
+  capacity: number;
   price: number;
   branchName: string;
+  details: string;
+  priceArs: number;
 }
 
 interface Item {

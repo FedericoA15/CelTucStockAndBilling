@@ -4,10 +4,10 @@ export const metadata: Metadata = {
   title: "Productos",
 };
 
-export default function productVariantPage() {
+export default function InvoicePage() {
   return (
     <div>
-      <h1>hola</h1>
+      <h1>invoice</h1>
     </div>
   );
 }

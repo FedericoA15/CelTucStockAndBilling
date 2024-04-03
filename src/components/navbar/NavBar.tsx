@@ -15,12 +15,12 @@ export default function Navbar() {
         <div className="text-sm lg:flex-grow">
           <Link href="/products">
             <span className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
-              Ruta 1
+              Productos
             </span>
           </Link>
-          <Link href="/login">
+          <Link href="/invoice">
             <span className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
-              Ruta 2
+              Facturas
             </span>
           </Link>
         </div>
