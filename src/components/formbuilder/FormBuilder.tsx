@@ -27,6 +27,7 @@ const FormBuilder: React.FC<FormBuilderProps> = ({ fields, onSubmit }) => {
                 onChange={handleChange}
                 className="w-full px-3 py-2 text-gray-700 bg-gray-200 rounded-md focus:outline-none"
               >
+                <option value="">Selecciona una opción</option>
                 {field.options?.map((option) => (
                   <option key={option.id} value={option.id}>
                     {option.name}

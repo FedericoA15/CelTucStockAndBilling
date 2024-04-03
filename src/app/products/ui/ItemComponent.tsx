@@ -1,10 +1,12 @@
 import { PlusButton } from "@/components/buttons/Buttons";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useCart } from "@/utils/cardContext"; // Asegúrate de reemplazar esto con la ruta real a tu archivo cartContext.tsx
 
 export const ItemComponent: React.FC<{ item: Item }> = ({ item }) => {
   const [showVariants, setShowVariants] = useState(false);
   const router = useRouter();
+  const { addToCart } = useCart();
 
   const redirectProductVariant = () => {
     router.push("/products/productvariant/new");
@@ -42,6 +44,12 @@ export const ItemComponent: React.FC<{ item: Item }> = ({ item }) => {
             <p>PrecioArs: {variant.priceArs}</p>
             <p>Sucursal: {variant.branchName}</p>
             <p>Detalles: {variant.details}</p>
+            <button
+              className="mt-2 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+              onClick={() => addToCart(variant.id)}
+            >
+              Agregar al carrito
+            </button>
             <p>----------</p>
           </div>
         ))}

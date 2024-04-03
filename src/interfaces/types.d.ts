@@ -45,3 +45,8 @@ interface PaginationProps {
 interface ButtonProps {
   onClick: MouseEventHandler<HTMLButtonElement>;
 }
+
+interface CartContextProps {
+  cart: string[];
+  addToCart: (item: string) => void;
+}

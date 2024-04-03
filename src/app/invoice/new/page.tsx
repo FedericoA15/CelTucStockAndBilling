@@ -1,6 +1,7 @@
 "use client"
 import dynamic from 'next/dynamic';
 import axiosInstance from "@/utils/axiosInstance";
+import { Cart } from '@/components/cart/Cart';
 const FormBuilder = dynamic(() => import('@/components/formbuilder/FormBuilder'), { ssr: false });
 
 const fields: Field[] = [
@@ -24,6 +25,7 @@ export default function NewInvoice() {
   return (
     <div>
       <h1>Nueva factura</h1>
+      <Cart></Cart>
       <FormBuilder fields={fields} onSubmit={handleSubmit} />
     </div>
   );

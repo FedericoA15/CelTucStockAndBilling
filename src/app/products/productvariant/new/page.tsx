@@ -27,10 +27,10 @@ export default function NewSubProduct() {
     { name: "capacity", label: 'Capacidad', type: "number" },
     { name: "details", label: 'Detalles', type: "text" },
   ];
-  
 
   const handleSubmit = async (data: any) => {
     try {
+      console.log(data);
       const transformedData = {
         ...data,
         branch: { id: data.branch },
