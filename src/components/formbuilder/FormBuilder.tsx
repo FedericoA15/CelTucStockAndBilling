@@ -1,11 +1,13 @@
-import { useState, ChangeEvent, FormEvent } from 'react';
+import { useState, ChangeEvent, FormEvent } from "react";
 
 const FormBuilder: React.FC<FormBuilderProps> = ({ fields, onSubmit }) => {
   const [form, setForm] = useState<FormState>(
-    fields.reduce((obj, item) => Object.assign(obj, { [item.name]: '' }), {})
+    fields.reduce((obj, item) => Object.assign(obj, { [item.name]: "" }), {})
   );
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
@@ -15,12 +17,17 @@ const FormBuilder: React.FC<FormBuilderProps> = ({ fields, onSubmit }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="text-white p-6 rounded-md h-screen flex flex-col justify-start items-center">
+    <form
+      onSubmit={handleSubmit}
+      className="text-white p-6 rounded-md h-screen flex flex-col justify-start items-center"
+    >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
         {fields.map((field) => (
           <div key={field.name} className="mb-4">
-            <label className="block text-sm font-medium mb-2">{field.label}</label>
-            {field.type === 'select' ? (
+            <label className="block text-sm font-medium mb-2">
+              {field.label}
+            </label>
+            {field.type === "select" ? (
               <select
                 name={field.name}
                 value={form[field.name]}
@@ -47,7 +54,10 @@ const FormBuilder: React.FC<FormBuilderProps> = ({ fields, onSubmit }) => {
         ))}
       </div>
       <div className="w-full self-end flex justify-end">
-        <button type="submit" className="w-1/2 py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-md">
+        <button
+          type="submit"
+          className="w-1/2 py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-md"
+        >
           Crear
         </button>
       </div>

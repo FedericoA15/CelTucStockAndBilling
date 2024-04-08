@@ -16,7 +16,7 @@ const ListComponent: React.FC = () => {
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
   const router = useRouter();
-  
+
   const redirectProduct = () => {
     router.push("/products/new");
   };
@@ -33,7 +33,7 @@ const ListComponent: React.FC = () => {
   return (
     <div className="flex flex-col sm:flex-row">
       <div className="w-3/20">
-      <CartModal/>
+        <CartModal />
         <SearchForm />
       </div>
       <div className="w-4/5 flex flex-col">
