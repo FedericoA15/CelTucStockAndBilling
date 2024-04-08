@@ -1,7 +1,7 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
 
 const FormBuilder: React.FC<FormBuilderProps> = ({ fields, onSubmit }) => {
-  const [form, setForm] = useState(
+  const [form, setForm] = useState<FormState>(
     fields.reduce((obj, item) => Object.assign(obj, { [item.name]: '' }), {})
   );
 

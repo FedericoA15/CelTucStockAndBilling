@@ -68,3 +68,6 @@ interface CartItem {
   variant: Variant;
   itemName: string;
 }
+interface FormState {
+  [key: string]: string;
+}
