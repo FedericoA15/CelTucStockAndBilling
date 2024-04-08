@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 export default function InvoicePage() {
   return (
     <div>
-      <h1>invoice</h1>
+      <h1>Facturas</h1>
     </div>
   );
 }

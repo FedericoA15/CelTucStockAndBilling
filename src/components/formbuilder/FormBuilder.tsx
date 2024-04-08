@@ -15,7 +15,7 @@ const FormBuilder: React.FC<FormBuilderProps> = ({ fields, onSubmit }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-gray-800 text-white p-6 rounded-md h-screen flex flex-col justify-start items-center">
+    <form onSubmit={handleSubmit} className="text-white p-6 rounded-md h-screen flex flex-col justify-start items-center">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
         {fields.map((field) => (
           <div key={field.name} className="mb-4">
@@ -48,7 +48,7 @@ const FormBuilder: React.FC<FormBuilderProps> = ({ fields, onSubmit }) => {
       </div>
       <div className="w-full self-end flex justify-end">
         <button type="submit" className="w-1/2 py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-md">
-          Submit
+          Crear
         </button>
       </div>
     </form>

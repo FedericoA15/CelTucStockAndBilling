@@ -23,7 +23,7 @@ export default function NewProduct() {
 
   return (
     <div>
-      <h1>New Product</h1>
+      <h2 className="text-white text-3xl text-center py-10">Nuevo producto</h2>
       <FormBuilder fields={fields} onSubmit={handleSubmit} />
     </div>
   );

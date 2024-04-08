@@ -30,7 +30,6 @@ export default function NewSubProduct() {
 
   const handleSubmit = async (data: any) => {
     try {
-      console.log(data);
       const transformedData = {
         ...data,
         branch: { id: data.branch },
@@ -50,7 +49,7 @@ export default function NewSubProduct() {
 
   return (
     <div className=' text-gray-200'>
-      <h1 className='justify-center font-bold text-xl'>Nueva Variante de producto</h1>
+      <h1 className="text-white text-3xl text-center py-10">Nueva Variante de producto</h1>
       <FormBuilder fields={fields} onSubmit={handleSubmit} />
     </div>
   );

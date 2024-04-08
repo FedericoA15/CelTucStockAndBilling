@@ -1,7 +1,7 @@
 import { PlusButton } from "@/components/buttons/Buttons";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useCart } from "@/utils/cardContext"; // Asegúrate de reemplazar esto con la ruta real a tu archivo cartContext.tsx
+import { useCart } from "@/utils/cartContext"; 
 
 export const ItemComponent: React.FC<{ item: Item }> = ({ item }) => {
   const [showVariants, setShowVariants] = useState(false);
@@ -46,9 +46,9 @@ export const ItemComponent: React.FC<{ item: Item }> = ({ item }) => {
             <p>Detalles: {variant.details}</p>
             <button
               className="mt-2 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-              onClick={() => addToCart(variant.id)}
+              onClick={() => addToCart({ variant, itemName: item.name })}
             >
-              Agregar al carrito
+              Agregar a la factura
             </button>
             <p>----------</p>
           </div>

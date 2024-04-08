@@ -46,7 +46,25 @@ interface ButtonProps {
   onClick: MouseEventHandler<HTMLButtonElement>;
 }
 
+interface InvoiceItem {
+  productVariant: {
+    id: string;
+  };
+  quantity: number;
+  price: number;
+}
+
+interface InvoiceFormProps {
+  invoiceItems: InvoiceItem[];
+  onSubmit: (formData: Record<string, { quantity: number; price: number }>) => void;
+}
+
 interface CartContextProps {
-  cart: string[];
-  addToCart: (item: string) => void;
+  cart: CartItem[];
+  addToCart: (item: CartItem) => void;
+}
+
+interface CartItem {
+  variant: Variant;
+  itemName: string;
 }

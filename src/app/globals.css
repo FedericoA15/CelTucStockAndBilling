@@ -20,9 +20,7 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
+  background-color: #2d3748; /* Color equivalente a bg-gray-800 */
   font-family: 'Roboto', sans-serif;
 }
 

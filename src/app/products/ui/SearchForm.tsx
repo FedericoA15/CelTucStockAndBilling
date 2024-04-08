@@ -19,7 +19,7 @@ const SearchForm = () => {
   };
 
   return (
-    <div className="bg-gray-800 text-white p-6 rounded-md w-full max-w-sm mx-auto">
+    <div className="text-white p-6 rounded-md w-full max-w-sm mx-auto">
       <input
         type="text"
         name="search"

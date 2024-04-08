@@ -6,6 +6,7 @@ import SearchForm from "./SearchForm";
 import { ItemComponent } from "./ItemComponent";
 import { PlusButton } from "@/components/buttons/Buttons";
 import { useRouter } from "next/navigation";
+import CartModal from "@/components/cartModal/CartModal";
 
 const ListComponent: React.FC = () => {
   const [data, setData] = useState<{ content: Item[]; totalPages: number }>({
@@ -32,6 +33,7 @@ const ListComponent: React.FC = () => {
   return (
     <div className="flex flex-col sm:flex-row">
       <div className="w-3/20">
+      <CartModal/>
         <SearchForm />
       </div>
       <div className="w-4/5 flex flex-col">

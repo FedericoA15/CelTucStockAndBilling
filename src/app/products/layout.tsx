@@ -6,7 +6,7 @@ export default function ShopLayout({
   children: React.ReactNode;
 }) {
   return (
-    <main className="bg-gray-800">
+    <main>
       <Navbar />
       <div>
         {children}
