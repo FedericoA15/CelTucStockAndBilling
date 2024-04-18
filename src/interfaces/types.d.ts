@@ -71,3 +71,9 @@ interface CartItem {
 interface FormState {
   [key: string]: string;
 }
+interface AuthenticationResponse {
+  jwt: string;
+  id: string;
+  username: string;
+  roles: string[];
+}

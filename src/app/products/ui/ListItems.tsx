@@ -33,22 +33,27 @@ const ListComponent: React.FC = () => {
   return (
     <div className="flex flex-col sm:flex-row">
       <div className="w-3/20">
-        <CartModal />
+      <div className="flex justify-center items-center">
+  <CartModal />
+</div>
+
         <SearchForm />
       </div>
       <div className="w-4/5 flex flex-col">
         <div className="flex justify-end items-center mb-4 text-gray-200">
-          <p className="font-bold text-xl ">Nuevo Producto</p>
+          <p className="font-bold text-xl mr-4">Nuevo Producto</p>
           <PlusButton onClick={redirectProduct} />
         </div>
         {data.content.map((item) => (
           <ItemComponent key={item.id} item={item} />
         ))}
-        <Pagination
-          totalPages={data.totalPages}
-          currentPage={currentPage}
-          onPageChange={setCurrentPage}
-        />
+        <div className="flex justify-start items-center">
+          <Pagination
+            totalPages={data.totalPages}
+            currentPage={currentPage}
+            onPageChange={setCurrentPage}
+          />
+        </div>
       </div>
     </div>
   );

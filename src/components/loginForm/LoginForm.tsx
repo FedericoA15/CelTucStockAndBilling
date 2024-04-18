@@ -1,13 +1,28 @@
 "use client";
-import { useState } from "react";
+import { loginAuth } from "@/actions/auth/auth";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 export default function LoginForm() {
-  const [email, setEmail] = useState("");
+  const router = useRouter();
+
+  useEffect(() => {
+    const token = Cookies.get("jwt");
+
+    if (token) {
+      router.push("/products");
+    }
+  }, []);
+  
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [remember, setRemember] = useState(false);
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
+    loginAuth(username, password).then(() => {
+      router.push("/products");
+    });
   };
 
   return (
@@ -27,10 +42,10 @@ export default function LoginForm() {
         <h2 className="text-2xl mb-6">Iniciar sesión</h2>
         <form onSubmit={handleSubmit}>
           <input
-            type="email"
-            placeholder="Correo electrónico"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            type="text"
+            placeholder="Usuario"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             className="block w-full mb-4 p-2 border border-gray-300"
           />
           <input
@@ -40,15 +55,6 @@ export default function LoginForm() {
             onChange={(e) => setPassword(e.target.value)}
             className="block w-full mb-4 p-2 border border-gray-300"
           />
-          <div className="flex items-center mb-6">
-            <input
-              type="checkbox"
-              checked={remember}
-              onChange={(e) => setRemember(e.target.checked)}
-              className="mr-2"
-            />
-            <label>Recuérdame</label>
-          </div>
           <button
             type="submit"
             className="block w-full mb-4 p-2 bg-blue-500 text-white"

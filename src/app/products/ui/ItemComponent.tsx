@@ -1,7 +1,7 @@
 import { PlusButton } from "@/components/buttons/Buttons";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useCart } from "@/utils/cartContext"; 
+import { useCart } from "@/utils/cartContext";
 
 export const ItemComponent: React.FC<{ item: Item }> = ({ item }) => {
   const [showVariants, setShowVariants] = useState(false);
@@ -13,7 +13,7 @@ export const ItemComponent: React.FC<{ item: Item }> = ({ item }) => {
   };
 
   return (
-    <div className="border-2 border-gray-600 bg-gray-600 text-gray-200 p-4 m-2 relative">
+    <div className="border-2 border-gray-600 bg-gray-600 text-gray-200 p-4 m-2 relative w-full">
       <h2 className="font-bold text-xl">{item.name}</h2>
       <p>Stock General: {item.generalStock}</p>
       {item.variants.length > 0 && (
