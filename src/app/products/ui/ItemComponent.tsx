@@ -13,7 +13,7 @@ export const ItemComponent: React.FC<{ item: Item }> = ({ item }) => {
   };
 
   return (
-    <div className="border-2 border-gray-600 bg-gray-600 text-gray-200 p-4 m-2 relative w-full">
+    <div className="bg-custom-grey-2 text-gray-200 p-4 my-4 relative w-full">
       <h2 className="font-bold text-xl">{item.name}</h2>
       <p>Stock General: {item.generalStock}</p>
       {item.variants.length > 0 && (

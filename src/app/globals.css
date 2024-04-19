@@ -20,7 +20,7 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background-color: #2d3748; /* Color equivalente a bg-gray-800 */
+  background-color: #0C0C0C; 
   font-family: 'Roboto', sans-serif;
 }
 

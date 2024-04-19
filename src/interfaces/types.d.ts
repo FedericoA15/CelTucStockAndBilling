@@ -77,3 +77,21 @@ interface AuthenticationResponse {
   username: string;
   roles: string[];
 }
+
+interface VariantFilters {
+  color: string;
+  capacity: string;
+  stock: string;
+  price: string;
+  batteryCapacity: string;
+  state: string;
+}
+
+interface Filters {
+  name: string;
+  variant: VariantFilters;
+}
+
+interface SearchFormProps {
+  onSearchChange: (filters: Filters) => void;
+}
