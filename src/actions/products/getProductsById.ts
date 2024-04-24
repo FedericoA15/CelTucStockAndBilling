@@ -1,7 +1,7 @@
 import axiosInstance from "@/utils/axiosInstance";
 
-export async function fetchInvoices(page: number = 0) {
-  let url = `/invoice?page=${page}&size=10`;
+export async function fetchProductById(id: string) {
+  let url = `/product/${id}`;
   const result = await axiosInstance.get(url);
   return result.data;
 }

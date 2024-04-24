@@ -18,7 +18,6 @@ export async function fetchProducts(filters: Filters, page: number = 0) {
     }
   }
 
-  console.log(url);
   const result = await axiosInstance.get(url);
   return result.data;
 }

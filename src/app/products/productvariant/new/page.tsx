@@ -26,6 +26,7 @@ export default function NewSubProduct() {
     { name: "state", label: 'Estado', type: "text" },
     { name: "capacity", label: 'Capacidad', type: "number" },
     { name: "details", label: 'Detalles', type: "text" },
+    { name: "subModel", label: 'SubModelo', type: "text" },
   ];
 
   const handleSubmit = async (data: any) => {
