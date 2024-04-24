@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import ListInvoice from "./ui/ListInvoice";
 
 export const metadata: Metadata = {
   title: "Productos",
@@ -7,7 +8,8 @@ export const metadata: Metadata = {
 export default function InvoicePage() {
   return (
     <div>
-      <h1>Facturas</h1>
+      <h2 className="text-white text-5xl text-center py-10">Facturas</h2>
+      <ListInvoice/>
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import { PlusButton } from "@/components/buttons/Buttons";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useCart } from "@/utils/cartContext"; 
+import { useCart } from "@/utils/cartContext";
 
 export const ItemComponent: React.FC<{ item: Item }> = ({ item }) => {
   const [showVariants, setShowVariants] = useState(false);
@@ -13,9 +13,10 @@ export const ItemComponent: React.FC<{ item: Item }> = ({ item }) => {
   };
 
   return (
-    <div className="border-2 border-gray-600 bg-gray-600 text-gray-200 p-4 m-2 relative">
+    <div className="bg-custom-grey-2 text-gray-200 p-4 my-4 relative w-full">
       <h2 className="font-bold text-xl">{item.name}</h2>
       <p>Stock General: {item.generalStock}</p>
+      <p>Codigo: {item.code}</p>
       {item.variants.length > 0 && (
         <button
           className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -35,6 +36,8 @@ export const ItemComponent: React.FC<{ item: Item }> = ({ item }) => {
             className="mt-2 p-2 border-2 border-gray-600 bg-gray-600 text-gray-200 mb-4"
           >
             <p>----------</p>
+            <p>Id: {variant.id}</p>
+            <p>Modelo: {variant.subModel}</p>
             <p>Estado: {variant.state}</p>
             <p>Capacidad: {variant.capacity}</p>
             <p>Color: {variant.color}</p>

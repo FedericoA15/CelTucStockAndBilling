@@ -22,9 +22,8 @@ const CartModal: React.FC = () => {
       >
         Carrito 🛒
       </button>
-
       {isModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-opacity-50">
+        <div className="fixed inset-0 flex items-center justify-center bg-opacity-50 z-10">
           <div className="bg-white p-4 rounded-lg">
             {cart.map((item, index) => (
               <div key={index}>

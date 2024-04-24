@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useCart } from "@/utils/cartContext";
 import axiosInstance from "@/utils/axiosInstance";
+import Cookies from 'js-cookie';
 
 export const Cart: React.FC = () => {
   const { cart } = useCart();
@@ -31,9 +32,10 @@ export const Cart: React.FC = () => {
   };
 
   const handleCreateInvoice = async () => {
+    const id = Cookies.get("id");
     const invoiceData = {
       user: {
-        id: "a6655912-049f-464d-8f6c-079de4b284c4",
+        id: id,
       },
       invoiceItems: cart.map((item) => ({
         productVariant: {

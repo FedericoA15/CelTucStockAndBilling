@@ -9,11 +9,13 @@ interface Variant {
   branchName: string;
   details: string;
   priceArs: number;
+  subModel: string;
 }
 
 interface Item {
   id: string;
   name: string;
+  code: string;
   generalStock: number;
   variants: Variant[];
 }
@@ -31,7 +33,7 @@ interface FormBuilderProps {
 }
 
 interface ApiResponse {
-  content: Item[];
+  content: Item[] | InvoiceItem [];
   totalPages: number;
   number: number;
 }
@@ -44,14 +46,6 @@ interface PaginationProps {
 
 interface ButtonProps {
   onClick: MouseEventHandler<HTMLButtonElement>;
-}
-
-interface InvoiceItem {
-  productVariant: {
-    id: string;
-  };
-  quantity: number;
-  price: number;
 }
 
 interface InvoiceFormProps {
@@ -70,4 +64,57 @@ interface CartItem {
 }
 interface FormState {
   [key: string]: string;
+}
+interface AuthenticationResponse {
+  jwt: string;
+  id: string;
+  username: string;
+  roles: string[];
+}
+
+interface VariantFilters {
+  color: string;
+  capacity: string;
+  stock: string;
+  price: string;
+  batteryCapacity: string;
+  state: string;
+}
+
+interface Filters {
+  name: string;
+  variant: VariantFilters;
+}
+
+interface SearchFormProps {
+  onSearchChange: (filters: Filters) => void;
+}
+
+
+interface InvoiceItem {
+  productName: string;
+  productVariant: Variant;
+  quantity: number;
+  price: number;
+}
+
+interface Payment {
+  paymentMethod: string;
+  amount: number;
+  details: string;
+}
+
+interface Invoice {
+  id: string;
+  userEmail: string;
+  date: string;
+  client: string;
+  invoiceItems: InvoiceItem[];
+  payments: Payment[];
+}
+
+interface Props {
+  params: {
+    id: string;
+  };
 }
