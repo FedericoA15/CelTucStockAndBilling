@@ -36,7 +36,7 @@ export const ItemComponent: React.FC<{ item: Item }> = ({ item }) => {
             className="mt-2 p-2 border-2 border-gray-600 bg-gray-600 text-gray-200 mb-4"
           >
             <p>----------</p>
-            <p>Id: {variant.id}</p>
+            {/* <p>Id: {variant.id}</p> */}
             <p>Modelo: {variant.subModel}</p>
             <p>Estado: {variant.state}</p>
             <p>Capacidad: {variant.capacity}</p>
@@ -47,6 +47,7 @@ export const ItemComponent: React.FC<{ item: Item }> = ({ item }) => {
             <p>PrecioArs: {variant.priceArs}</p>
             <p>Sucursal: {variant.branchName}</p>
             <p>Detalles: {variant.details}</p>
+            <p>Codigo: {variant.productCodes}</p>
             <button
               className="mt-2 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
               onClick={() => addToCart({ variant, itemName: item.name })}

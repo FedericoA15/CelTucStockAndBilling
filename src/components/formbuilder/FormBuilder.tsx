@@ -2,13 +2,22 @@ import { useState, ChangeEvent, FormEvent } from "react";
 
 const FormBuilder: React.FC<FormBuilderProps> = ({ fields, onSubmit }) => {
   const [form, setForm] = useState<FormState>(
-    fields.reduce((obj, item) => Object.assign(obj, { [item.name]: "" }), {})
+    fields.reduce((obj, item) => Object.assign(obj, { [item.name]: item.name === 'productCodes' ? "" : "" }), {})
   );
 
+  type FormState = {
+    [key: string]: string | string[];
+  };
+  
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    if (e.target.name === 'productCodes') {
+      const value = e.target.value as string;
+      setForm({ ...form, [e.target.name]: value.split(',').map((item: string) => item.trim()) });
+    } else {
+      setForm({ ...form, [e.target.name]: e.target.value });
+    }
   };
 
   const handleSubmit = async (e: FormEvent) => {
@@ -41,6 +50,15 @@ const FormBuilder: React.FC<FormBuilderProps> = ({ fields, onSubmit }) => {
                   </option>
                 ))}
               </select>
+            ) : field.type === "multi-text" ? (
+              <input
+                type="text"
+                name={field.name}
+                value={form[field.name]}
+                onChange={handleChange}
+                className="w-full px-3 py-2 text-gray-700 bg-gray-200 rounded-md focus:outline-none"
+                placeholder="Ingresa los códigos, separados por comas"
+              />
             ) : (
               <input
                 type={field.type}
