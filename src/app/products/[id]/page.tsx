@@ -3,11 +3,7 @@ import { ProductDetail } from "./ui/ProductDetail";
 import BackButton from "@/components/buttons/BackButton";
 
 
-export async function generateMetadata(
-  { params }: Props,
-  parent: ResolvingMetadata,
-): Promise<Metadata> {
-
+export async function generateMetadata(): Promise<Metadata> {
   return {
     title: "Producto Detalles",
   };

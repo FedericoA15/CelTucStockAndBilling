@@ -1,5 +1,6 @@
 interface Variant {
   id: string;
+  productCodes: string[];
   state: string;
   color: string;
   batteryCapacity: number;
@@ -33,7 +34,7 @@ interface FormBuilderProps {
 }
 
 interface ApiResponse {
-  content: Item[] | InvoiceItem [];
+  content: Item[] | InvoiceItem[];
   totalPages: number;
   number: number;
 }
@@ -50,7 +51,9 @@ interface ButtonProps {
 
 interface InvoiceFormProps {
   invoiceItems: InvoiceItem[];
-  onSubmit: (formData: Record<string, { quantity: number; price: number }>) => void;
+  onSubmit: (
+    formData: Record<string, { quantity: number; price: number }>
+  ) => void;
 }
 
 interface CartContextProps {
@@ -79,17 +82,18 @@ interface VariantFilters {
   price: string;
   batteryCapacity: string;
   state: string;
+  productCodes: string
 }
 
 interface Filters {
   name: string;
+  code: string;
   variant: VariantFilters;
 }
 
 interface SearchFormProps {
   onSearchChange: (filters: Filters) => void;
 }
-
 
 interface InvoiceItem {
   productName: string;
@@ -118,3 +122,7 @@ interface Props {
     id: string;
   };
 }
+
+type FormState = {
+  [key: string]: string | string[];
+};

@@ -27,9 +27,11 @@ export default function NewSubProduct() {
     { name: "capacity", label: 'Capacidad', type: "number" },
     { name: "details", label: 'Detalles', type: "text" },
     { name: "subModel", label: 'SubModelo', type: "text" },
+    { name: "productCodes", label: 'Codigos', type: "multi-text"}
   ];
 
   const handleSubmit = async (data: any) => {
+    // toDo: change de cod for actions server side
     try {
       const transformedData = {
         ...data,
