@@ -16,6 +16,7 @@ const ListComponent: React.FC = () => {
   });
   const [filters, setFilters] = useState<Filters>({
     name: '',
+    code: '',
     variant: {
       color: '',
       capacity: '',
@@ -23,6 +24,7 @@ const ListComponent: React.FC = () => {
       price: '',
       batteryCapacity: '',
       state: '',
+      productCodes: '',
     },
   });
   const [currentPage, setCurrentPage] = useState(0);
