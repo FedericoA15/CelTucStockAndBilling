@@ -2,14 +2,27 @@ import { PlusButton } from "@/components/buttons/Buttons";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useCart } from "@/utils/cartContext";
+import EditVariantModal from "@/components/editVariant/editVariantModal";
 
 export const ItemComponent: React.FC<{ item: Item }> = ({ item }) => {
   const [showVariants, setShowVariants] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentVariant, setCurrentVariant] = useState(null);
   const router = useRouter();
   const { addToCart } = useCart();
 
   const redirectProductVariant = () => {
     router.push("/products/productvariant/new");
+  };
+
+  const openModal = (variant: any) => {
+    setCurrentVariant(variant);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setCurrentVariant(null);
   };
 
   return (
@@ -47,16 +60,25 @@ export const ItemComponent: React.FC<{ item: Item }> = ({ item }) => {
             <p>PrecioArs: {variant.priceArs}</p>
             <p>Sucursal: {variant.branchName}</p>
             <p>Detalles: {variant.details}</p>
-            <p>Codigo: {variant.productCodes}</p>
+            <p>Codigo: {variant.productCodes.join(", ")}</p>
             <button
               className="mt-2 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
               onClick={() => addToCart({ variant, itemName: item.name })}
             >
               Agregar a la factura
             </button>
+            <button
+              className="mt-2 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+              onClick={() => openModal(variant)}
+            >
+              Modificar producto
+            </button>
             <p>----------</p>
           </div>
         ))}
+      {isModalOpen && currentVariant && (
+        <EditVariantModal isOpen={isModalOpen} onClose={closeModal} variant={currentVariant} />
+      )}
     </div>
   );
 };
