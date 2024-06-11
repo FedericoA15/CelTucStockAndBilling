@@ -68,7 +68,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearchChange }) => {
         />
       </div>
       <div className="mb-4">
-        <label className="block text-sm font-medium mb-2">Capacity</label>
+        <label className="block text-sm font-medium mb-2">Capacidad</label>
         <input
           type="text"
           name="capacity"
@@ -88,7 +88,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearchChange }) => {
         />
       </div>
       <div className="mb-4">
-        <label className="block text-sm font-medium mb-2">Price</label>
+        <label className="block text-sm font-medium mb-2">Precio</label>
         <input
           type="text"
           name="price"
@@ -99,7 +99,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearchChange }) => {
       </div>
       <div className="mb-4">
         <label className="block text-sm font-medium mb-2">
-          Battery Capacity
+          Capacidad de bateria
         </label>
         <input
           type="text"
@@ -134,13 +134,13 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearchChange }) => {
           type="reset"
           className="py-2 px-4 bg-gray-500 hover:bg-gray-700 text-white font-bold rounded-md"
         >
-          Reset
+          Resteo
         </button>
         <button
           type="submit"
           className="py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-md"
         >
-          Search
+          Buscar
         </button>
       </div>
     </div>

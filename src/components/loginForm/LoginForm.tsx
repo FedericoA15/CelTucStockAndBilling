@@ -14,7 +14,7 @@ export default function LoginForm() {
       router.push("/products");
     }
   }, []);
-  
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -26,21 +26,19 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="flex flex-col md:flex-row">
-      <div className="w-full md:w-1/2 bg-blue-500 text-white p-10">
-        <h2 className="text-4xl mb-6">K-WD</h2>
-        <p className="mb-6">
-          Con el poder de K-WD, puedes disfrutar de la privacidad y la
-          funcionalidad de los datos que solo tú posees. ¡Invita a tus amigos a
-          chatear en K-WD!
+    <div className="h-full w-full flex flex-col md:flex-row">
+      <div className="w-full md:w-1/2 bg-custom-black text-white p-10 flex flex-col justify-center items-center">
+        <div className="flex items-center mb-6">
+        <h2 className="text-4xl">celtuc</h2>
+        <img src="/logo.png" alt="Celtuc Logo" className="h-12 w-12 mr-4" />
+        </div>
+        <p className="mb-6 text-center md:text-left">
+          Bienvenidos al software de CelTuc para el control de stock y facturación
         </p>
-        <a href="/register" className="underline">
-          ¡Empieza ahora!
-        </a>
       </div>
-      <div className="w-full md:w-1/2 bg-white p-10">
-        <h2 className="text-2xl mb-6">Iniciar sesión</h2>
-        <form onSubmit={handleSubmit}>
+      <div className="w-full md:w-1/2 bg-red-50 p-10 flex flex-col justify-center items-center">
+        <h2 className="text-2xl mb-6">Inicio de sesión</h2>
+        <form onSubmit={handleSubmit} className="w-full max-w-sm">
           <input
             type="text"
             placeholder="Usuario"
@@ -57,12 +55,11 @@ export default function LoginForm() {
           />
           <button
             type="submit"
-            className="block w-full mb-4 p-2 bg-blue-500 text-white"
+            className="block w-full mb-4 p-2 bg-gray-500 text-white"
           >
             Iniciar sesión
           </button>
         </form>
-        <div className="flex flex-col md:flex-row justify-between"></div>
       </div>
     </div>
   );
