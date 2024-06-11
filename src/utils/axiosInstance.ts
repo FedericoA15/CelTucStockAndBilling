@@ -2,7 +2,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 const axiosInstance = axios.create({
-  baseURL: "https://celtucapi-bbb9fa28ff48.herokuapp.com/api",
+  baseURL: "http://localhost:8080/api",
   headers: {
     "Content-Type": "application/json", 
   },
