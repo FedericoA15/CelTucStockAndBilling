@@ -1,15 +1,18 @@
 import { PlusButton } from "@/components/buttons/Buttons";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useCart } from "@/utils/cartContext";
 import EditVariantModal from "@/components/editVariant/editVariantModal";
+import Cookies from 'js-cookie';
 
 export const ItemComponent: React.FC<{ item: Item }> = ({ item }) => {
   const [showVariants, setShowVariants] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentVariant, setCurrentVariant] = useState(null);
-  const router = useRouter();
+  const [isClient, setIsClient] = useState(false);
   const { addToCart } = useCart();
+  const router = useRouter();
+  const role = Cookies.get("roles");
 
   const redirectProductVariant = () => {
     router.push("/products/productvariant/new");
@@ -25,6 +28,10 @@ export const ItemComponent: React.FC<{ item: Item }> = ({ item }) => {
     setCurrentVariant(null);
   };
 
+  useEffect(() => {
+    setIsClient(true); 
+  }, []);
+
   return (
     <div className="bg-custom-grey-2 text-gray-200 p-4 my-4 relative w-full">
       <h2 className="font-bold text-xl">{item.name}</h2>
@@ -38,10 +45,12 @@ export const ItemComponent: React.FC<{ item: Item }> = ({ item }) => {
           {showVariants ? "Ocultar" : "Mostrar"} Variantes
         </button>
       )}
-      <div className="absolute right-0 top-0 flex items-center space-x-2">
-        <p>Nueva variante</p>
-        <PlusButton onClick={redirectProductVariant} />
-      </div>
+      {isClient && role === "ADMIN" && (
+        <div className="absolute right-0 top-0 flex items-center space-x-2">
+          <p>Nueva variante</p>
+          <PlusButton onClick={redirectProductVariant} />
+        </div>
+      )}
       {showVariants &&
         item.variants.map((variant) => (
           <div
@@ -49,15 +58,16 @@ export const ItemComponent: React.FC<{ item: Item }> = ({ item }) => {
             className="mt-2 p-2 border-2 border-gray-600 bg-gray-600 text-gray-200 mb-4"
           >
             <p>----------</p>
-            {/* <p>Id: {variant.id}</p> */}
             <p>Modelo: {variant.subModel}</p>
             <p>Estado: {variant.state}</p>
             <p>Capacidad: {variant.capacity}</p>
             <p>Color: {variant.color}</p>
             <p>Capacidad de Batería: {variant.batteryCapacity}</p>
             <p>Stock: {variant.stock}</p>
-            <p>Precio: {variant.price}</p>
-            <p>PrecioArs: {variant.priceArs}</p>
+            <p>Precio USD: USD{variant.price}</p>
+            <p>Precio de contado USD: USD{variant.countedPrice}</p>
+            <p>Precio Ars: ${variant.priceArs}</p>
+            <p>Precio contado Ars: ${variant.priceArsCounted}</p>
             <p>Sucursal: {variant.branchName}</p>
             <p>Detalles: {variant.details}</p>
             <p>Codigo: {variant.productCodes.join(", ")}</p>
@@ -67,12 +77,14 @@ export const ItemComponent: React.FC<{ item: Item }> = ({ item }) => {
             >
               Agregar a la factura
             </button>
-            <button
-              className="mt-2 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-              onClick={() => openModal(variant)}
-            >
-              Modificar producto
-            </button>
+            {isClient && role === "ADMIN" && (
+              <button
+                className="mt-2 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                onClick={() => openModal(variant)}
+              >
+                Modificar producto
+              </button>
+            )}
             <p>----------</p>
           </div>
         ))}

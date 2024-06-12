@@ -7,9 +7,11 @@ interface Variant {
   stock: number;
   capacity: number;
   price: number;
+  countedPrice: number;
   branchName: string;
   details: string;
   priceArs: number;
+  priceArsCounted: number;
   subModel: string;
 }
 
@@ -91,9 +93,19 @@ interface Filters {
   variant: VariantFilters;
 }
 
+interface FiltersInvoice {
+  client: string;
+  date: string;
+  id: string;
+}
+
 interface SearchFormProps {
   onSearchChange: (filters: Filters) => void;
 }
+interface SearchFormPropsInvoice {
+  onSearchChangeInvoice: (filters: FiltersInvoice) => void;
+}
+
 
 interface InvoiceItem {
   productName: string;
