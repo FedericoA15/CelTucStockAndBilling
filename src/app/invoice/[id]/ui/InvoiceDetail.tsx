@@ -1,24 +1,29 @@
-"use client"
+"use client";
 import { useEffect, useState } from 'react';
 import { fetchInvoiceById } from "@/actions/invoices/getInvoiceById";
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import JsBarcode from 'jsbarcode';
+import InvoicePDF from '@/utils/InvoicePDF';
 
-interface Props {
-  id: string;
-}
-
-export const InvoiceDetail: React.FC<Props> = ({ id }) => {
-  const [invoice, setInvoice] = useState<Invoice|null>(null);
+export const InvoiceDetail: React.FC<PropsId> = ({ id }) => {
+  const [invoice, setInvoice] = useState<Invoice | null>(null);
+  const [barcode, setBarcode] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchInvoice = async () => {
       const fetchedInvoice = await fetchInvoiceById(id);
       setInvoice(fetchedInvoice);
+      
+      // Generar código de barras
+      const canvas = document.createElement('canvas');
+      JsBarcode(canvas, id, { format: 'CODE128' });
+      setBarcode(canvas.toDataURL('image/png'));
     };
 
     fetchInvoice();
   }, [id]);
 
-  if (!invoice) {
+  if (!invoice || !barcode) {
     return <div>Cargando...</div>;
   }
 
@@ -35,7 +40,10 @@ export const InvoiceDetail: React.FC<Props> = ({ id }) => {
           <p>Cantidad: {item.quantity}</p>
           <p>Modelo: {item.productVariant.subModel}</p>
           <p>Bateria: {item.productVariant.batteryCapacity}</p>
-          <p>Precio: {item.price}</p>
+          <p>Precio: USD{item.price}</p>
+          <p>Precio de contado: USD{item.productVariant.countedPrice}</p>
+          <p>Precio: ${item.productVariant.priceArs}</p>
+          <p>Precio de contado: ${item.productVariant.priceArsCounted}</p>
           <p>Capacidad: {item.productVariant.capacity}</p>
           <p>Detalles: {item.productVariant.details}</p>
           <p>Sucursal: {item.productVariant.branchName}</p>
@@ -49,6 +57,9 @@ export const InvoiceDetail: React.FC<Props> = ({ id }) => {
           <p>Detalles: {payment.details}</p>
         </div>
       ))}
+      <PDFDownloadLink document={<InvoicePDF invoice={invoice} barcode={barcode} />} fileName={`invoice_${id}.pdf`}>
+        {({ loading }) => (loading ? 'Generando PDF...' : 'Descargar Factura')}
+      </PDFDownloadLink>
     </div>
   );
 };

@@ -29,8 +29,11 @@ const CartModal: React.FC = () => {
               <div key={index}>
                 <p>------</p>
                 <p>{item.itemName}</p>
-                <p>Precio: {item.variant.price} USD</p>
-                <p>Precio: {item.variant.priceArs} ARS</p>
+                <p>{item.variant.subModel}</p>
+                <p>Precio: USD{item.variant.price}</p>
+                <p>Precio ARS: ${item.variant.priceArs}</p>
+                <p>Precio de contado: USD{item.variant.countedPrice}</p>
+                <p>Precio de contado ARS: ${item.variant.priceArsCounted}</p>
                 <p>------</p>
               </div>
             ))}

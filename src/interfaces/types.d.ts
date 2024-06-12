@@ -95,7 +95,7 @@ interface Filters {
 
 interface FiltersInvoice {
   client: string;
-  date: string;
+  createdAt: string;
   id: string;
 }
 
@@ -138,3 +138,38 @@ interface Props {
 type FormState = {
   [key: string]: string | string[];
 };
+
+interface CartItemInvoice {
+  itemName: string;
+  variant: {
+    id: string;
+    price: number;
+    priceArs: number;
+  };
+}
+
+interface PropsId {
+  id: string;
+}
+
+interface InvoicePDFProps {
+  invoice: {
+    client: string;
+    date: string;
+    invoiceItems: {
+      productName: string;
+      quantity: number;
+      productVariant: {
+        subModel: string;
+        priceArs: number;
+        priceArsCounted: number;
+        branchName: string;
+      };
+    }[];
+    payments: {
+      paymentMethod: string;
+      amount: number;
+    }[];
+  };
+  barcode: string | null; // Puede ser una URL en formato base64
+}

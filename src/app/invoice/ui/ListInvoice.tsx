@@ -14,7 +14,7 @@ const ListInvoice: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [filters, setFilters] = useState<FiltersInvoice>({
     client: "",
-    date: "",
+    createdAt: "",
     id: "",
   });
 

@@ -16,7 +16,10 @@ export const ItemInvoice: React.FC<{ item: Invoice }> = ({ item }) => {
           </h3>
           <p>Nombre del producto: {invoiceItem.productName}</p>
           <p>Cantidad: {invoiceItem.quantity}</p>
-          <p>Precio: {invoiceItem.price}</p>
+          <p>Precio: USD{invoiceItem.price}</p>
+          <p>Precio de contado: USD{invoiceItem.productVariant.countedPrice}</p>
+          <p>Precio: ${invoiceItem.productVariant.priceArs}</p>
+          <p>Precio de contado: ${invoiceItem.productVariant.priceArsCounted}</p>
         </div>
       ))}
       {item.payments.map((payment, index) => (

@@ -8,17 +8,13 @@ export const Cart: React.FC = () => {
   const [paymentMethods, setPaymentMethods] = useState<string[]>([""]);
   const [amounts, setAmounts] = useState<string[]>([""]);
   const [details, setDetails] = useState<string[]>([""]);
+  const [clientName, setClientName] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const productCounts: Record<string, number> = {};
-
-  cart.forEach((item) => {
-    const productId = item.variant.id;
-    if (productCounts[productId]) {
-      productCounts[productId] += 1;
-    } else {
-      productCounts[productId] = 1;
-    }
-  });
+  const productCounts: Record<string, number> = cart.reduce((acc, item) => {
+    acc[item.variant.id] = (acc[item.variant.id] || 0) + 1;
+    return acc;
+  }, {} as Record<string, number>);
 
   const totalUSD = cart.reduce((acc, item) => acc + item.variant.price, 0);
   const totalARS = cart.reduce((acc, item) => acc + item.variant.priceArs, 0);
@@ -32,15 +28,23 @@ export const Cart: React.FC = () => {
   };
 
   const handleCreateInvoice = async () => {
+    if (!clientName) {
+      alert("Por favor, ingrese el nombre del cliente.");
+      return;
+    }
+    setLoading(true);
     const id = Cookies.get("id");
+    if (!id) {
+      alert("Usuario no identificado");
+      setLoading(false);
+      return;
+    }
+
     const invoiceData = {
-      user: {
-        id: id,
-      },
+      user: { id },
+      client: clientName,
       invoiceItems: cart.map((item) => ({
-        productVariant: {
-          id: item.variant.id,
-        },
+        productVariant: { id: item.variant.id },
         quantity: productCounts[item.variant.id],
         price: item.variant.price,
       })),
@@ -50,6 +54,7 @@ export const Cart: React.FC = () => {
         details: details[index],
       })),
     };
+
     try {
       const response = await axiosInstance.post("/invoice", invoiceData);
       if (response.status === 200) {
@@ -59,6 +64,8 @@ export const Cart: React.FC = () => {
       }
     } catch (error) {
       alert("Error interno del servidor");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -73,7 +80,7 @@ export const Cart: React.FC = () => {
             <p className="ml-2"> Precio en ARS</p>
             <p className="ml-2">Cantidad </p>
           </li>
-          {cart.map((item: CartItem, index) => (
+          {cart.map((item: CartItemInvoice, index) => (
             <li key={index} className="flex items-center">
               <p className="flex-grow">{item.itemName}</p>
               <p>${item.variant.price} USD</p>
@@ -86,12 +93,17 @@ export const Cart: React.FC = () => {
           <p>Total en USD: {totalUSD} USD</p>
           <p>Total en ARS: {totalARS} ARS</p>
         </div>
-        <div>
+        
+        <div className="mt-4">
+          <label className="block text-sm font-medium text-gray-200">
+            Nombre del Cliente
+          </label>
           <input
             type="text"
-            name="client"
-            placeholder="Cliente"
-            className="text-black p-2 rounded"
+            value={clientName}
+            onChange={(e) => setClientName(e.target.value)}
+            placeholder="Ingrese el nombre del cliente"
+            className="mt-2 p-2 rounded w-full"
           />
         </div>
 
@@ -106,7 +118,7 @@ export const Cart: React.FC = () => {
                 updatedMethods[index] = e.target.value;
                 setPaymentMethods(updatedMethods);
               }}
-              className="p-2 rounded"
+              className="p-2 rounded w-full"
             />
             <input
               type="text"
@@ -117,7 +129,7 @@ export const Cart: React.FC = () => {
                 updatedAmounts[index] = e.target.value;
                 setAmounts(updatedAmounts);
               }}
-              className="mt-2 p-2 rounded"
+              className="mt-2 p-2 rounded w-full"
             />
             <input
               type="text"
@@ -128,7 +140,7 @@ export const Cart: React.FC = () => {
                 updatedDetails[index] = e.target.value;
                 setDetails(updatedDetails);
               }}
-              className="mt-2 p-2 rounded"
+              className="mt-2 p-2 rounded w-full"
             />
           </div>
         ))}
@@ -143,8 +155,9 @@ export const Cart: React.FC = () => {
           type="button"
           onClick={handleCreateInvoice}
           className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          disabled={loading}
         >
-          Crear factura
+          {loading ? "Creando..." : "Crear factura"}
         </button>
       </div>
     </form>
