@@ -1,4 +1,3 @@
-// ListComponent.tsx
 "use client";
 import React, { useState, useEffect } from "react";
 import { fetchProducts } from "@/actions/products/getProducts";
@@ -7,6 +6,7 @@ import SearchForm from "./SearchForm";
 import { ItemComponent } from "./ItemComponent";
 import { PlusButton } from "@/components/buttons/Buttons";
 import { useRouter } from "next/navigation";
+import Cookies from 'js-cookie';
 import CartModal from "@/components/cartModal/CartModal";
 
 const ListComponent: React.FC = () => {
@@ -28,7 +28,9 @@ const ListComponent: React.FC = () => {
     },
   });
   const [currentPage, setCurrentPage] = useState(0);
+  const [isClient, setIsClient] = useState(false); 
   const router = useRouter();
+  const role = Cookies.get("roles");
 
   const redirectProduct = () => {
     router.push("/products/new");
@@ -43,6 +45,10 @@ const ListComponent: React.FC = () => {
     fetchData();
   }, [filters, currentPage]);
 
+  useEffect(() => {
+    setIsClient(true); 
+  }, []);
+
   return (
     <div className="flex flex-col sm:flex-row">
       <div className="w-3/20">
@@ -52,12 +58,14 @@ const ListComponent: React.FC = () => {
         <SearchForm onSearchChange={setFilters} />
       </div>
       <div className="w-full flex flex-col border-solid rounded-md bg-custom-black-2">
-        <div className="flex justify-end items-center mb-4 text-gray-200 ">
-          <p className="font-bold text-xl mr-4">Nuevo Producto</p>
-          <div>
-            <PlusButton onClick={redirectProduct} />
+        {isClient && role === "ADMIN" && (
+          <div className="flex justify-end items-center mb-4 text-gray-200 ">
+            <p className="font-bold text-xl mr-4">Nuevo Producto</p>
+            <div>
+              <PlusButton onClick={redirectProduct} />
+            </div>
           </div>
-        </div>
+        )}
         {data.content.map((item) => (
           <ItemComponent key={item.id} item={item} />
         ))}

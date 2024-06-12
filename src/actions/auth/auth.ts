@@ -9,7 +9,7 @@ export async function loginAuth(username: string, password: string): Promise<Aut
   Cookies.set('jwt', data.jwt);
   Cookies.set('id', data.id);
   Cookies.set('username', data.username);
-  Cookies.set('roles', JSON.stringify(data.roles));
+  Cookies.set('roles', (data.roles[0]));
 
   return data;
 }

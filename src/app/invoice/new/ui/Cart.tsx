@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useCart } from "@/utils/cartContext";
 import axiosInstance from "@/utils/axiosInstance";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 
 export const Cart: React.FC = () => {
   const { cart } = useCart();
@@ -86,8 +86,17 @@ export const Cart: React.FC = () => {
           <p>Total en USD: {totalUSD} USD</p>
           <p>Total en ARS: {totalARS} ARS</p>
         </div>
+        <div>
+          <input
+            type="text"
+            name="client"
+            placeholder="Cliente"
+            className="text-black p-2 rounded"
+          />
+        </div>
+
         {paymentMethods.map((method, index) => (
-          <div key={index} className="mt-2">
+          <div key={index} className="text-black mt-2">
             <input
               type="text"
               placeholder={`Método de pago ${index + 1}`}
