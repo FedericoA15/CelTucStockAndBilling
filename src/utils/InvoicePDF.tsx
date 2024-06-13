@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
 
 const InvoicePDF: React.FC<InvoicePDFProps> = ({ invoice, barcode }) => {
     if (!invoice || !barcode) {
-      return null; // Manejo básico de carga, podrías mostrar un mensaje de error o de carga
+      return null; 
     }
   
     return (
@@ -55,7 +55,7 @@ const InvoicePDF: React.FC<InvoicePDFProps> = ({ invoice, barcode }) => {
             <View key={index} style={styles.section}>
               <Text>Pago {index + 1}</Text>
               <Text>Método de pago: {payment.paymentMethod}</Text>
-              <Text>Monto: {payment.amount}</Text>
+              <Text>Monto: ${payment.amount}</Text>
             </View>
           ))}
           <View style={styles.barcode}>

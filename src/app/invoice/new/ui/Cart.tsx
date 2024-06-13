@@ -103,7 +103,7 @@ export const Cart: React.FC = () => {
             value={clientName}
             onChange={(e) => setClientName(e.target.value)}
             placeholder="Ingrese el nombre del cliente"
-            className="mt-2 p-2 rounded w-full"
+            className="mt-2 p-2 rounded w-full text-black"
           />
         </div>
 

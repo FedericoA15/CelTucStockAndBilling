@@ -72,14 +72,14 @@ export const ItemComponent: React.FC<{ item: Item }> = ({ item }) => {
             <p>Detalles: {variant.details}</p>
             <p>Codigo: {variant.productCodes.join(", ")}</p>
             <button
-              className="mt-2 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+              className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2"
               onClick={() => addToCart({ variant, itemName: item.name })}
             >
               Agregar a la factura
             </button>
             {isClient && role === "ADMIN" && (
               <button
-                className="mt-2 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                 onClick={() => openModal(variant)}
               >
                 Modificar producto

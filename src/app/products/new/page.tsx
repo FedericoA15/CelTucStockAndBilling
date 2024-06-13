@@ -1,28 +1,20 @@
 "use client";
 import dynamic from "next/dynamic";
-import axiosInstance from "@/utils/axiosInstance";
+import { postProduct } from "@/actions/products/postProduct";
+import { useRouter } from "next/navigation";
 const FormBuilder = dynamic(
   () => import("@/components/formbuilder/FormBuilder"),
   { ssr: false }
 );
-
 const fields: Field[] = [
   { name: "name", label: "Nombre del producto", type: "text" },
   { name: "code", label: "Codigo del producto", type: "text" },
 ];
 
 export default function NewProduct() {
-  const handleSubmit = async (data: any) => {
-    try {
-      const response = await axiosInstance.post("/products", data);
-      if (response.status === 200) {
-        alert("Producto creado exitosamente");
-      } else {
-        alert("Error al crear el producto");
-      }
-    } catch (error) {
-      alert("Error interno del servidor");
-    }
+  const router = useRouter();
+  const handleSubmit = async (data: CreateProduct) => {
+      await postProduct(data,router);
   };
 
   return (

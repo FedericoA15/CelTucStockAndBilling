@@ -55,7 +55,7 @@ export default function LoginForm() {
           />
           <button
             type="submit"
-            className="block w-full mb-4 p-2 bg-gray-500 text-white"
+            className="block w-full mb-4 p-2 bg-blue-500 hover:bg-blue-700 text-white"
           >
             Iniciar sesión
           </button>

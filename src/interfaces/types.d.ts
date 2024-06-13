@@ -171,5 +171,10 @@ interface InvoicePDFProps {
       amount: number;
     }[];
   };
-  barcode: string | null; // Puede ser una URL en formato base64
+  barcode: string | null;
+}
+
+interface CreateProduct{
+  name: string;
+  code: string;
 }
