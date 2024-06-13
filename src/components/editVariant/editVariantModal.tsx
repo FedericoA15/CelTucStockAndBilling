@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axiosInstance from '@/utils/axiosInstance';
-import { on } from 'events';
+import { putProduct } from '@/actions/products/putProductVariant';
 
 
 const EditVariantModal: React.FC<{ isOpen: boolean, onClose: () => void, variant: Variant }> = ({ isOpen, onClose, variant }) => {
@@ -16,17 +16,10 @@ const EditVariantModal: React.FC<{ isOpen: boolean, onClose: () => void, variant
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      const response = await axiosInstance.put(`/products-variant/edit/${variant.id}`,formData);
-      if (response.status === 200) {
-        alert("Producto editado correctamente");
+      const response = await putProduct(formData,variant.id);
+      if (response?.success) {
         onClose();
-      } else {
-        alert("Error al editar producto");
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    }
+      } 
   };
 
   if (!isOpen) return null;

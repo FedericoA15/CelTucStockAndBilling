@@ -3,16 +3,11 @@ import React, { useState, ChangeEvent, useEffect } from "react";
 const SearchForm: React.FC<SearchFormPropsInvoice> = ({
   onSearchChangeInvoice,
 }) => {
-  const [searchTerm, setSearchTerm] = useState<string>("");
   const [filters, setFilters] = useState<FiltersInvoice>({
     client: "",
-    date: "",
+    createdAt: "",
     id: "",
   });
-
-  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
-  };
 
   const handleFilterChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFilters({ ...filters, [e.target.name]: e.target.value });
@@ -35,14 +30,14 @@ const SearchForm: React.FC<SearchFormPropsInvoice> = ({
         />
       </div>
       <div className="mb-4">
-        <label className="block text-sm font-medium mb-2">Fecha</label>
+        {/* <label className="block text-sm font-medium mb-2">Fecha</label>
         <input
           type="text"
-          name="date"
-          value={filters.date}
+          name="createdAt"
+          value={filters.createdAt}
           onChange={handleFilterChange}
           className="w-full px-3 py-2 mb-4 text-gray-700 bg-gray-200 rounded-md focus:outline-none"
-        />
+        /> */}
       </div>
       <div className="mb-4">
         <label className="block text-sm font-medium mb-2">Codigo</label>

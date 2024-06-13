@@ -1,9 +1,10 @@
 "use client";
-import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
-import axiosInstance from "@/utils/axiosInstance";
+import { useEffect, useState } from "react";
 import { getAllBranches } from "@/actions/branchs/getAllBranchs";
 import { getAllProducts } from "@/actions/products/getAllProducts";
+import { postProductVariant } from "@/actions/products/postProductVariant";
+import { useRouter } from "next/navigation";
 const FormBuilder = dynamic(
   () => import("@/components/formbuilder/FormBuilder"),
   { ssr: false }
@@ -12,6 +13,7 @@ const FormBuilder = dynamic(
 export default function NewSubProduct() {
   const [branches, setBranches] = useState([]);
   const [products, setProducts] = useState([]);
+  const router = useRouter();
 
   useEffect(() => {
     getAllBranches().then(setBranches);
@@ -38,26 +40,12 @@ export default function NewSubProduct() {
   ];
 
   const handleSubmit = async (data: any) => {
-    // toDo: change de cod for actions server side
-    try {
-      const transformedData = {
-        ...data,
-        branch: { id: data.branch },
-        product: { id: data.product },
-      };
-      const response = await axiosInstance.post(
-        "/products-variant",
-        transformedData
-      );
-      if (response.status === 200) {
-        alert("Producto creado exitosamente");
-      } else {
-        alert("Error al crear el producto");
-      }
-    } catch (error) {
-      console.log(error);
-      alert("Error interno del servidor");
-    }
+    const transformedData = {
+      ...data,
+      branch: { id: data.branch },
+      product: { id: data.product },
+    };
+    await postProductVariant(transformedData, router);
   };
 
   return (
