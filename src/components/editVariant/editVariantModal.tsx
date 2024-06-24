@@ -1,13 +1,17 @@
 import { useState, useEffect } from 'react';
-import axiosInstance from '@/utils/axiosInstance';
 import { putProduct } from '@/actions/products/putProductVariant';
 
-
 const EditVariantModal: React.FC<{ isOpen: boolean, onClose: () => void, variant: Variant }> = ({ isOpen, onClose, variant }) => {
-  const [formData, setFormData] = useState<Variant>(variant);
+  const [formData, setFormData] = useState({
+    ...variant,
+    productCodes: variant.productCodes.join(', '), 
+  });
 
   useEffect(() => {
-    setFormData(variant);
+    setFormData({
+      ...variant,
+      productCodes: variant.productCodes.join(', '),
+    });
   }, [variant]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -16,10 +20,16 @@ const EditVariantModal: React.FC<{ isOpen: boolean, onClose: () => void, variant
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-      const response = await putProduct(formData,variant.id);
-      if (response?.success) {
-        onClose();
-      } 
+
+    const updatedFormData = {
+      ...formData,
+      productCodes: formData.productCodes.split(',').map((code: string) => code.trim()),
+    };
+
+    const response = await putProduct(updatedFormData, variant.id);
+    if (response?.success) {
+      onClose();
+    }
   };
 
   if (!isOpen) return null;
@@ -92,13 +102,13 @@ const EditVariantModal: React.FC<{ isOpen: boolean, onClose: () => void, variant
             onChange={handleChange}
             className="p-2 bg-gray-700 text-white rounded"
           />
-          {/* <input
+          <input
             name="productCodes"
             placeholder="Ingresa los códigos, separados por comas"
             value={formData.productCodes}
             onChange={handleChange}
             className="col-span-2 p-2 bg-gray-700 text-white rounded"
-          /> */}
+          />
           <button
             type="submit"
             className="col-span-2 bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded"

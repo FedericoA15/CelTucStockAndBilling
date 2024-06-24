@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useCart } from "@/utils/cartContext";
 import EditVariantModal from "@/components/editVariant/editVariantModal";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 
 export const ItemComponent: React.FC<{ item: Item }> = ({ item }) => {
   const [showVariants, setShowVariants] = useState(false);
@@ -29,7 +29,7 @@ export const ItemComponent: React.FC<{ item: Item }> = ({ item }) => {
   };
 
   useEffect(() => {
-    setIsClient(true); 
+    setIsClient(true);
   }, []);
 
   return (
@@ -37,6 +37,14 @@ export const ItemComponent: React.FC<{ item: Item }> = ({ item }) => {
       <h2 className="font-bold text-xl">{item.name}</h2>
       <p>Stock General: {item.generalStock}</p>
       <p>Codigo: {item.code}</p>
+      {isClient && role === "ADMIN" && (
+        <div className=" top-0 flex items-center space-x-2">
+          <PlusButton
+            onClick={redirectProductVariant}
+            tittled="Nueva Variante"
+          />
+        </div>
+      )}
       {item.variants.length > 0 && (
         <button
           className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -44,12 +52,6 @@ export const ItemComponent: React.FC<{ item: Item }> = ({ item }) => {
         >
           {showVariants ? "Ocultar" : "Mostrar"} Variantes
         </button>
-      )}
-      {isClient && role === "ADMIN" && (
-        <div className="absolute right-0 top-0 flex items-center space-x-2">
-          <p>Nueva variante</p>
-          <PlusButton onClick={redirectProductVariant} />
-        </div>
       )}
       {showVariants &&
         item.variants.map((variant) => (
@@ -89,7 +91,11 @@ export const ItemComponent: React.FC<{ item: Item }> = ({ item }) => {
           </div>
         ))}
       {isModalOpen && currentVariant && (
-        <EditVariantModal isOpen={isModalOpen} onClose={closeModal} variant={currentVariant} />
+        <EditVariantModal
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          variant={currentVariant}
+        />
       )}
     </div>
   );

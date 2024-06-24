@@ -58,6 +58,16 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearchChange }) => {
         />
       </div>
       <div className="mb-4">
+        <label className="block text-sm font-medium mb-2">Codigos</label>
+        <input
+          type="text"
+          name="productCodes"
+          value={filters.variant.productCodes}
+          onChange={handleFilterChange}
+          className="w-full px-3 py-2 text-gray-700 bg-gray-200 rounded-md focus:outline-none"
+        />
+      </div>
+      <div className="mb-4">
         <label className="block text-sm font-medium mb-2">Color</label>
         <input
           type="text"
@@ -115,16 +125,6 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearchChange }) => {
           type="text"
           name="state"
           value={filters.variant.state}
-          onChange={handleFilterChange}
-          className="w-full px-3 py-2 text-gray-700 bg-gray-200 rounded-md focus:outline-none"
-        />
-      </div>
-      <div className="mb-4">
-        <label className="block text-sm font-medium mb-2">Codigos</label>
-        <input
-          type="text"
-          name="productCodes"
-          value={filters.variant.productCodes}
           onChange={handleFilterChange}
           className="w-full px-3 py-2 text-gray-700 bg-gray-200 rounded-md focus:outline-none"
         />

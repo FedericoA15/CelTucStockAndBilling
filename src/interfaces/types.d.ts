@@ -49,6 +49,7 @@ interface PaginationProps {
 
 interface ButtonProps {
   onClick: MouseEventHandler<HTMLButtonElement>;
+  tittled: string;
 }
 
 interface InvoiceFormProps {

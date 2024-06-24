@@ -59,10 +59,9 @@ const ListComponent: React.FC = () => {
       </div>
       <div className="w-full flex flex-col border-solid rounded-md bg-custom-black-2">
         {isClient && role === "ADMIN" && (
-          <div className="flex justify-end items-center mb-4 text-gray-200 ">
-            <p className="font-bold text-xl mr-4">Nuevo Producto</p>
+          <div className="flex justify-items-start px-4 items-center mb-4 text-gray-200 ">
             <div>
-              <PlusButton onClick={redirectProduct} />
+              <PlusButton onClick={redirectProduct} tittled="Nuevo Producto"/>
             </div>
           </div>
         )}
