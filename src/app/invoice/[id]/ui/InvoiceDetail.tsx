@@ -14,10 +14,11 @@ export const InvoiceDetail: React.FC<PropsId> = ({ id }) => {
       const fetchedInvoice = await fetchInvoiceById(id);
       setInvoice(fetchedInvoice);
       
-      // Generar código de barras
       const canvas = document.createElement('canvas');
       JsBarcode(canvas, id, { format: 'CODE128' });
-      setBarcode(canvas.toDataURL('image/png'));
+      const barcodeUrl = canvas.toDataURL('image/png');
+      setBarcode(barcodeUrl);
+      console.log('Generated Barcode URL:', barcodeUrl); // Verifica la URL del código de barras
     };
 
     fetchInvoice();
@@ -57,7 +58,7 @@ export const InvoiceDetail: React.FC<PropsId> = ({ id }) => {
           <p>Detalles: {payment.details}</p>
         </div>
       ))}
-      <PDFDownloadLink document={<InvoicePDF invoice={invoice} barcode={barcode} />} fileName={`invoice_${id}.pdf`}>
+      <PDFDownloadLink document={<InvoicePDF invoice={invoice} barcode={barcode} />} fileName={`comprobante_${id}.pdf`}>
         {({ loading }) => (loading ? 'Generando PDF...' : 'Descargar Factura')}
       </PDFDownloadLink>
     </div>
