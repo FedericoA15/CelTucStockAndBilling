@@ -97,6 +97,7 @@ interface Filters {
 interface FiltersInvoice {
   client: string;
   createdAt: string;
+  seller: string; 
   id: string;
 }
 

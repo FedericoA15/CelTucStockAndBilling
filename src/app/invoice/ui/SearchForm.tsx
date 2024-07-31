@@ -5,6 +5,7 @@ const SearchForm: React.FC<SearchFormPropsInvoice> = ({
 }) => {
   const [filters, setFilters] = useState<FiltersInvoice>({
     client: "",
+    seller: "",
     createdAt: "",
     id: "",
   });
@@ -45,6 +46,16 @@ const SearchForm: React.FC<SearchFormPropsInvoice> = ({
           type="text"
           name="id"
           value={filters.id}
+          onChange={handleFilterChange}
+          className="w-full px-3 py-2 mb-4 text-gray-700 bg-gray-200 rounded-md focus:outline-none"
+        />
+      </div>
+      <div className="mb-4">
+        <label className="block text-sm font-medium mb-2">Vendedor</label>
+        <input
+          type="text"
+          name="seller"
+          value={filters.seller}
           onChange={handleFilterChange}
           className="w-full px-3 py-2 mb-4 text-gray-700 bg-gray-200 rounded-md focus:outline-none"
         />

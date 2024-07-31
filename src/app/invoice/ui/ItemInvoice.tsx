@@ -4,7 +4,7 @@ export const ItemInvoice: React.FC<{ item: Invoice }> = ({ item }) => {
   return (
     <div className=" text-white p-6 my-4 rounded-md w-full">
       <Link className="font-bold text-2xl mb-4" href={`/invoice/${item.id}`}>
-        ID de la factura: {item.id}
+        ID del comprobante: {item.id}
       </Link>
       <p className="mb-2">Email del usuario: {item.userEmail}</p>
       <p className="mb-2">Fecha: {item.date.slice(0, 10)}</p>
