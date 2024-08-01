@@ -127,6 +127,7 @@ interface Invoice {
   userEmail: string;
   date: string;
   client: string;
+  shortId: string;
   invoiceItems: InvoiceItem[];
   payments: Payment[];
 }
@@ -174,6 +175,7 @@ interface InvoicePDFProps {
     }[];
   };
   barcode: string | null;
+  id: string;
 }
 
 interface CreateProduct{

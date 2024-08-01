@@ -93,7 +93,7 @@ export const Cart: React.FC = () => {
           <p>Total en USD: {totalUSD} USD</p>
           <p>Total en ARS: {totalARS} ARS</p>
         </div>
-        
+
         <div className="mt-4">
           <label className="block text-sm font-medium text-gray-200">
             Nombre del Cliente

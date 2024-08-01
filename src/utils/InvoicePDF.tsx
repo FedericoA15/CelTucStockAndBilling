@@ -1,40 +1,46 @@
-import React from 'react';
-import { Page, Text, View, Document, StyleSheet, Image } from '@react-pdf/renderer';
+import React from "react";
+import {
+  Page,
+  Text,
+  View,
+  Document,
+  StyleSheet,
+  Image,
+} from "@react-pdf/renderer";
 
 const styles = StyleSheet.create({
   page: {
-    flexDirection: 'column',
-    backgroundColor: '#FFFFFF',
+    flexDirection: "column",
+    backgroundColor: "#FFFFFF",
     padding: 10,
     width: 226.77, // 80mm in points
-    height: 'auto', // Auto height to fit content
+    height: "auto", // Auto height to fit content
   },
   section: {
     margin: 5,
     padding: 5,
-    fontSize: 10,
+    fontSize: 8, // Ajusta el tamaño de la fuente para que todo quepa
   },
   header: {
     fontSize: 10,
     marginBottom: 10,
-    textAlign: 'center',
+    textAlign: "center",
   },
   barcode: {
-    marginVertical: 20,
-    alignSelf: 'center',
-    width: '100%',
-    height: 'auto',
+    marginVertical: 10,
+    alignSelf: "center",
+    width: 50,
+    height: "auto",
   },
 });
 
-const InvoicePDF: React.FC<InvoicePDFProps> = ({ invoice, barcode }) => {
+const InvoicePDF: React.FC<InvoicePDFProps> = ({ invoice, barcode, id }) => {
   if (!invoice || !barcode) {
-    return null; 
+    return null;
   }
-
   return (
     <Document>
-      <Page size={[226.77, 'auto']} style={styles.page}>
+      <Page size={[226.77, "auto"]} style={styles.page}>
         <View style={styles.header}>
           <Text>CelTuc</Text>
         </View>
@@ -49,7 +55,9 @@ const InvoicePDF: React.FC<InvoicePDFProps> = ({ invoice, barcode }) => {
             <Text>Sucursal: {item.productVariant.branchName}</Text>
             <Text>Modelo: {item.productVariant.subModel}</Text>
             <Text>Precio: ${item.productVariant.priceArs}</Text>
-            <Text>Precio de contado: ${item.productVariant.priceArsCounted}</Text>
+            <Text>
+              Precio de contado: ${item.productVariant.priceArsCounted}
+            </Text>
           </View>
         ))}
         {invoice.payments.map((payment, index) => (
@@ -59,8 +67,8 @@ const InvoicePDF: React.FC<InvoicePDFProps> = ({ invoice, barcode }) => {
             <Text>Monto: ${payment.amount}</Text>
           </View>
         ))}
-        <View style={styles.barcode}>
-          <Image src={barcode} />
+        <View style={styles.section}>
+          <Text>{id}</Text>
         </View>
       </Page>
     </Document>
