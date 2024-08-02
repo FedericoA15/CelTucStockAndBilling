@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import ExcelJS from "exceljs";
 import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
 
 const ReceiptForm: React.FC = () => {
@@ -40,12 +39,11 @@ const ReceiptForm: React.FC = () => {
       const pdfDoc = await PDFDocument.load(existingPdfBytes);
 
       const pages = pdfDoc.getPages();
-      console.log(pages);
       const firstPage = pages[0];
 
       const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
 
-      const addText = (text: any, x: any, y: any) => {
+      const addText = (text: string, x: number, y: number) => {
         firstPage.drawText(text, {
           x,
           y,
@@ -54,20 +52,21 @@ const ReceiptForm: React.FC = () => {
           color: rgb(0, 0, 0),
         });
       };
-
-      addText(data.couponNumber, 450, 735);
-      addText(data.date, 450, 715);
-      addText(data.name, 100, 680);
-      addText(data.dni, 60, 655);
-      addText(data.phone, 350, 655);
-      addText(data.amount, 100, 630);
-      addText(data.concept, 100, 605);
-      addText(data.condition, 100, 500);
-      addText(data.imei, 100, 480);
-      addText(data.warranty, 100, 460);
-      addText(data.paymentMethod, 100, 440);
-      addText(data.total, 450, 500);
-      addText(data.observations, 100, 400);
+      
+      
+      addText(data.couponNumber, 350, 700);
+      addText(data.date, 350, 670);
+      addText(data.name, 115, 650);
+      addText(data.dni, 70, 655);
+      addText(data.phone, 330, 655);
+      addText(data.amount, 100, 635);
+      addText(data.concept, 100, 610);
+      addText(data.condition, 100, 540);
+      addText(data.imei, 100, 520);
+      addText(data.warranty, 100, 500);
+      addText(data.paymentMethod, 100, 480);
+      addText(data.total, 470, 540);
+      addText(data.observations, 100, 420);
 
       const pdfBytes = await pdfDoc.save();
 
