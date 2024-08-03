@@ -77,7 +77,7 @@ export const ItemComponent: React.FC<{ item: Item }> = ({ item }) => {
               className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2"
               onClick={() => addToCart({ variant, itemName: item.name })}
             >
-              Agregar a la factura
+              Agregar al comprobante
             </button>
             {isClient && role === "ADMIN" && (
               <button

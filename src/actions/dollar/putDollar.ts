@@ -1,8 +1,8 @@
 import axiosInstance from "@/utils/axiosInstance";
 
-export async function putDollar(data: number) {
+export async function putDollar(data: string) {
   try {
-    const response = await axiosInstance.post("/dollar/0fa80126-0543-4216-85ea-9e6b1488a5e7", data);
+    const response = await axiosInstance.put("/dollar/f0f464e2-81c4-40a3-8614-51b9290f864c", { value: data });
     if (response.status === 200) {
       alert("Dolar actulizado");
     } else {

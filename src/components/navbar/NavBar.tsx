@@ -29,7 +29,17 @@ export default function Navbar() {
           </Link>
           <Link href="/invoice">
             <span className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-red-700 mr-4">
-              Facturas
+              Comprobantes
+            </span>
+          </Link>
+          <Link href="/voucher">
+            <span className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-red-700 mr-4">
+              Comprobantes de equipos
+            </span>
+          </Link>
+          <Link href="/repair">
+            <span className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-red-700 mr-4">
+              Comprobantes de reparaciones
             </span>
           </Link>
         </div>

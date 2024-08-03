@@ -9,7 +9,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
 
   return {
-    title: "Facturas",
+    title: "Comprobante",
   };
 }
 
@@ -18,7 +18,7 @@ export default async function InvoiceIdPage({ params }: Props) {
 
   return (
     <div>
-      <h2 className="text-white text-5xl text-center py-10">Factura {id}</h2>
+      <h2 className="text-white text-5xl text-center py-10">Comprobante {id}</h2>
       <BackButton/>
       <InvoiceDetail id={id} />
     </div>

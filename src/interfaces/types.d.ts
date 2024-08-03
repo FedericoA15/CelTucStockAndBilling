@@ -62,6 +62,7 @@ interface InvoiceFormProps {
 interface CartContextProps {
   cart: CartItem[];
   addToCart: (item: CartItem) => void;
+  removeFromCart: (item: CartItem) => void;
 }
 
 interface CartItem {
@@ -97,6 +98,7 @@ interface Filters {
 interface FiltersInvoice {
   client: string;
   createdAt: string;
+  seller: string; 
   id: string;
 }
 
@@ -126,6 +128,7 @@ interface Invoice {
   userEmail: string;
   date: string;
   client: string;
+  shortId: string;
   invoiceItems: InvoiceItem[];
   payments: Payment[];
 }
@@ -146,6 +149,7 @@ interface CartItemInvoice {
     id: string;
     price: number;
     priceArs: number;
+    priceArsCounted: number;
   };
 }
 
@@ -173,6 +177,7 @@ interface InvoicePDFProps {
     }[];
   };
   barcode: string | null;
+  id: string;
 }
 
 interface CreateProduct{
