@@ -45,7 +45,7 @@ const InvoicePDF: React.FC<InvoicePDFProps> = ({ invoice, barcode, id }) => {
           <Text>CelTuc</Text>
         </View>
         <View style={styles.section}>
-          <Text>FECHA: {invoice.date.slice(0, 10)}</Text>
+          <Text>Fecha: {invoice.date.slice(0, 10)}</Text>
         </View>
         {invoice.invoiceItems.map((item, index) => (
           <View key={index} style={styles.section}>
@@ -55,20 +55,19 @@ const InvoicePDF: React.FC<InvoicePDFProps> = ({ invoice, barcode, id }) => {
             <Text>Sucursal: {item.productVariant.branchName}</Text>
             <Text>Modelo: {item.productVariant.subModel}</Text>
             <Text>Precio: ${item.productVariant.priceArs}</Text>
-            <Text>
-              Precio de contado: ${item.productVariant.priceArsCounted}
-            </Text>
+            <Text>------------------------</Text>
           </View>
         ))}
         {invoice.payments.map((payment, index) => (
           <View key={index} style={styles.section}>
-            <Text>Pago {index + 1}</Text>
+            <Text>Forma de pago n° {index + 1}</Text>
             <Text>Método de pago: {payment.paymentMethod}</Text>
             <Text>Monto: ${payment.amount}</Text>
+            <Text>------------------------</Text>
           </View>
         ))}
         <View style={styles.section}>
-          <Text>{id}</Text>
+          <Text>Codigo: {id}</Text>
         </View>
       </Page>
     </Document>

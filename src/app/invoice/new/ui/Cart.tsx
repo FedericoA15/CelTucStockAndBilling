@@ -18,6 +18,10 @@ export const Cart: React.FC = () => {
 
   const totalUSD = cart.reduce((acc, item) => acc + item.variant.price, 0);
   const totalARS = cart.reduce((acc, item) => acc + item.variant.priceArs, 0);
+  const totalARSCounted = cart.reduce(
+    (acc, item) => acc + item.variant.priceArsCounted,
+    0
+  );
 
   const handleAddPaymentMethod = () => {
     if (paymentMethods.length < 3) {
@@ -43,11 +47,14 @@ export const Cart: React.FC = () => {
     const invoiceData = {
       user: { id },
       client: clientName,
-      invoiceItems: cart.map((item) => ({
-        productVariant: { id: item.variant.id },
-        quantity: productCounts[item.variant.id],
-        price: item.variant.price,
-      })),
+      invoiceItems: Object.keys(productCounts).map((variantId) => {
+        const item = cart.find((item) => item.variant.id === variantId);
+        return {
+          productVariant: { id: variantId },
+          quantity: productCounts[variantId],
+          price: item?.variant.price,
+        };
+      }),
       payments: paymentMethods.map((method, index) => ({
         paymentMethod: method,
         amount: parseFloat(amounts[index]),
@@ -69,33 +76,52 @@ export const Cart: React.FC = () => {
     }
   };
 
+  const uniqueCartItems = Array.from(
+    new Set(cart.map((item) => item.variant.id))
+  ).map((id) => cart.find((item) => item.variant.id === id)!);
+
   return (
-    <form onSubmit={(e) => e.preventDefault()}>
-      <div className="border-gray-600 bg-gray-600 text-gray-200 rounded-lg shadow-md p-4">
-        <h2 className="text-xl font-semibold mb-4">Carrito</h2>
-        <ul className="space-y-2">
-          <li className="flex items-center">
-            <p className="flex-grow">Nombre</p>
-            <p> Precio en USD</p>
-            <p className="ml-2"> Precio en ARS</p>
-            <p className="ml-2">Cantidad </p>
-          </li>
-          {cart.map((item: CartItemInvoice, index) => (
-            <li key={index} className="flex items-center">
-              <p className="flex-grow">{item.itemName}</p>
-              <p>${item.variant.price} USD</p>
-              <p className="ml-2">{item.variant.priceArs} ARS</p>
-              <p className="ml-2">Cantidad: {productCounts[item.variant.id]}</p>
+    <form
+      onSubmit={(e) => e.preventDefault()}
+      className="h-screen flex flex-col  items-center "
+    >
+      <div className="w-full  border-gray-600 bg-gray-600 text-gray-200 rounded-lg shadow-md p-6">
+        <h2 className="text-2xl font-semibold mb-4 text-center">
+          Nuevo Comprobante
+        </h2>
+        <div className="overflow-x-auto">
+          <ul className="space-y-2 mb-4">
+            <li className="grid grid-cols-5 gap-4 text-center">
+              <p className="font-bold">Producto</p>
+              <p className="font-bold">Precio en USD</p>
+              <p className="font-bold">Precio en ARS</p>
+              <p className="font-bold">Precio en ARS Contado</p>
+              <p className="font-bold">Cantidad</p>
             </li>
-          ))}
-        </ul>
-        <div>
-          <p>Total en USD: {totalUSD} USD</p>
-          <p>Total en ARS: {totalARS} ARS</p>
+            {uniqueCartItems.map((item) => (
+              <li
+                key={item.variant.id}
+                className="grid grid-cols-5 gap-4 text-center"
+              >
+                <p>{item.itemName}</p>
+                <p>${item.variant.price} USD</p>
+                <p>${item.variant.priceArs} ARS</p>
+                <p>${item.variant.priceArsCounted} ARS</p>
+                <p>{productCounts[item.variant.id]}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="mt-4">
+          <p className="text-lg">Total en USD: ${totalUSD} USD</p>
+          <p className="text-lg">Total en ARS: ${totalARS} ARS</p>
+          <p className="text-lg">
+            Total en ARS (Contado): ${totalARSCounted} ARS
+          </p>
         </div>
 
-        <div className="mt-4">
-          <label className="block text-sm font-medium text-gray-200">
+        <div className="mt-6">
+          <label className="block text-sm font-medium text-gray-200 mb-2">
             Nombre del Cliente
           </label>
           <input
@@ -108,18 +134,26 @@ export const Cart: React.FC = () => {
         </div>
 
         {paymentMethods.map((method, index) => (
-          <div key={index} className="text-black mt-2">
-            <input
-              type="text"
-              placeholder={`Método de pago ${index + 1}`}
+          <div key={index} className="mt-4">
+            <label className="block text-sm font-medium text-gray-200 mb-2">
+              Método de Pago {index + 1}
+            </label>
+            <select
               value={method}
               onChange={(e) => {
                 const updatedMethods = [...paymentMethods];
                 updatedMethods[index] = e.target.value;
                 setPaymentMethods(updatedMethods);
               }}
-              className="p-2 rounded w-full"
-            />
+              className="p-2 rounded w-full text-black"
+            >
+              <option value="" disabled>
+                Selecciona el método de pago
+              </option>
+              <option value="tarjeta">Tarjeta</option>
+              <option value="efectivo">Efectivo</option>
+              <option value="transferencia">Transferencia</option>
+            </select>
             <input
               type="text"
               placeholder="Monto"
@@ -129,7 +163,7 @@ export const Cart: React.FC = () => {
                 updatedAmounts[index] = e.target.value;
                 setAmounts(updatedAmounts);
               }}
-              className="mt-2 p-2 rounded w-full"
+              className="mt-2 p-2 rounded w-full text-black"
             />
             <input
               type="text"
@@ -140,25 +174,28 @@ export const Cart: React.FC = () => {
                 updatedDetails[index] = e.target.value;
                 setDetails(updatedDetails);
               }}
-              className="mt-2 p-2 rounded w-full"
+              className="mt-2 p-2 rounded w-full text-black"
             />
           </div>
         ))}
-        <button
-          type="button"
-          onClick={handleAddPaymentMethod}
-          className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        >
-          Agregar método de pago
-        </button>
-        <button
-          type="button"
-          onClick={handleCreateInvoice}
-          className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          disabled={loading}
-        >
-          {loading ? "Creando..." : "Crear factura"}
-        </button>
+
+        <div className="flex justify-between mt-6">
+          <button
+            type="button"
+            onClick={handleAddPaymentMethod}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Agregar método de pago
+          </button>
+          <button
+            type="button"
+            onClick={handleCreateInvoice}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            disabled={loading}
+          >
+            {loading ? "Creando..." : "Crear factura"}
+          </button>
+        </div>
       </div>
     </form>
   );

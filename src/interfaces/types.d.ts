@@ -62,6 +62,7 @@ interface InvoiceFormProps {
 interface CartContextProps {
   cart: CartItem[];
   addToCart: (item: CartItem) => void;
+  removeFromCart: (item: CartItem) => void;
 }
 
 interface CartItem {
@@ -148,6 +149,7 @@ interface CartItemInvoice {
     id: string;
     price: number;
     priceArs: number;
+    priceArsCounted: number;
   };
 }
 

@@ -13,25 +13,14 @@ export const InvoiceDetail: React.FC<PropsId> = ({ id }) => {
     const fetchInvoice = async () => {
       const fetchedInvoice = await fetchInvoiceById(id);
       setInvoice(fetchedInvoice);
+
+      const canvas = document.createElement("canvas");
+      JsBarcode(canvas, id, { format: "CODE128" });
+      setBarcode(canvas.toDataURL("image/png"));
     };
 
     fetchInvoice();
   }, [id]);
-
-  useEffect(() => {
-    if (invoice?.shortId) {
-      const canvas = document.createElement("canvas");
-      canvas.width = 200; // Asegura que el ancho del canvas sea suficiente
-      canvas.height = 100; // Asegura que la altura del canvas sea suficiente
-      JsBarcode(canvas, invoice.shortId, {
-        format: "CODE128",
-        width: 2,
-        height: 50,
-      });
-      const barcodeUrl = canvas.toDataURL("image/png");
-      setBarcode(barcodeUrl);
-    }
-  }, [invoice]);
 
   if (!invoice || !barcode) {
     return <div>Cargando...</div>;
@@ -79,7 +68,7 @@ export const InvoiceDetail: React.FC<PropsId> = ({ id }) => {
             id={invoice.shortId}
           />
         }
-        fileName={`comprobante_${id}.pdf`}
+        fileName={`invoice_${id}.pdf`}
       >
         {({ loading }) => (loading ? "Generando PDF..." : "Descargar Factura")}
       </PDFDownloadLink>
