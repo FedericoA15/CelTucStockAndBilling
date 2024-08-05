@@ -16,7 +16,7 @@ const ListInvoice: React.FC = () => {
     client: "",
     seller: "",
     createdAt: "",
-    id: "",
+    shortId: "",
   });
 
   useEffect(() => {
@@ -26,7 +26,7 @@ const ListInvoice: React.FC = () => {
     };
 
     fetchData();
-  }, [filters,currentPage]);
+  }, [filters, currentPage]);
 
   return (
     <div className="flex flex-col sm:flex-row">

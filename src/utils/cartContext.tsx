@@ -1,5 +1,6 @@
 "use client";
 import { createContext, useContext, useState } from "react";
+import { toast } from "react-toastify";
 
 const CartContext = createContext<CartContextProps | undefined>(undefined);
 
@@ -10,14 +11,22 @@ export const CartProvider: React.FC<React.PropsWithChildren<{}>> = ({
 
   const addToCart = (item: CartItem) => {
     setCart([...cart, item]);
+    toast.success("Se agrego correctamente el producto");
   };
 
   const removeFromCart = (item: CartItem) => {
     setCart(cart.filter((cartItem) => cartItem.variant.id !== item.variant.id));
+    toast.error("Se elimino correctamente el producto");
+  };
+
+  const cleanCart = () => {
+    setCart([]);
   };
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart }}>
+    <CartContext.Provider
+      value={{ cart, addToCart, removeFromCart, cleanCart }}
+    >
       {children}
     </CartContext.Provider>
   );

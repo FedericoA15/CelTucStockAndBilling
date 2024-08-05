@@ -1,12 +1,15 @@
 "use client";
+import { postVoucher } from "@/actions/voucher/postVoucher";
 import { GeneratePDFByReceipt } from "@/utils/GeneratePDF";
 import React, { useState, useEffect } from "react";
+import Cookies from "js-cookie";
 
 const ReceiptForm: React.FC = () => {
+  const id = Cookies.get("id");
   const [formData, setFormData] = useState({
-    couponNumber: "",
+    coupon: "",
     date: "",
-    name: "",
+    client: "",
     dni: "",
     phone: "",
     amount: "",
@@ -14,7 +17,7 @@ const ReceiptForm: React.FC = () => {
     condition: "",
     imei: "",
     warranty: "",
-    paymentMethod: "",
+    paymentMethods: "",
     observations: "",
     total: "",
   });
@@ -33,6 +36,14 @@ const ReceiptForm: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const formDataWithType = {
+      ...formData,
+      type: "Ventas",
+      user: {
+        id: id,
+      },
+    };
+    // postVoucher(formDataWithType);
     GeneratePDFByReceipt(formData);
   };
 
@@ -51,14 +62,14 @@ const ReceiptForm: React.FC = () => {
           </div>
           <div className="w-full md:w-auto">
             <div className="flex flex-col mb-2">
-              <label htmlFor="couponNumber" className="block font-medium">
+              <label htmlFor="coupon" className="block font-medium">
                 CUPON Nº
               </label>
               <input
                 type="text"
-                id="couponNumber"
-                name="couponNumber"
-                value={formData.couponNumber}
+                id="coupon"
+                name="coupon"
+                value={formData.coupon}
                 onChange={handleChange}
                 className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
               />
@@ -79,14 +90,14 @@ const ReceiptForm: React.FC = () => {
           </div>
         </div>
         <div className="mb-4">
-          <label htmlFor="name" className="block font-medium">
+          <label htmlFor="client" className="block font-medium">
             RECIBI DE
           </label>
           <input
             type="text"
-            id="name"
-            name="name"
-            value={formData.name}
+            id="client"
+            name="client"
+            value={formData.client}
             onChange={handleChange}
             className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
           />
@@ -120,14 +131,14 @@ const ReceiptForm: React.FC = () => {
           </div>
         </div>
         <div className="mb-4">
-          <label htmlFor="amount" className="block font-medium">
+          <label htmlFor="total" className="block font-medium">
             LA SUMA DE
           </label>
           <input
             type="text"
-            id="amount"
-            name="amount"
-            value={formData.amount}
+            id="total"
+            name="total"
+            value={formData.total}
             onChange={handleChange}
             className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
           />
@@ -200,14 +211,14 @@ const ReceiptForm: React.FC = () => {
             />
           </div>
           <div>
-            <label htmlFor="paymentMethod" className="block font-medium">
+            <label htmlFor="paymentMethods" className="block font-medium">
               FORMA DE PAGO
             </label>
             <input
               type="text"
-              id="paymentMethod"
-              name="paymentMethod"
-              value={formData.paymentMethod}
+              id="paymentMethods"
+              name="paymentMethods"
+              value={formData.paymentMethods}
               onChange={handleChange}
               className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
             />

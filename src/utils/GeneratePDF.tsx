@@ -72,26 +72,26 @@ export const GeneratePDFByRepair = async (data: any) => {
       });
     };
 
-    addText(data.couponNumber, 350, 696.024);
+    addText(data.coupon, 350, 696.024);
     addText(data.date, 345, 672);
-    addText(data.name, 111, 650);
+    addText(data.client, 111, 650);
     addText(data.equipment, 130, 635);
-    addText(data.faults, 190, 622);
-    addText(data.observations, 88, 585);
-    addText(data.receiver, 128, 540);
-    addText(data.estimate, 360, 540);
-    addText(data.unlockCode, 155, 527);
-    addText(data.deposit, 321, 527);
+    addText(data.failure, 190, 622);
+    addText(data.obs, 88, 585);
+    addText(data.reception, 128, 540);
+    addText(data.budget, 360, 540);
+    addText(data.code, 155, 527);
+    addText(data.sign, 321, 527);
     addText(data.phone, 85, 515);
-    addText(data.pendingAmount, 347, 515);
-    addText(data.technicalDiagnosis, 176, 486);
+    addText(data.slope, 347, 515);
+    addText(data.dignosis, 176, 486);
 
     const pdfBytes = await pdfDoc.save();
 
     const blob = new Blob([pdfBytes], { type: "application/pdf" });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
-    link.download = "ComprobanteRellenado.pdf";
+    link.download = "ComprobanteReparacion.pdf";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
