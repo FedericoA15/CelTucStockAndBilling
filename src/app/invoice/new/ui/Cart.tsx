@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { useCart } from "@/utils/cartContext";
-import axiosInstance from "@/utils/axiosInstance";
 import Cookies from "js-cookie";
+import { postInvoice } from "@/actions/invoices/postInvoice";
+import { useRouter } from "next/navigation";
 
 export const Cart: React.FC = () => {
-  const { cart } = useCart();
+  const router = useRouter();
+  const { cart, cleanCart } = useCart();
   const [paymentMethods, setPaymentMethods] = useState<string[]>([""]);
   const [amounts, setAmounts] = useState<string[]>([""]);
   const [details, setDetails] = useState<string[]>([""]);
@@ -62,18 +64,8 @@ export const Cart: React.FC = () => {
       })),
     };
 
-    try {
-      const response = await axiosInstance.post("/invoice", invoiceData);
-      if (response.status === 200) {
-        alert("Factura creada exitosamente");
-      } else {
-        alert("Error al crear la factura");
-      }
-    } catch (error) {
-      alert("Error interno del servidor");
-    } finally {
-      setLoading(false);
-    }
+    postInvoice(invoiceData, router);
+    cleanCart();
   };
 
   const uniqueCartItems = Array.from(

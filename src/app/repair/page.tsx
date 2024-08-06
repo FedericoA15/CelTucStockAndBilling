@@ -8,7 +8,7 @@ export default function InvoicePage() {
   return (
     <div>
       <h2 className="text-white text-5xl text-center py-10">
-        Comprobantes de venta garantia/reparacion
+        Comprobantes de garantia/reparacion
       </h2>
       <ReceiptForm />
     </div>

@@ -32,19 +32,24 @@ export const ItemComponent: React.FC<{ item: Item }> = ({ item }) => {
     setIsClient(true);
   }, []);
 
+  const renderValue = (value: any) =>
+    value === null || value === "" ? "-" : value;
+
   return (
     <div className="bg-custom-grey-2 text-gray-200 p-4 my-4 relative w-full">
       <h2 className="font-bold text-xl">{item.name}</h2>
-      <p>Stock General: {item.generalStock}</p>
-      <p>Codigo: {item.code}</p>
-      {isClient && role === "ADMIN" && (
-        <div className=" top-0 flex items-center space-x-2">
-          <PlusButton
-            onClick={redirectProductVariant}
-            tittled="Nueva Variante"
-          />
-        </div>
-      )}
+      <ul className="list-none ">
+        <li>Stock General: {renderValue(item.generalStock)}</li>
+        <li>Codigo: {renderValue(item.code)}</li>
+        {isClient && role === "ADMIN" && (
+          <div className="flex items-center space-x-2 my-2">
+            <PlusButton
+              onClick={redirectProductVariant}
+              tittled="Nueva Variante"
+            />
+          </div>
+        )}
+      </ul>
       {item.variants.length > 0 && (
         <button
           className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -53,43 +58,61 @@ export const ItemComponent: React.FC<{ item: Item }> = ({ item }) => {
           {showVariants ? "Ocultar" : "Mostrar"} Variantes
         </button>
       )}
-      {showVariants &&
-        item.variants.map((variant) => (
-          <div
-            key={variant.id}
-            className="mt-2 p-2 border-2 border-gray-600 bg-gray-600 text-gray-200 mb-4"
-          >
-            <p>----------</p>
-            <p>Modelo: {variant.subModel}</p>
-            <p>Estado: {variant.state}</p>
-            <p>Capacidad: {variant.capacity}</p>
-            <p>Color: {variant.color}</p>
-            <p>Capacidad de Batería: {variant.batteryCapacity}</p>
-            <p>Stock: {variant.stock}</p>
-            <p>Precio USD: USD{variant.price}</p>
-            <p>Precio de contado USD: USD{variant.countedPrice}</p>
-            <p>Precio Ars: ${variant.priceArs}</p>
-            <p>Precio contado Ars: ${variant.priceArsCounted}</p>
-            <p>Sucursal: {variant.branchName}</p>
-            <p>Detalles: {variant.details}</p>
-            <p>Codigo: {variant.productCodes.join(", ")}</p>
-            <button
-              className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2"
-              onClick={() => addToCart({ variant, itemName: item.name })}
-            >
-              Agregar al comprobante
-            </button>
-            {isClient && role === "ADMIN" && (
-              <button
-                className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                onClick={() => openModal(variant)}
+      {showVariants && (
+        <div className="mt-2">
+          <ul className="list-none">
+            <li className="font-bold grid grid-cols-6 gap-2">
+              <span>Modelo</span>
+              <span>Stock</span>
+              <span>Estado</span>
+              <span>Capacidad</span>
+              <span>Color</span>
+              <span>Precio USD</span>
+              <span>Precio contado USD</span>
+              <span>Precio ARS</span>
+              <span>Precio contado ARS</span>
+              <span>Sucursal</span>
+              <span>Detalles</span>
+              <span>Codigos</span>
+            </li>
+            {item.variants.map((variant) => (
+              <li
+                key={variant.id}
+                className="grid grid-cols-6 gap-2 border-b border-gray-600 py-2"
               >
-                Modificar producto
-              </button>
-            )}
-            <p>----------</p>
-          </div>
-        ))}
+                <span>{renderValue(variant.subModel)}</span>
+                <span>{renderValue(variant.stock)}</span>
+                <span>{renderValue(variant.state)}</span>
+                <span>{renderValue(variant.capacity)}</span>
+                <span>{renderValue(variant.color)}</span>
+                <span>USD {renderValue(variant.price)}</span>
+                <span>USD {renderValue(variant.countedPrice)}</span>
+                <span>${renderValue(variant.priceArs)}</span>
+                <span>${renderValue(variant.priceArsCounted)}</span>
+                <span>{renderValue(variant.branchName)}</span>
+                <span>{renderValue(variant.details)}</span>
+                <span>{renderValue(variant.productCodes.join(", "))}</span>
+                <span className="flex justify-stretch space-x-2">
+                  <button
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
+                    onClick={() => addToCart({ variant, itemName: item.name })}
+                  >
+                    Agregar
+                  </button>
+                  {isClient && role === "ADMIN" && (
+                    <button
+                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
+                      onClick={() => openModal(variant)}
+                    >
+                      Modificar
+                    </button>
+                  )}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
       {isModalOpen && currentVariant && (
         <EditVariantModal
           isOpen={isModalOpen}

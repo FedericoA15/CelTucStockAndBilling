@@ -63,6 +63,7 @@ interface CartContextProps {
   cart: CartItem[];
   addToCart: (item: CartItem) => void;
   removeFromCart: (item: CartItem) => void;
+  cleanCart: () => void;
 }
 
 interface CartItem {
@@ -99,7 +100,7 @@ interface FiltersInvoice {
   client: string;
   createdAt: string;
   seller: string; 
-  id: string;
+  shortId: string;
 }
 
 interface SearchFormProps {

@@ -1,22 +1,25 @@
 "use client";
+import { postVoucher } from "@/actions/voucher/postVoucher";
 import { GeneratePDFByRepair } from "@/utils/GeneratePDF";
 import React, { useState, useEffect } from "react";
+import Cookies from "js-cookie";
 
 const RepairForm: React.FC = () => {
+  const id = Cookies.get("id");
   const [formData, setFormData] = useState({
-    couponNumber: "",
+    coupon: "",
     date: "",
-    name: "",
+    client: "",
     equipment: "",
-    faults: "",
-    observations: "",
-    receiver: "",
-    estimate: "",
-    unlockCode: "",
-    deposit: "",
+    failure: "",
+    obs: "",
+    reception: "",
+    budget: "",
+    code: "",
+    sign: "",
     phone: "",
-    pendingAmount: "",
-    technicalDiagnosis: "",
+    slope: "",
+    dignosis: "",
   });
 
   useEffect(() => {
@@ -33,6 +36,14 @@ const RepairForm: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const formDataWithType = {
+      ...formData,
+      type: "Garantia/Reparacion",
+      user: {
+        id: id,
+      },
+    };
+    postVoucher(formDataWithType);
     GeneratePDFByRepair(formData);
   };
 
@@ -51,14 +62,14 @@ const RepairForm: React.FC = () => {
           </div>
           <div className="w-full md:w-auto">
             <div className="flex flex-col mb-2">
-              <label htmlFor="couponNumber" className="block font-medium">
+              <label htmlFor="coupon" className="block font-medium">
                 CUPON Nº
               </label>
               <input
                 type="text"
-                id="couponNumber"
-                name="couponNumber"
-                value={formData.couponNumber}
+                id="coupon"
+                name="coupon"
+                value={formData.coupon}
                 onChange={handleChange}
                 className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
               />
@@ -79,14 +90,14 @@ const RepairForm: React.FC = () => {
           </div>
         </div>
         <div className="mb-4">
-          <label htmlFor="name" className="block font-medium">
+          <label htmlFor="client" className="block font-medium">
             RECIBI DE
           </label>
           <input
             type="text"
-            id="name"
-            name="name"
-            value={formData.name}
+            id="client"
+            name="client"
+            value={formData.client}
             onChange={handleChange}
             className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
           />
@@ -105,52 +116,52 @@ const RepairForm: React.FC = () => {
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="faults" className="block font-medium">
+          <label htmlFor="failure" className="block font-medium">
             CON LA SIGUIENTE FALLA/S
           </label>
           <textarea
             id="faults"
-            name="faults"
-            value={formData.faults}
+            name="failure"
+            value={formData.failure}
             onChange={handleChange}
             className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="observations" className="block font-medium">
+          <label htmlFor="obs" className="block font-medium">
             OBS
           </label>
           <textarea
-            id="observations"
-            name="observations"
-            value={formData.observations}
+            id="obs"
+            name="obs"
+            value={formData.obs}
             onChange={handleChange}
             className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
           />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <div>
-            <label htmlFor="receiver" className="block font-medium">
+            <label htmlFor="reception" className="block font-medium">
               RECEPCIONO
             </label>
             <input
               type="text"
-              id="receiver"
-              name="receiver"
-              value={formData.receiver}
+              id="reception"
+              name="reception"
+              value={formData.reception}
               onChange={handleChange}
               className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
             />
           </div>
           <div>
-            <label htmlFor="estimate" className="block font-medium">
+            <label htmlFor="budget" className="block font-medium">
               PRESUPUESTO
             </label>
             <input
               type="text"
-              id="estimate"
-              name="estimate"
-              value={formData.estimate}
+              id="budget"
+              name="budget"
+              value={formData.budget}
               onChange={handleChange}
               className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
             />
@@ -158,40 +169,40 @@ const RepairForm: React.FC = () => {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
           <div>
-            <label htmlFor="unlockCode" className="block font-medium">
+            <label htmlFor="code" className="block font-medium">
               COD. DESBLOQUEO
             </label>
             <input
               type="text"
-              id="unlockCode"
-              name="unlockCode"
-              value={formData.unlockCode}
+              id="code"
+              name="code"
+              value={formData.code}
               onChange={handleChange}
               className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
             />
           </div>
           <div>
-            <label htmlFor="deposit" className="block font-medium">
+            <label htmlFor="sign" className="block font-medium">
               SEÑA
             </label>
             <input
               type="text"
-              id="deposit"
-              name="deposit"
-              value={formData.deposit}
+              id="sign"
+              name="sign"
+              value={formData.sign}
               onChange={handleChange}
               className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
             />
           </div>
           <div>
-            <label htmlFor="pendingAmount" className="block font-medium">
+            <label htmlFor="slope" className="block font-medium">
               PENDIENTE
             </label>
             <input
               type="text"
-              id="pendingAmount"
-              name="pendingAmount"
-              value={formData.pendingAmount}
+              id="slope"
+              name="slope"
+              value={formData.slope}
               onChange={handleChange}
               className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
             />
@@ -211,13 +222,13 @@ const RepairForm: React.FC = () => {
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="technicalDiagnosis" className="block font-medium">
+          <label htmlFor="dignosis" className="block font-medium">
             DIAGNOSTICO TECNICO
           </label>
           <textarea
-            id="technicalDiagnosis"
-            name="technicalDiagnosis"
-            value={formData.technicalDiagnosis}
+            id="dignosis"
+            name="dignosis"
+            value={formData.dignosis}
             onChange={handleChange}
             className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
           />
