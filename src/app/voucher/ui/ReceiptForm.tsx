@@ -38,7 +38,7 @@ const ReceiptForm: React.FC = () => {
     e.preventDefault();
     const formDataWithType = {
       ...formData,
-      type: "Ventas",
+      type: "Compra",
       user: {
         id: id,
       },
@@ -179,7 +179,7 @@ const ReceiptForm: React.FC = () => {
               name="total"
               value={formData.total}
               onChange={handleChange}
-              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+              className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
             />
           </div>
         </div>

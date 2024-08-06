@@ -17,6 +17,10 @@
     --background-end-rgb: 25, 25, 26;
   }
 }
+input {
+  text-transform: capitalize;
+}
+
 
 body {
   color: rgb(var(--foreground-rgb));
