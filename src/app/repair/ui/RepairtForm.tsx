@@ -6,6 +6,7 @@ import Cookies from "js-cookie";
 
 const RepairForm: React.FC = () => {
   const id = Cookies.get("id");
+  const [clientEmail, setClientEmail] = useState("");
   const [formData, setFormData] = useState({
     coupon: "",
     date: "",
@@ -32,6 +33,7 @@ const RepairForm: React.FC = () => {
   ) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    setClientEmail(value);
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -44,7 +46,7 @@ const RepairForm: React.FC = () => {
       },
     };
     postVoucher(formDataWithType);
-    GeneratePDFByRepair(formData);
+    GeneratePDFByRepair(formData, clientEmail);
   };
 
   return (
@@ -217,6 +219,19 @@ const RepairForm: React.FC = () => {
             id="phone"
             name="phone"
             value={formData.phone}
+            onChange={handleChange}
+            className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
+          />
+        </div>
+        <div className="mb-4">
+          <label htmlFor="clientEmail" className="block font-medium">
+            Email
+          </label>
+          <input
+            type="text"
+            id="clientEmail"
+            name="clientEmail"
+            value={clientEmail}
             onChange={handleChange}
             className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
           />
