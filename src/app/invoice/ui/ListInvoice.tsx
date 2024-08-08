@@ -32,7 +32,7 @@ const ListInvoice: React.FC = () => {
     <div className="flex flex-col sm:flex-row">
       <div className="w-3/20"></div>
       <SearchForm onSearchChangeInvoice={setFilters} />
-      <div className="w-full flex flex-col border-solid rounded-md bg-custom-black-2">
+      <div className="w-full flex flex-col border-solid rounded-md ">
         {data.content.map((item) => (
           <ItemInvoice key={item.id} item={item} />
         ))}

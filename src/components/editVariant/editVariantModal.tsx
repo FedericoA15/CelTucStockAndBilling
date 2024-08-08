@@ -1,16 +1,20 @@
-import { useState, useEffect } from 'react';
-import { putProduct } from '@/actions/products/putProductVariant';
+import { useState, useEffect } from "react";
+import { putProduct } from "@/actions/products/putProductVariant";
 
-const EditVariantModal: React.FC<{ isOpen: boolean, onClose: () => void, variant: Variant }> = ({ isOpen, onClose, variant }) => {
+const EditVariantModal: React.FC<{
+  isOpen: boolean;
+  onClose: () => void;
+  variant: Variant;
+}> = ({ isOpen, onClose, variant }) => {
   const [formData, setFormData] = useState({
     ...variant,
-    productCodes: variant.productCodes.join(', '), 
+    productCodes: variant.productCodes.join(", "),
   });
 
   useEffect(() => {
     setFormData({
       ...variant,
-      productCodes: variant.productCodes.join(', '),
+      productCodes: variant.productCodes.join(", "),
     });
   }, [variant]);
 
@@ -23,7 +27,9 @@ const EditVariantModal: React.FC<{ isOpen: boolean, onClose: () => void, variant
 
     const updatedFormData = {
       ...formData,
-      productCodes: formData.productCodes.split(',').map((code: string) => code.trim()),
+      productCodes: formData.productCodes
+        .split(",")
+        .map((code: string) => code.trim()),
     };
 
     const response = await putProduct(updatedFormData, variant.id);
@@ -35,9 +41,11 @@ const EditVariantModal: React.FC<{ isOpen: boolean, onClose: () => void, variant
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-gray-800 p-8 rounded-lg w-2/3">
-        <h2 className="text-2xl font-bold mb-4">Modificar Variante de producto</h2>
+    <div className="fixed inset-0 bg-slate-950 bg-opacity-50 flex justify-center items-center z-50">
+      <div className="bg-custom-black p-8 rounded-lg w-2/3">
+        <h2 className="text-2xl font-bold mb-4">
+          Modificar Variante de producto
+        </h2>
         <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4">
           <input
             name="color"

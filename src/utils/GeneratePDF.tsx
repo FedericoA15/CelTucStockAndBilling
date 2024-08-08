@@ -1,7 +1,10 @@
 import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
 import axiosInstance from "./axiosInstance";
 
-export const GeneratePDFByReceipt = async (data: any) => {
+export const GeneratePDFByReceipt = async (
+  data: any,
+  recipientEmail: string
+) => {
   try {
     const existingPdfBytes = await fetch("/compra.pdf").then((res) =>
       res.arrayBuffer()
@@ -38,6 +41,20 @@ export const GeneratePDFByReceipt = async (data: any) => {
     addText(data.observations, 100, 400);
 
     const pdfBytes = await pdfDoc.save();
+
+    const formData = new FormData();
+    formData.append(
+      "pdf",
+      new Blob([pdfBytes], { type: "application/pdf" }),
+      "ComprobanteReparacion.pdf"
+    );
+    formData.append("email", recipientEmail);
+
+    await axiosInstance.post("/send-pdf-email", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
 
     const blob = new Blob([pdfBytes], { type: "application/pdf" });
     const link = document.createElement("a");
@@ -100,7 +117,11 @@ export const GeneratePDFByRepair = async (
     );
     formData.append("email", recipientEmail);
 
-    await axiosInstance.post("/send-pdf-email", { formData });
+    await axiosInstance.post("/send-pdf-email", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
 
     const blob = new Blob([pdfBytes], { type: "application/pdf" });
     const link = document.createElement("a");

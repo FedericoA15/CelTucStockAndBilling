@@ -6,6 +6,7 @@ import Cookies from "js-cookie";
 
 const ReceiptForm: React.FC = () => {
   const id = Cookies.get("id");
+  const [clientEmail, setClientEmail] = useState("");
   const [formData, setFormData] = useState({
     coupon: "",
     date: "",
@@ -32,6 +33,9 @@ const ReceiptForm: React.FC = () => {
   ) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    if (name === "clientEmail") {
+      setClientEmail(value);
+    }
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -44,11 +48,11 @@ const ReceiptForm: React.FC = () => {
       },
     };
     // postVoucher(formDataWithType);
-    GeneratePDFByReceipt(formData);
+    GeneratePDFByReceipt(formData, clientEmail);
   };
 
   return (
-    <div className="flex text-white items-start justify-center min-h-screen bg-custom-black">
+    <div className="flex text-white items-start justify-center min-h-screen ">
       <form
         onSubmit={handleSubmit}
         className="w-full max-w-3xl p-6 bg-custom-black-2 shadow-lg rounded-lg space-y-4"
@@ -129,6 +133,19 @@ const ReceiptForm: React.FC = () => {
               className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
             />
           </div>
+        </div>
+        <div className="mb-4">
+          <label htmlFor="clientEmail" className="block font-medium">
+            Email
+          </label>
+          <input
+            type="text"
+            id="clientEmail"
+            name="clientEmail"
+            value={clientEmail}
+            onChange={handleChange}
+            className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
+          />
         </div>
         <div className="mb-4">
           <label htmlFor="total" className="block font-medium">

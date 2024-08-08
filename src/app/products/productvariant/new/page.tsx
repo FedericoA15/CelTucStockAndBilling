@@ -49,7 +49,7 @@ export default function NewSubProduct() {
   };
 
   return (
-    <div className=" text-gray-200">
+    <div className="bg-custom-bg2  bg-cover bg-center bg-no-repeat min-h-screen text-gray-200">
       <h1 className="text-white text-3xl text-center py-10">
         Nueva Variante de producto
       </h1>

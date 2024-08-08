@@ -33,7 +33,9 @@ const RepairForm: React.FC = () => {
   ) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    setClientEmail(value);
+    if (name === "clientEmail") {
+      setClientEmail(value);
+    }
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -45,12 +47,12 @@ const RepairForm: React.FC = () => {
         id: id,
       },
     };
-    postVoucher(formDataWithType);
+    // postVoucher(formDataWithType);
     GeneratePDFByRepair(formData, clientEmail);
   };
 
   return (
-    <div className="flex text-white items-start justify-center min-h-screen bg-custom-black">
+    <div className="flex text-white items-start justify-center min-h-screen ">
       <form
         onSubmit={handleSubmit}
         className="w-full max-w-3xl p-6 bg-custom-black-2 shadow-lg rounded-lg space-y-4"
