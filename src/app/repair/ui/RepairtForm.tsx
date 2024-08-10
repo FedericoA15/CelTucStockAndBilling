@@ -3,9 +3,16 @@ import { postVoucher } from "@/actions/voucher/postVoucher";
 import { GeneratePDFByRepair } from "@/utils/GeneratePDF";
 import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
+import Link from "next/link";
 
 const RepairForm: React.FC = () => {
   const id = Cookies.get("id");
+  const role = Cookies.get("roles");
+  useEffect(() => {
+    const today = new Date().toISOString().split("T")[0];
+    setFormData((prevData) => ({ ...prevData, date: today }));
+  }, []);
+
   const [clientEmail, setClientEmail] = useState("");
   const [formData, setFormData] = useState({
     coupon: "",
@@ -22,11 +29,6 @@ const RepairForm: React.FC = () => {
     slope: "",
     dignosis: "",
   });
-
-  useEffect(() => {
-    const today = new Date().toISOString().split("T")[0];
-    setFormData((prevData) => ({ ...prevData, date: today }));
-  }, []);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -47,7 +49,7 @@ const RepairForm: React.FC = () => {
         id: id,
       },
     };
-    // postVoucher(formDataWithType);
+    postVoucher(formDataWithType);
     GeneratePDFByRepair(formData, clientEmail);
   };
 
@@ -256,6 +258,15 @@ const RepairForm: React.FC = () => {
         >
           Guardar Comprobante
         </button>
+        {role === "ADMIN" && (
+          <div className="text-center">
+            <Link href="repair/list">
+              <button className="bg-blue-500 text-white py-2 px-4 my-2 rounded hover:bg-blue-700">
+                Ver lista de comprobantes
+              </button>
+            </Link>
+          </div>
+        )}
       </form>
     </div>
   );

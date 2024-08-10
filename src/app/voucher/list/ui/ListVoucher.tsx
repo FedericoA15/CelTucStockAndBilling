@@ -32,12 +32,12 @@ const ListVoucher: React.FC = () => {
       <div className="w-3/20"></div>
       <SearchForm onSearchChangeVoucher={setFilters} />
       <div className="w-full flex flex-col border-solid rounded-md">
-        {data.content.map((item) => (
+        {data?.content.map((item) => (
           <ItemVoucher key={item.id} item={item} />
         ))}
         <div className="flex justify-start items-center">
           <Pagination
-            totalPages={data.totalPages}
+            totalPages={data?.totalPages}
             currentPage={currentPage}
             onPageChange={setCurrentPage}
           />

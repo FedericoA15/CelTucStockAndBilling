@@ -3,12 +3,16 @@ import { postVoucher } from "@/actions/voucher/postVoucher";
 import { GeneratePDFByReceipt } from "@/utils/GeneratePDF";
 import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
+import Link from "next/link";
+import { getLastVoucherByType } from "@/actions/voucher/getLastVoucherByType";
 
 const ReceiptForm: React.FC = () => {
   const id = Cookies.get("id");
+  const role = Cookies.get("roles");
+  const [coupon, setCoupon] = useState("");
   const [clientEmail, setClientEmail] = useState("");
   const [formData, setFormData] = useState({
-    coupon: "",
+    coupon: coupon,
     date: "",
     client: "",
     dni: "",
@@ -20,12 +24,14 @@ const ReceiptForm: React.FC = () => {
     warranty: "",
     paymentMethods: "",
     observations: "",
+    addition: "",
     total: "",
   });
 
   useEffect(() => {
     const today = new Date().toISOString().split("T")[0];
     setFormData((prevData) => ({ ...prevData, date: today }));
+    const response = getLastVoucherByType("Compra");
   }, []);
 
   const handleChange = (
@@ -47,7 +53,7 @@ const ReceiptForm: React.FC = () => {
         id: id,
       },
     };
-    // postVoucher(formDataWithType);
+    postVoucher(formDataWithType);
     GeneratePDFByReceipt(formData, clientEmail);
   };
 
@@ -148,14 +154,14 @@ const ReceiptForm: React.FC = () => {
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="total" className="block font-medium">
+          <label htmlFor="addition" className="block font-medium">
             LA SUMA DE
           </label>
           <input
             type="text"
-            id="total"
-            name="total"
-            value={formData.total}
+            id="addition"
+            name="addition"
+            value={formData.addition}
             onChange={handleChange}
             className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
           />
@@ -247,6 +253,15 @@ const ReceiptForm: React.FC = () => {
         >
           Guardar Comprobante
         </button>
+        {role === "ADMIN" && (
+          <div className="text-center">
+            <Link href="voucher/list">
+              <button className="bg-blue-500 text-white py-2 px-4 my-2 rounded hover:bg-blue-700">
+                Ver lista de comprobantes
+              </button>
+            </Link>
+          </div>
+        )}
       </form>
     </div>
   );

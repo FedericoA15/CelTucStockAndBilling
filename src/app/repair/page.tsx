@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import ReceiptForm from "./ui/RepairtForm";
+import Link from "next/link";
 export const metadata: Metadata = {
   title: "Comprobantes",
 };

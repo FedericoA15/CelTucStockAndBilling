@@ -41,7 +41,7 @@ const SearchForm: React.FC<SearchFormPropsVoucher> = ({
         />
       </div>
       <div className="mb-4">
-        <label className="block text-sm font-medium mb-2">Vendedor</label>
+        <label className="block text-sm font-medium mb-2">Equipo</label>
         <input
           type="text"
           name="equipment"

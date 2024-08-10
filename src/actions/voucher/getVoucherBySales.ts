@@ -1,39 +1,24 @@
 import axiosInstance from "@/utils/axiosInstance";
 import { toast } from 'react-toastify';
 
-export async function getVoucherBySales(filters: any, page: number = 0) {
+export async function getVoucherBySales(filters: object, page: number = 0) {
   try {
-    let url = "/voucher?type=Compra";
+    let url = `/voucher?type=Compra&page=${page}&size=10`;
     
-    if (filters && typeof filters === 'object') {
-      const queryParameters = new URLSearchParams();
-
-      for (const [key, value] of Object.entries(filters)) {
-        if (typeof value === 'string' && value.trim() !== '') {
-          queryParameters.append(key, encodeURIComponent(value));
-        } else if (typeof value === 'object' && value !== null) {
-          for (const [subKey, subValue] of Object.entries(value)) {
-            if (typeof subValue === 'string' && subValue.trim() !== '') {
-              queryParameters.append(`variants.${subKey}`, encodeURIComponent(subValue));
-            }
+    for (const [key, value] of Object.entries(filters)) {
+      if (typeof value === "string" && value.trim() !== "") {
+        url += `&${key}=${encodeURIComponent(value)}`;
+      } else if (typeof value === "object") {
+        for (const [subKey, subValue] of Object.entries(value)) {
+          if ((subValue as string).trim() !== "") {
+            url += `&variants.${subKey}=${encodeURIComponent(
+              subValue as string
+            )}`;
           }
         }
       }
-
-      if (queryParameters.toString()) {
-        url += `?${queryParameters.toString()}`;
-      }
     }
-
-    const response = await toast.promise(
-      axiosInstance.get(url),
-      {
-        pending: "Cargando comprobantes...",
-        success: "Comprobantes cargados",
-        error: "Error al cargar los comprobantes"
-      }
-    );
-    
+    const response = await axiosInstance.get(url)
     return response.data;
   } catch (error) {
     toast.error("Error interno del servidor");

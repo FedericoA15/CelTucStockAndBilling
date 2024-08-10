@@ -213,6 +213,7 @@ interface Voucher {
   total: string | null;
   type: string;
   user: string;
+  addition: string;
   productVariants: Variant[];
 }
 
