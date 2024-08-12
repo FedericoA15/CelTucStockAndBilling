@@ -114,6 +114,11 @@ interface SearchFormPropsVoucher {
   onSearchChangeVoucher: (filters: FiltersVoucher) => void;
 }
 
+
+interface IMEISearchFormProps {
+  onSearch: (imei: string) => void;
+}
+
 interface InvoiceItem {
   productName: string;
   productVariant: Variant;
@@ -222,4 +227,10 @@ interface FiltersVoucher {
   code: string;
   date: string;
   equipment: string;
+}
+
+interface IMEIResultModalProps {
+  product: any;
+  onClose: () => void;
+  onAddToVoucher: () => void;
 }

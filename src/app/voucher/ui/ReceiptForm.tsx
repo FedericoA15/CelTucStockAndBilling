@@ -2,18 +2,22 @@
 import { postVoucher } from "@/actions/voucher/postVoucher";
 import { GeneratePDFByReceipt } from "@/utils/GeneratePDF";
 import React, { useState, useEffect } from "react";
+import { getLastVoucherByType } from "@/actions/voucher/getLastVoucherByType";
 import Cookies from "js-cookie";
 import Link from "next/link";
-import { getLastVoucherByType } from "@/actions/voucher/getLastVoucherByType";
+import IMEIResultModal from "./IMEIResultModal";
+import { getProductByIMEI } from "@/actions/products/getProductByIMEI";
+import IMEISearchForm from "./IMEISearchForm";
 
 const ReceiptForm: React.FC = () => {
   const id = Cookies.get("id");
   const role = Cookies.get("roles");
-  const [coupon, setCoupon] = useState("");
+
+  const today = new Date().toISOString().split("T")[0];
   const [clientEmail, setClientEmail] = useState("");
   const [formData, setFormData] = useState({
-    coupon: coupon,
-    date: "",
+    coupon: "",
+    date: today,
     client: "",
     dni: "",
     phone: "",
@@ -28,10 +32,24 @@ const ReceiptForm: React.FC = () => {
     total: "",
   });
 
+  const [product, setProduct] = useState<any>(null);
+
   useEffect(() => {
-    const today = new Date().toISOString().split("T")[0];
-    setFormData((prevData) => ({ ...prevData, date: today }));
-    const response = getLastVoucherByType("Compra");
+    async function fetchLastCoupon() {
+      try {
+        const lastVoucher = await getLastVoucherByType("Compra");
+        const lastCoupon = lastVoucher.content[0]?.coupon || 0;
+
+        setFormData((prevData) => ({
+          ...prevData,
+          coupon: (parseInt(lastCoupon, 10) + 1).toString(),
+        }));
+      } catch (error) {
+        console.error("Error al obtener el último cupón:", error);
+      }
+    }
+
+    fetchLastCoupon();
   }, []);
 
   const handleChange = (
@@ -57,8 +75,32 @@ const ReceiptForm: React.FC = () => {
     GeneratePDFByReceipt(formData, clientEmail);
   };
 
+  const handleSearch = async (imei: string) => {
+    try {
+      const foundProduct = await getProductByIMEI(imei);
+      setProduct(foundProduct);
+    } catch (error) {
+      console.error("Error al buscar el producto por IMEI:", error);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setProduct(null);
+  };
+
+  const handleAddToVoucher = () => {
+    if (product) {
+      setFormData({
+        ...formData,
+        concept: `${formData.concept} - ${product.name}`,
+        imei: product.variants[0].productCodes[0],
+      });
+      setProduct(null);
+    }
+  };
+
   return (
-    <div className="flex text-white items-start justify-center min-h-screen ">
+    <div className="flex text-white items-start justify-center min-h-screen">
       <form
         onSubmit={handleSubmit}
         className="w-full max-w-3xl p-6 bg-custom-black-2 shadow-lg rounded-lg space-y-4"
@@ -66,6 +108,8 @@ const ReceiptForm: React.FC = () => {
         <h2 className="text-2xl font-bold mb-4 text-center">
           RECIBO DE COMPRA DE EQUIPO/S
         </h2>
+        <IMEISearchForm onSearch={handleSearch} />
+
         <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-4 space-y-4 md:space-y-0">
           <div className="flex flex-col">
             <span className="font-bold">CELTUC</span>
@@ -82,6 +126,7 @@ const ReceiptForm: React.FC = () => {
                 value={formData.coupon}
                 onChange={handleChange}
                 className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
+                readOnly
               />
             </div>
             <div className="flex flex-col mb-2">
@@ -247,22 +292,45 @@ const ReceiptForm: React.FC = () => {
             />
           </div>
         </div>
-        <button
-          type="submit"
-          className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-        >
-          Guardar Comprobante
-        </button>
-        {role === "ADMIN" && (
-          <div className="text-center">
-            <Link href="voucher/list">
-              <button className="bg-blue-500 text-white py-2 px-4 my-2 rounded hover:bg-blue-700">
-                Ver lista de comprobantes
-              </button>
-            </Link>
-          </div>
-        )}
+        <div className="mb-4">
+          <label htmlFor="observations" className="block font-medium">
+            OBSERVACIONES
+          </label>
+          <textarea
+            id="observations"
+            name="observations"
+            value={formData.observations}
+            onChange={handleChange}
+            className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
+          />
+        </div>
+        <div className="mb-4">
+          <Link href="/voucher/list">
+            <button
+              type="button"
+              className="w-full bg-blue-700 hover:bg-opacity-80 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            >
+              Ver cupones
+            </button>
+          </Link>
+        </div>
+        <div className="text-center">
+          <button
+            type="submit"
+            className="bg-green-700 hover:bg-opacity-80 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          >
+            Generar PDF y Guardar
+          </button>
+        </div>
       </form>
+
+      {product && (
+        <IMEIResultModal
+          product={product}
+          onClose={handleCloseModal}
+          onAddToVoucher={handleAddToVoucher}
+        />
+      )}
     </div>
   );
 };

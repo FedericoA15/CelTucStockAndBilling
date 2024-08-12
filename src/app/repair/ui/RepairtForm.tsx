@@ -4,19 +4,18 @@ import { GeneratePDFByRepair } from "@/utils/GeneratePDF";
 import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import Link from "next/link";
+import { getLastVoucherByType } from "@/actions/voucher/getLastVoucherByType";
 
 const RepairForm: React.FC = () => {
   const id = Cookies.get("id");
   const role = Cookies.get("roles");
-  useEffect(() => {
-    const today = new Date().toISOString().split("T")[0];
-    setFormData((prevData) => ({ ...prevData, date: today }));
-  }, []);
+
+  const today = new Date().toISOString().split("T")[0];
 
   const [clientEmail, setClientEmail] = useState("");
   const [formData, setFormData] = useState({
     coupon: "",
-    date: "",
+    date: today,
     client: "",
     equipment: "",
     failure: "",
@@ -29,6 +28,24 @@ const RepairForm: React.FC = () => {
     slope: "",
     dignosis: "",
   });
+
+  useEffect(() => {
+    async function fetchLastCoupon() {
+      try {
+        const lastVoucher = await getLastVoucherByType("Garantia/Reparacion");
+        const lastCoupon = lastVoucher.content[0]?.coupon || 0;
+
+        setFormData((prevData) => ({
+          ...prevData,
+          coupon: (parseInt(lastCoupon, 10) + 1).toString(),
+        }));
+      } catch (error) {
+        console.error("Error al obtener el último cupón:", error);
+      }
+    }
+
+    fetchLastCoupon();
+  }, []);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -252,21 +269,24 @@ const RepairForm: React.FC = () => {
             className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
           />
         </div>
-        <button
-          type="submit"
-          className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-        >
-          Guardar Comprobante
-        </button>
-        {role === "ADMIN" && (
-          <div className="text-center">
-            <Link href="repair/list">
-              <button className="bg-blue-500 text-white py-2 px-4 my-2 rounded hover:bg-blue-700">
-                Ver lista de comprobantes
-              </button>
-            </Link>
-          </div>
-        )}
+        <div className="mb-4">
+          <Link href="/repair/list">
+            <button
+              type="button"
+              className="w-full bg-blue-700 hover:bg-opacity-80 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            >
+              Ver cupones
+            </button>
+          </Link>
+        </div>
+        <div className="text-center">
+          <button
+            type="submit"
+            className="bg-green-700 hover:bg-opacity-80 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          >
+            Generar PDF y Guardar
+          </button>
+        </div>
       </form>
     </div>
   );
