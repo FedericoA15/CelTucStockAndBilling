@@ -220,6 +220,11 @@ interface Voucher {
   user: string;
   addition: string;
   productVariants: Variant[];
+  dniBuyer: string
+  imei2: string
+  color: string
+  brand: string
+  model: string
 }
 
 interface FiltersVoucher {
@@ -232,5 +237,5 @@ interface FiltersVoucher {
 interface IMEIResultModalProps {
   product: any;
   onClose: () => void;
-  onAddToVoucher: () => void;
+  onAddToVoucher: (variant: Item) => void;
 }

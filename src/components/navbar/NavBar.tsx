@@ -57,6 +57,11 @@ export default function Navbar() {
               Comprobantes de reparaciones
             </span>
           </Link>
+          <Link href="/contract">
+            <span className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-red-700 mr-4">
+              Comprobantes de contratos
+            </span>
+          </Link>
         </div>
       </div>
     </nav>

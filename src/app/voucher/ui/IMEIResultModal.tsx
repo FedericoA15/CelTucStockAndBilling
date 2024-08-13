@@ -1,11 +1,5 @@
 import React from "react";
 
-interface IMEIResultModalProps {
-  product: any;
-  onClose: () => void;
-  onAddToVoucher: () => void;
-}
-
 const IMEIResultModal: React.FC<IMEIResultModalProps> = ({
   product,
   onClose,
@@ -24,25 +18,40 @@ const IMEIResultModal: React.FC<IMEIResultModalProps> = ({
         <div className="mb-4">
           <strong>Variante:</strong>
           {product.variants.map((variant: Variant) => (
-            <div key={variant.id}>
-              <p>Modelo: {variant.subModel}</p>
-              <p>Color: {variant.color}</p>
-              <p>Capacidad de Batería: {variant.batteryCapacity}</p>
-              <p>Precio: {variant.price}</p>
-              <p>Sucursal: {variant.branchName}</p>
-              <p>Precio: {variant.price}</p>
-              <p>Detalles: {variant.details}</p>
-              <p>IMEI: {variant.productCodes}</p>
-              <p>Condicion: {variant.state}</p>
+            <div key={variant.id} className="mb-2 p-2 bg-gray-800 rounded-md">
+              <p>
+                <strong>Modelo:</strong> {variant.subModel}
+              </p>
+              <p>
+                <strong>Color:</strong> {variant.color}
+              </p>
+              <p>
+                <strong>Capacidad de Batería:</strong> {variant.batteryCapacity}
+              </p>
+              <p>
+                <strong>Precio:</strong> ${variant.price}
+              </p>
+              <p>
+                <strong>Sucursal:</strong> {variant.branchName}
+              </p>
+              <p>
+                <strong>Detalles:</strong> {variant.details}
+              </p>
+              <p>
+                <strong>IMEI:</strong> {variant.productCodes.join(", ")}
+              </p>
+              <p>
+                <strong>Condición:</strong> {variant.state}
+              </p>
             </div>
           ))}
         </div>
-        <div className="flex justify-end">
+        <div className="flex justify-end mt-4">
           <button
-            onClick={onAddToVoucher}
-            className="bg-green-700 hover:bg-opacity-80 text-white font-bold py-2 px-4 rounded mr-2"
+            onClick={() => onAddToVoucher(product)}
+            className="bg-green-700 hover:bg-opacity-80 text-white font-bold py-2 px-4 mx-3 rounded"
           >
-            Cargar al Voucher
+            Cargar esta Variante al Voucher
           </button>
           <button
             onClick={onClose}
