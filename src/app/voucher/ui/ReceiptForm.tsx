@@ -12,20 +12,19 @@ import Link from "next/link";
 const ReceiptForm: React.FC = () => {
   const id = Cookies.get("id");
   const [clientEmail, setClientEmail] = useState("");
-  const [product, setProduct] = useState<any>(null);
+  const [product, setProduct] = useState<any>();
   const [formData, setFormData] = useState({
     coupon: "",
     date: new Date().toISOString().split("T")[0],
     client: "",
     dni: "",
     phone: "",
-    amount: "",
     concept: "",
     condition: "",
     imei: "",
     warranty: "",
     paymentMethods: "",
-    observations: "",
+    obs: "",
     addition: "",
     total: "",
   });
@@ -67,22 +66,6 @@ const ReceiptForm: React.FC = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formDataWithType = {
-      ...formData,
-      type: "Compra",
-      user: { id },
-      // product: { id: product.id },
-    };
-    // postVoucher(formDataWithType);
-    // GeneratePDFByReceipt(formData, clientEmail);
-  };
-
-  const handleCloseModal = () => {
-    setProduct(null);
-  };
-
   const handleAddToVoucher = (variant: Item) => {
     if (variant) {
       setFormData({
@@ -91,21 +74,42 @@ const ReceiptForm: React.FC = () => {
         imei: product.variants[0].productCodes[0],
         condition: product.variants[0].state,
         total: product.variants[0].price,
+        addition: product.variants[0].price,
       });
-      if (product.variants[0].state === "Nuevo") {
-        setFormData({
-          ...formData,
-          warranty: "1 Año",
-        });
-      } else {
-        setFormData({
-          ...formData,
-          warranty: "3 meses",
-        });
-      }
       setProduct(null);
     }
+    // if (product.variants[0].state === "Nuevo") {
+    //   setFormData({
+    //     ...formData,
+    //     warranty: "1 Año",
+    //   });
+    // } else {
+    //   setFormData({
+    //     ...formData,
+    //     warranty: "3 meses",
+    //   });
+    // }
   };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const foundProduct = await getProductByIMEI(formData.imei);
+    console.log(foundProduct.variants[0]);
+    const formDataWithType = {
+      ...formData,
+      type: "Compra",
+      user: { id },
+      productVariants: [foundProduct.variants[0]],
+    };
+    console.log(formDataWithType);
+    postVoucher(formDataWithType);
+    // GeneratePDFByReceipt(formData, clientEmail);
+  };
+
+  const handleCloseModal = () => {
+    setProduct(null);
+  };
+
   return (
     <div className="flex text-white items-start justify-center min-h-screen">
       <form
@@ -300,13 +304,13 @@ const ReceiptForm: React.FC = () => {
           </div>
         </div>
         <div className="mb-4">
-          <label htmlFor="observations" className="block font-medium">
+          <label htmlFor="obs" className="block font-medium">
             OBSERVACIONES
           </label>
           <textarea
-            id="observations"
-            name="observations"
-            value={formData.observations}
+            id="obs"
+            name="obs"
+            value={formData.obs}
             onChange={handleChange}
             className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
           />
