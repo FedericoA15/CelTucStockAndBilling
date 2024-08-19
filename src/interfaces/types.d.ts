@@ -219,7 +219,7 @@ interface Voucher {
   type?: string;
   user?: string;
   addition?: string;
-  productVariants?: Variant[];
+  productVariants: Variant[];
   dniBuyer?: string
   imei2?: string
   color?: string
