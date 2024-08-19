@@ -110,6 +110,14 @@ interface SearchFormPropsInvoice {
   onSearchChangeInvoice: (filters: FiltersInvoice) => void;
 }
 
+interface SearchFormPropsVoucher {
+  onSearchChangeVoucher: (filters: FiltersVoucher) => void;
+}
+
+
+interface IMEISearchFormProps {
+  onSearch: (imei: string) => void;
+}
 
 interface InvoiceItem {
   productName: string;
@@ -184,4 +192,50 @@ interface InvoicePDFProps {
 interface CreateProduct{
   name: string;
   code: string;
+}
+
+interface Voucher {
+  id: string;
+  coupon: number;
+  date: string;
+  client?: string;
+  equipment?: string;
+  failure?: string;
+  obs?: string;
+  reception?: string | null;
+  code?: string;
+  phone?: string;
+  budget?: string;
+  sign?: string;
+  slope?: string;
+  diagnosis?: string;
+  DNI?: string | null;
+  concept?: string | null;
+  condition?: string | null;
+  imei?: string | null;
+  warranty?: string | null;
+  paymentMethods?: string;
+  total?: string | null;
+  type?: string;
+  user?: string;
+  addition?: string;
+  productVariants: Variant[];
+  dniBuyer?: string
+  imei2?: string
+  color?: string
+  brand?: string
+  model?: string
+}
+
+interface FiltersVoucher {
+  client: string;
+  code: string;
+  date: string;
+  equipment: string;
+}
+
+interface IMEIResultModalProps {
+  product: any;
+  onClose: () => void;
+  onAddToVoucher: (variant: Item) => void;
 }

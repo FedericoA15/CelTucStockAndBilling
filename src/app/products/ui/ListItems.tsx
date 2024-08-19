@@ -6,7 +6,7 @@ import SearchForm from "./SearchForm";
 import { ItemComponent } from "./ItemComponent";
 import { PlusButton } from "@/components/buttons/Buttons";
 import { useRouter } from "next/navigation";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 import CartModal from "@/components/cartModal/CartModal";
 
 const ListComponent: React.FC = () => {
@@ -15,20 +15,20 @@ const ListComponent: React.FC = () => {
     totalPages: 0,
   });
   const [filters, setFilters] = useState<Filters>({
-    name: '',
-    code: '',
+    name: "",
+    code: "",
     variant: {
-      color: '',
-      capacity: '',
-      stock: '',
-      price: '',
-      batteryCapacity: '',
-      state: '',
-      productCodes: '',
+      color: "",
+      capacity: "",
+      stock: "",
+      price: "",
+      batteryCapacity: "",
+      state: "",
+      productCodes: "",
     },
   });
   const [currentPage, setCurrentPage] = useState(0);
-  const [isClient, setIsClient] = useState(false); 
+  const [isClient, setIsClient] = useState(false);
   const router = useRouter();
   const role = Cookies.get("roles");
 
@@ -46,7 +46,7 @@ const ListComponent: React.FC = () => {
   }, [filters, currentPage]);
 
   useEffect(() => {
-    setIsClient(true); 
+    setIsClient(true);
   }, []);
 
   return (
@@ -61,7 +61,7 @@ const ListComponent: React.FC = () => {
         {isClient && role === "ADMIN" && (
           <div className="flex justify-items-start px-4 items-center mb-4 text-gray-200 ">
             <div>
-              <PlusButton onClick={redirectProduct} tittled="Nuevo Producto"/>
+              <PlusButton onClick={redirectProduct} tittled="Nuevo Producto" />
             </div>
           </div>
         )}

@@ -1,17 +1,17 @@
 import { Metadata } from "next";
-import ReceiptForm from "./ui/ReceiptForm";
+import ContractForm from "./ui/ContractForm";
 
 export const metadata: Metadata = {
   title: "Comprobantes",
 };
 
-export default function voucherPage() {
+export default function contractPage() {
   return (
     <div className="bg-custom-bg2 bg-cover bg-center bg-no-repeat min-h-screen">
       <h2 className="text-white text-5xl text-center py-10">
-        Comprobantes de venta de celulares
+        Comprobantes de contratos de compra de celulares
       </h2>
-      <ReceiptForm />
+      <ContractForm />
     </div>
   );
 }

@@ -1,17 +1,16 @@
 import { Metadata } from "next";
-import ReceiptForm from "./ui/RepairtForm";
-import Link from "next/link";
+import ListRepair from "./ui/ListRepair";
 export const metadata: Metadata = {
   title: "Comprobantes",
 };
 
-export default function repairPage() {
+export default function repairListPage() {
   return (
     <div className="bg-custom-bg2  bg-cover bg-center bg-no-repeat min-h-screen">
       <h2 className="text-white text-5xl text-center py-10">
-        Comprobantes de garantia/reparacion
+        Listado de comprobantes de garantia/reparacion
       </h2>
-      <ReceiptForm />
+      <ListRepair />
     </div>
   );
 }

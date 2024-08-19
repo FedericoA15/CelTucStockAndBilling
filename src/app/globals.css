@@ -3,7 +3,6 @@
 @tailwind utilities;
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
-
 :root {
   --foreground-rgb: #000000;
   --background-start-rgb: 25, 25, 26;
@@ -17,14 +16,14 @@
     --background-end-rgb: 25, 25, 26;
   }
 }
+
 input {
   text-transform: capitalize;
 }
 
-
 body {
   color: rgb(var(--foreground-rgb));
-  background-color: #0C0C0C; 
+  background-color: #0C0C0C;
   font-family: 'Roboto', sans-serif;
 }
 

@@ -29,11 +29,12 @@ export default function LoginForm() {
     <div className="h-full w-full flex flex-col md:flex-row">
       <div className="w-full md:w-1/2 bg-custom-black text-white p-10 flex flex-col justify-center items-center">
         <div className="flex items-center mb-6">
-        <h2 className="text-4xl">celtuc</h2>
-        <img src="/logo.png" alt="Celtuc Logo" className="h-12 w-12 mr-4" />
+          <h2 className="text-4xl">celtuc</h2>
+          <img src="/logo.png" alt="Celtuc Logo" className="h-12 w-12 mr-4" />
         </div>
         <p className="mb-6 text-center md:text-left">
-          Bienvenidos al software de CelTuc para el control de stock y facturación
+          Bienvenidos al software de CelTuc para el control de stock y
+          facturación
         </p>
       </div>
       <div className="w-full md:w-1/2 bg-red-50 p-10 flex flex-col justify-center items-center">

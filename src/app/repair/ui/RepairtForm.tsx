@@ -3,12 +3,17 @@ import { postVoucher } from "@/actions/voucher/postVoucher";
 import { GeneratePDFByRepair } from "@/utils/GeneratePDF";
 import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
+import Link from "next/link";
+import { getLastVoucherByType } from "@/actions/voucher/getLastVoucherByType";
 
 const RepairForm: React.FC = () => {
   const id = Cookies.get("id");
+  const role = Cookies.get("roles");
+  const today = new Date().toISOString().split("T")[0];
+  const [clientEmail, setClientEmail] = useState("");
   const [formData, setFormData] = useState({
     coupon: "",
-    date: "",
+    date: today,
     client: "",
     equipment: "",
     failure: "",
@@ -20,11 +25,25 @@ const RepairForm: React.FC = () => {
     phone: "",
     slope: "",
     dignosis: "",
+    branch: { id: "" },
   });
 
   useEffect(() => {
-    const today = new Date().toISOString().split("T")[0];
-    setFormData((prevData) => ({ ...prevData, date: today }));
+    async function fetchLastCoupon() {
+      try {
+        const lastVoucher = await getLastVoucherByType("Garantia/Reparacion");
+        const lastCoupon = lastVoucher.content[0]?.coupon || 0;
+
+        setFormData((prevData) => ({
+          ...prevData,
+          coupon: (parseInt(lastCoupon, 10) + 1).toString(),
+        }));
+      } catch (error) {
+        console.error("Error al obtener el último cupón:", error);
+      }
+    }
+
+    fetchLastCoupon();
   }, []);
 
   const handleChange = (
@@ -32,10 +51,21 @@ const RepairForm: React.FC = () => {
   ) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    if (name === "clientEmail") {
+      setClientEmail(value);
+    }
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!formData.branch.id) {
+      alert(
+        "Por favor, selecciona una sucursal antes de enviar el formulario."
+      );
+      return;
+    }
+
     const formDataWithType = {
       ...formData,
       type: "Garantia/Reparacion",
@@ -44,11 +74,11 @@ const RepairForm: React.FC = () => {
       },
     };
     postVoucher(formDataWithType);
-    GeneratePDFByRepair(formData);
+    GeneratePDFByRepair(formData, clientEmail);
   };
 
   return (
-    <div className="flex text-white items-start justify-center min-h-screen bg-custom-black">
+    <div className="flex text-white items-start justify-center min-h-screen ">
       <form
         onSubmit={handleSubmit}
         className="w-full max-w-3xl p-6 bg-custom-black-2 shadow-lg rounded-lg space-y-4"
@@ -56,6 +86,32 @@ const RepairForm: React.FC = () => {
         <h2 className="text-2xl font-bold mb-4 text-center">
           RECEPCION DE EQUIPO/GARANTIA REPARACION
         </h2>
+        <div className="mb-4">
+          <label htmlFor="branch" className="block font-medium">
+            Sucursal
+          </label>
+          <select
+            id="branch"
+            name="branch"
+            value={formData.branch.id}
+            onChange={(e) =>
+              setFormData({
+                ...formData,
+                branch: { id: e.target.value },
+              })
+            }
+            className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
+          >
+            <option value="" disabled>
+              Selecciona una sucursal
+            </option>
+            <option value="e692d1b3-71a7-431a-ba8a-36754f2c64a5">
+              Yerba Buena
+            </option>
+            <option value="e692d1b3-71a7-431a-ba8a-36754f2c64a9">Solar</option>
+            <option value="e692d1b3-71a7-431a-ba8a-36754f2c64a3">Centro</option>
+          </select>
+        </div>
         <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-4 space-y-4 md:space-y-0">
           <div className="flex flex-col">
             <span className="font-bold">CELTUC</span>
@@ -222,6 +278,19 @@ const RepairForm: React.FC = () => {
           />
         </div>
         <div className="mb-4">
+          <label htmlFor="clientEmail" className="block font-medium">
+            Email
+          </label>
+          <input
+            type="text"
+            id="clientEmail"
+            name="clientEmail"
+            value={clientEmail}
+            onChange={handleChange}
+            className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
+          />
+        </div>
+        <div className="mb-4">
           <label htmlFor="dignosis" className="block font-medium">
             DIAGNOSTICO TECNICO
           </label>
@@ -233,12 +302,24 @@ const RepairForm: React.FC = () => {
             className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
           />
         </div>
-        <button
-          type="submit"
-          className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-        >
-          Guardar Comprobante
-        </button>
+        <div className="text-center">
+          <button
+            type="submit"
+            className="bg-green-700 hover:bg-opacity-80 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          >
+            Generar PDF y Guardar
+          </button>
+        </div>
+        <div className="text-center">
+          <Link href="/repair/list">
+            <button
+              type="button"
+              className="bg-blue-700 hover:bg-opacity-80 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            >
+              Ver comprobantes
+            </button>
+          </Link>
+        </div>
       </form>
     </div>
   );

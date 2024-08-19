@@ -2,40 +2,37 @@
 import React, { useState, useEffect } from "react";
 import { getLastVoucherByType } from "@/actions/voucher/getLastVoucherByType";
 import { postVoucher } from "@/actions/voucher/postVoucher";
-import { GeneratePDFByReceipt } from "@/utils/GeneratePDF";
+import { GeneratePDFByContract } from "@/utils/GeneratePDF";
 import Cookies from "js-cookie";
-import IMEIResultModal from "./IMEIResultModal";
-import { getProductByIMEI } from "@/actions/products/getProductByIMEI";
-import IMEISearchForm from "./IMEISearchForm";
 import Link from "next/link";
 
-const ReceiptForm: React.FC = () => {
+const ContractForm: React.FC = () => {
   const id = Cookies.get("id");
   const [clientEmail, setClientEmail] = useState("");
 
-  const [product, setProduct] = useState<any>();
   const [formData, setFormData] = useState({
     coupon: "",
     date: new Date().toISOString().split("T")[0],
     client: "",
     dni: "",
-    phone: "",
-    concept: "",
-    condition: "",
+    brand: "",
+    model: "",
+    color: "",
     imei: "",
-    warranty: "",
-    paymentMethods: "",
+    imei2: "",
     obs: "",
-    addition: "",
+    reception: "",
+    dniBuyer: "",
     total: "",
     branch: { id: "" },
     signature: "",
+    signatureBySeller: "",
   });
 
   useEffect(() => {
     async function fetchLastCoupon() {
       try {
-        const lastVoucher = await getLastVoucherByType("Compra");
+        const lastVoucher = await getLastVoucherByType("Contrato");
         const lastCoupon = lastVoucher.content[0]?.coupon || 0;
 
         setFormData((prevData) => ({
@@ -60,36 +57,7 @@ const ReceiptForm: React.FC = () => {
     }
   };
 
-  const handleSearch = async (imei: string) => {
-    try {
-      const foundProduct = await getProductByIMEI(imei);
-      setProduct(foundProduct);
-    } catch (error) {
-      console.error("Error al buscar el producto por IMEI:", error);
-    }
-  };
-
-  const handleAddToVoucher = (variant: Item) => {
-    if (variant) {
-      setFormData({
-        ...formData,
-        concept: `${product.name} - ${product.variants[0].subModel} - ${product.variants[0].details}`,
-        imei: product.variants[0].productCodes[0],
-        condition: product.variants[0].state,
-        total: product.variants[0].price,
-        addition: product.variants[0].price,
-      });
-      setProduct(null);
-    }
-  };
-
-  const branchNames: { [key: string]: string } = {
-    "e692d1b3-71a7-431a-ba8a-36754f2c64a5": "Yerba Buena",
-    "e692d1b3-71a7-431a-ba8a-36754f2c64a9": "Solar",
-    "e692d1b3-71a7-431a-ba8a-36754f2c64a3": "Centro",
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!formData.branch.id) {
@@ -98,24 +66,14 @@ const ReceiptForm: React.FC = () => {
       );
       return;
     }
-    const foundProduct = await getProductByIMEI(formData.imei);
 
     const formDataWithType = {
       ...formData,
-      type: "Compra",
+      type: "Contrato",
       user: { id },
-      productVariants: [foundProduct.variants[0]],
     };
-
-    const branchName =
-      branchNames[formData.branch.id] || "Sucursal desconocida";
-
     postVoucher(formDataWithType);
-    GeneratePDFByReceipt(formDataWithType, branchName, clientEmail);
-  };
-
-  const handleCloseModal = () => {
-    setProduct(null);
+    GeneratePDFByContract(formDataWithType, clientEmail);
   };
 
   return (
@@ -127,7 +85,6 @@ const ReceiptForm: React.FC = () => {
         <h2 className="text-2xl font-bold mb-4 text-center">
           RECIBO DE COMPRA DE EQUIPO/S
         </h2>
-        <IMEISearchForm onSearch={handleSearch} />
         <div className="mb-4">
           <label htmlFor="branch" className="block font-medium">
             Sucursal
@@ -154,6 +111,7 @@ const ReceiptForm: React.FC = () => {
             <option value="e692d1b3-71a7-431a-ba8a-36754f2c64a3">Centro</option>
           </select>
         </div>
+
         <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-4 space-y-4 md:space-y-0">
           <div className="flex flex-col">
             <span className="font-bold">CELTUC</span>
@@ -190,7 +148,7 @@ const ReceiptForm: React.FC = () => {
         </div>
         <div className="mb-4">
           <label htmlFor="client" className="block font-medium">
-            RECIBI DE
+            Señor/a
           </label>
           <input
             type="text"
@@ -200,34 +158,6 @@ const ReceiptForm: React.FC = () => {
             onChange={handleChange}
             className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
           />
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-          <div>
-            <label htmlFor="dni" className="block font-medium">
-              DNI
-            </label>
-            <input
-              type="text"
-              id="dni"
-              name="dni"
-              value={formData.dni}
-              onChange={handleChange}
-              className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
-            />
-          </div>
-          <div>
-            <label htmlFor="phone" className="block font-medium">
-              Nº TEL
-            </label>
-            <input
-              type="text"
-              id="phone"
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-              className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
-            />
-          </div>
         </div>
         <div className="mb-4">
           <label htmlFor="clientEmail" className="block font-medium">
@@ -243,59 +173,62 @@ const ReceiptForm: React.FC = () => {
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="addition" className="block font-medium">
-            LA SUMA DE
-          </label>
-          <input
-            type="text"
-            id="addition"
-            name="addition"
-            value={formData.addition}
-            onChange={handleChange}
-            className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="concept" className="block font-medium">
-            EN CONCEPTO DE LA COMPRA DE EQUIPO/S
-          </label>
-          <textarea
-            id="concept"
-            name="concept"
-            value={formData.concept}
-            onChange={handleChange}
-            className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
-          />
+          <div>
+            <label htmlFor="dni" className="block font-medium">
+              DNI
+            </label>
+            <input
+              type="text"
+              id="dni"
+              name="dni"
+              value={formData.dni}
+              onChange={handleChange}
+              className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
+            />
+          </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <div>
-            <label htmlFor="condition" className="block font-medium">
-              CONDICION
+            <label htmlFor="brand" className="block font-medium">
+              Marca
             </label>
             <input
               type="text"
-              id="condition"
-              name="condition"
-              value={formData.condition}
+              id="brand"
+              name="brand"
+              value={formData.brand}
               onChange={handleChange}
               className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
             />
           </div>
           <div>
-            <label htmlFor="total" className="block font-medium">
-              TOTAL $
+            <label htmlFor="model" className="block font-medium">
+              Modelo
             </label>
             <input
               type="text"
-              id="total"
-              name="total"
-              value={formData.total}
+              id="model"
+              name="model"
+              value={formData.model}
+              onChange={handleChange}
+              className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
+            />
+          </div>
+          <div>
+            <label htmlFor="color" className="block font-medium">
+              Color
+            </label>
+            <input
+              type="text"
+              id="color"
+              name="color"
+              value={formData.color}
               onChange={handleChange}
               className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
             />
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <div>
             <label htmlFor="imei" className="block font-medium">
               IMEI
@@ -310,34 +243,47 @@ const ReceiptForm: React.FC = () => {
             />
           </div>
           <div>
-            <label htmlFor="warranty" className="block font-medium">
-              GARANTIA
+            <label htmlFor="imei2" className="block font-medium">
+              IMEI 2
             </label>
             <input
               type="text"
-              id="warranty"
-              name="warranty"
-              value={formData.warranty}
-              onChange={handleChange}
-              className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
-            />
-          </div>
-          <div>
-            <label htmlFor="paymentMethods" className="block font-medium">
-              FORMA DE PAGO
-            </label>
-            <input
-              type="text"
-              id="paymentMethods"
-              name="paymentMethods"
-              value={formData.paymentMethods}
+              id="imei2"
+              name="imei2"
+              value={formData.imei2}
               onChange={handleChange}
               className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
             />
           </div>
         </div>
         <div className="mb-4">
-          <label htmlFor="obs" className="block font-medium">
+          <label htmlFor="reception" className="block font-medium">
+            RECEPCIÓN
+          </label>
+          <input
+            type="text"
+            id="reception"
+            name="reception"
+            value={formData.reception}
+            onChange={handleChange}
+            className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
+          />
+        </div>
+        <div>
+          <label htmlFor="dniBuyer" className="block font-medium">
+            DNI Comprador
+          </label>
+          <input
+            type="text"
+            id="dniBuyer"
+            name="dniBuyer"
+            value={formData.dniBuyer}
+            onChange={handleChange}
+            className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
+          />
+        </div>
+        <div className="mb-4">
+          <label htmlFor="observations" className="block font-medium">
             OBSERVACIONES
           </label>
           <textarea
@@ -349,10 +295,35 @@ const ReceiptForm: React.FC = () => {
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="signature" className="block font-medium">
-            Firma
+          <label htmlFor="total" className="block font-medium">
+            TOTAL
           </label>
-          <textarea
+          <input
+            type="text"
+            id="total"
+            name="total"
+            value={formData.total}
+            onChange={handleChange}
+            className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
+          />
+        </div>
+        <div className="mb-4">
+          <label htmlFor="signatureBySeller" className="block font-medium">
+            Firma de vendedor
+          </label>
+          <input
+            id="signatureBySeller"
+            name="signatureBySeller"
+            value={formData.signatureBySeller}
+            onChange={handleChange}
+            className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
+          />
+        </div>
+        <div className="mb-4">
+          <label htmlFor="signature" className="block font-medium">
+            Firma de cliente
+          </label>
+          <input
             id="signature"
             name="signature"
             value={formData.signature}
@@ -369,26 +340,18 @@ const ReceiptForm: React.FC = () => {
           </button>
         </div>
         <div className="text-center">
-          <Link href="/voucher/list">
+          <Link href="/contract/list">
             <button
               type="button"
-              className="bg-blue-700 hover:bg-opacity-80 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              className=" bg-blue-700 hover:bg-opacity-80 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             >
-              Ver comprobantes
+              Ver cupones
             </button>
           </Link>
         </div>
       </form>
-
-      {product && (
-        <IMEIResultModal
-          product={product}
-          onClose={handleCloseModal}
-          onAddToVoucher={handleAddToVoucher}
-        />
-      )}
     </div>
   );
 };
 
-export default ReceiptForm;
+export default ContractForm;

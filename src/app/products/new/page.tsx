@@ -14,11 +14,11 @@ const fields: Field[] = [
 export default function NewProduct() {
   const router = useRouter();
   const handleSubmit = async (data: CreateProduct) => {
-      await postProduct(data,router);
+    await postProduct(data, router);
   };
 
   return (
-    <div>
+    <div className="bg-custom-bg2  bg-cover bg-center bg-no-repeat min-h-screen">
       <h2 className="text-white text-3xl text-center py-10">Nuevo producto</h2>
       <FormBuilder fields={fields} onSubmit={handleSubmit} />
     </div>
