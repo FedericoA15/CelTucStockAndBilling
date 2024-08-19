@@ -34,16 +34,6 @@ export const ContractDetails: React.FC<PropsId> = ({ id }) => {
       <p>IMEI: {voucher.imei}</p>
       <p>Garantia: {voucher.warranty}</p>
       <p>Forma de pago: {voucher.paymentMethods}</p>
-      {voucher.productVariants.map((item, index) => (
-        <div key={index} className="p-4 mt-4 bg-gray-700 rounded-md">
-          <p>Modelo: {item.subModel}</p>
-          <p>Bateria: {item.batteryCapacity}</p>
-          <p>Precio: USD{item.price}</p>
-          <p>Capacidad: {item.capacity}</p>
-          <p>Detalles: {item.details}</p>
-          <p>Sucursal: {item.branchName}</p>
-        </div>
-      ))}
     </div>
   );
 };
