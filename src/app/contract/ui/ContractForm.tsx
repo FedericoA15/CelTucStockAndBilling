@@ -2,12 +2,14 @@
 import React, { useState, useEffect } from "react";
 import { getLastVoucherByType } from "@/actions/voucher/getLastVoucherByType";
 import { postVoucher } from "@/actions/voucher/postVoucher";
-import { GeneratePDFByReceipt } from "@/utils/GeneratePDF";
+import { GeneratePDFByContract } from "@/utils/GeneratePDF";
 import Cookies from "js-cookie";
 import Link from "next/link";
 
 const ContractForm: React.FC = () => {
   const id = Cookies.get("id");
+  const [clientEmail, setClientEmail] = useState("");
+
   const [formData, setFormData] = useState({
     coupon: "",
     date: new Date().toISOString().split("T")[0],
@@ -15,12 +17,16 @@ const ContractForm: React.FC = () => {
     dni: "",
     brand: "",
     model: "",
+    color: "",
     imei: "",
     imei2: "",
+    obs: "",
     reception: "",
     dniBuyer: "",
-    observations: "",
     total: "",
+    branch: { id: "" },
+    signature: "",
+    signatureBySeller: "",
   });
 
   useEffect(() => {
@@ -46,17 +52,28 @@ const ContractForm: React.FC = () => {
   ) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    if (name === "clientEmail") {
+      setClientEmail(value);
+    }
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!formData.branch.id) {
+      alert(
+        "Por favor, selecciona una sucursal antes de enviar el formulario."
+      );
+      return;
+    }
+
     const formDataWithType = {
       ...formData,
       type: "Contrato",
       user: { id },
     };
     postVoucher(formDataWithType);
-    GeneratePDFByReceipt(formData, formData.client);
+    GeneratePDFByContract(formDataWithType, clientEmail);
   };
 
   return (
@@ -68,6 +85,32 @@ const ContractForm: React.FC = () => {
         <h2 className="text-2xl font-bold mb-4 text-center">
           RECIBO DE COMPRA DE EQUIPO/S
         </h2>
+        <div className="mb-4">
+          <label htmlFor="branch" className="block font-medium">
+            Sucursal
+          </label>
+          <select
+            id="branch"
+            name="branch"
+            value={formData.branch.id}
+            onChange={(e) =>
+              setFormData({
+                ...formData,
+                branch: { id: e.target.value },
+              })
+            }
+            className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
+          >
+            <option value="" disabled>
+              Selecciona una sucursal
+            </option>
+            <option value="e692d1b3-71a7-431a-ba8a-36754f2c64a5">
+              Yerba Buena
+            </option>
+            <option value="e692d1b3-71a7-431a-ba8a-36754f2c64a9">Solar</option>
+            <option value="e692d1b3-71a7-431a-ba8a-36754f2c64a3">Centro</option>
+          </select>
+        </div>
 
         <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-4 space-y-4 md:space-y-0">
           <div className="flex flex-col">
@@ -117,6 +160,19 @@ const ContractForm: React.FC = () => {
           />
         </div>
         <div className="mb-4">
+          <label htmlFor="clientEmail" className="block font-medium">
+            Email
+          </label>
+          <input
+            type="text"
+            id="clientEmail"
+            name="clientEmail"
+            value={clientEmail}
+            onChange={handleChange}
+            className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
+          />
+        </div>
+        <div className="mb-4">
           <div>
             <label htmlFor="dni" className="block font-medium">
               DNI
@@ -154,6 +210,19 @@ const ContractForm: React.FC = () => {
               id="model"
               name="model"
               value={formData.model}
+              onChange={handleChange}
+              className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
+            />
+          </div>
+          <div>
+            <label htmlFor="color" className="block font-medium">
+              Color
+            </label>
+            <input
+              type="text"
+              id="color"
+              name="color"
+              value={formData.color}
               onChange={handleChange}
               className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
             />
@@ -218,9 +287,9 @@ const ContractForm: React.FC = () => {
             OBSERVACIONES
           </label>
           <textarea
-            id="observations"
-            name="observations"
-            value={formData.observations}
+            id="obs"
+            name="obs"
+            value={formData.obs}
             onChange={handleChange}
             className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
           />
@@ -239,14 +308,28 @@ const ContractForm: React.FC = () => {
           />
         </div>
         <div className="mb-4">
-          <Link href="/contract/list">
-            <button
-              type="button"
-              className="w-full bg-blue-700 hover:bg-opacity-80 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            >
-              Ver cupones
-            </button>
-          </Link>
+          <label htmlFor="signatureBySeller" className="block font-medium">
+            Firma de vendedor
+          </label>
+          <input
+            id="signatureBySeller"
+            name="signatureBySeller"
+            value={formData.signatureBySeller}
+            onChange={handleChange}
+            className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
+          />
+        </div>
+        <div className="mb-4">
+          <label htmlFor="signature" className="block font-medium">
+            Firma de cliente
+          </label>
+          <input
+            id="signature"
+            name="signature"
+            value={formData.signature}
+            onChange={handleChange}
+            className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
+          />
         </div>
         <div className="text-center">
           <button
@@ -255,6 +338,16 @@ const ContractForm: React.FC = () => {
           >
             Generar PDF y Guardar
           </button>
+        </div>
+        <div className="text-center">
+          <Link href="/contract/list">
+            <button
+              type="button"
+              className=" bg-blue-700 hover:bg-opacity-80 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            >
+              Ver cupones
+            </button>
+          </Link>
         </div>
       </form>
     </div>

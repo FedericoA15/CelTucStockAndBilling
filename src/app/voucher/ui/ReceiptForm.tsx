@@ -12,6 +12,7 @@ import Link from "next/link";
 const ReceiptForm: React.FC = () => {
   const id = Cookies.get("id");
   const [clientEmail, setClientEmail] = useState("");
+
   const [product, setProduct] = useState<any>();
   const [formData, setFormData] = useState({
     coupon: "",
@@ -27,6 +28,8 @@ const ReceiptForm: React.FC = () => {
     obs: "",
     addition: "",
     total: "",
+    branch: { id: "" },
+    signature: "",
   });
 
   useEffect(() => {
@@ -78,32 +81,37 @@ const ReceiptForm: React.FC = () => {
       });
       setProduct(null);
     }
-    // if (product.variants[0].state === "Nuevo") {
-    //   setFormData({
-    //     ...formData,
-    //     warranty: "1 Año",
-    //   });
-    // } else {
-    //   setFormData({
-    //     ...formData,
-    //     warranty: "3 meses",
-    //   });
-    // }
+  };
+
+  const branchNames: { [key: string]: string } = {
+    "e692d1b3-71a7-431a-ba8a-36754f2c64a5": "Yerba Buena",
+    "e692d1b3-71a7-431a-ba8a-36754f2c64a9": "Solar",
+    "e692d1b3-71a7-431a-ba8a-36754f2c64a3": "Centro",
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!formData.branch.id) {
+      alert(
+        "Por favor, selecciona una sucursal antes de enviar el formulario."
+      );
+      return;
+    }
     const foundProduct = await getProductByIMEI(formData.imei);
-    console.log(foundProduct.variants[0]);
+
     const formDataWithType = {
       ...formData,
       type: "Compra",
       user: { id },
       productVariants: [foundProduct.variants[0]],
     };
-    console.log(formDataWithType);
+
+    const branchName =
+      branchNames[formData.branch.id] || "Sucursal desconocida";
+
     postVoucher(formDataWithType);
-    // GeneratePDFByReceipt(formData, clientEmail);
+    GeneratePDFByReceipt(formDataWithType, branchName, clientEmail);
   };
 
   const handleCloseModal = () => {
@@ -120,7 +128,32 @@ const ReceiptForm: React.FC = () => {
           RECIBO DE COMPRA DE EQUIPO/S
         </h2>
         <IMEISearchForm onSearch={handleSearch} />
-
+        <div className="mb-4">
+          <label htmlFor="branch" className="block font-medium">
+            Sucursal
+          </label>
+          <select
+            id="branch"
+            name="branch"
+            value={formData.branch.id}
+            onChange={(e) =>
+              setFormData({
+                ...formData,
+                branch: { id: e.target.value },
+              })
+            }
+            className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
+          >
+            <option value="" disabled>
+              Selecciona una sucursal
+            </option>
+            <option value="e692d1b3-71a7-431a-ba8a-36754f2c64a5">
+              Yerba Buena
+            </option>
+            <option value="e692d1b3-71a7-431a-ba8a-36754f2c64a9">Solar</option>
+            <option value="e692d1b3-71a7-431a-ba8a-36754f2c64a3">Centro</option>
+          </select>
+        </div>
         <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-4 space-y-4 md:space-y-0">
           <div className="flex flex-col">
             <span className="font-bold">CELTUC</span>
@@ -316,14 +349,16 @@ const ReceiptForm: React.FC = () => {
           />
         </div>
         <div className="mb-4">
-          <Link href="/voucher/list">
-            <button
-              type="button"
-              className="w-full bg-blue-700 hover:bg-opacity-80 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            >
-              Ver cupones
-            </button>
-          </Link>
+          <label htmlFor="signature" className="block font-medium">
+            Firma
+          </label>
+          <textarea
+            id="signature"
+            name="signature"
+            value={formData.signature}
+            onChange={handleChange}
+            className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
+          />
         </div>
         <div className="text-center">
           <button
@@ -332,6 +367,16 @@ const ReceiptForm: React.FC = () => {
           >
             Generar PDF y Guardar
           </button>
+        </div>
+        <div className="text-center">
+          <Link href="/voucher/list">
+            <button
+              type="button"
+              className="bg-blue-700 hover:bg-opacity-80 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            >
+              Ver comprobantes
+            </button>
+          </Link>
         </div>
       </form>
 
