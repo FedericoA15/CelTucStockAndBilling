@@ -19,9 +19,7 @@ export const ContractDetails: React.FC<PropsId> = ({ id }) => {
 
   return (
     <div className="bg-custom-black-2 text-white p-6 my-4 rounded-md w-full">
-      <h2 className="font-bold text-2xl mb-4">
-        ID del Comprobante: {voucher.id}
-      </h2>
+      <h2 className="font-bold text-2xl mb-4">ID del contrato: {voucher.id}</h2>
       <p>Cupon: {voucher.coupon}</p>
       <p>Fecha: {voucher.date.slice(0, 10)}</p>
       <p>Cliente: {voucher.client}</p>
