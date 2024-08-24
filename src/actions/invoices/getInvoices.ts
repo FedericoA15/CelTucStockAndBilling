@@ -1,7 +1,6 @@
 import axiosInstance from "@/utils/axiosInstance";
 
 export async function fetchInvoices(filters: FiltersInvoice, page: number = 0) {
-  console.log(filters);
   let url = `/invoice?page=${page}&size=10`;
   for (const [key, value] of Object.entries(filters)) {
     if (typeof value === "string" && value.trim() !== "") {
@@ -16,7 +15,6 @@ export async function fetchInvoices(filters: FiltersInvoice, page: number = 0) {
       }
     }
   }
-  console.log(url);
   const result = await axiosInstance.get(url);
   return result.data;
 }

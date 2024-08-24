@@ -14,19 +14,27 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearchChange }) => {
       state: "",
       productCodes: "",
     },
+    branchName: "",
   });
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   };
 
-  const handleFilterChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.name in filters) {
-      setFilters({ ...filters, [e.target.name]: e.target.value });
+  const handleFilterChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    if (name in filters) {
+      if (name === "branchName") {
+        setFilters({ ...filters, [name]: value });
+      } else {
+        setFilters({ ...filters, [name]: value });
+      }
     } else {
       setFilters({
         ...filters,
-        variant: { ...filters.variant, [e.target.name]: e.target.value },
+        variant: { ...filters.variant, [name]: value },
       });
     }
   };
@@ -49,7 +57,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearchChange }) => {
       </div>
       <div className="mb-4">
         <label className="block text-sm font-medium mb-2">
-          Codigo universal
+          Código universal
         </label>
         <input
           type="text"
@@ -61,7 +69,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearchChange }) => {
         />
       </div>
       <div className="mb-4">
-        <label className="block text-sm font-medium mb-2">Codigos</label>
+        <label className="block text-sm font-medium mb-2">Códigos</label>
         <input
           type="text"
           name="productCodes"
@@ -70,6 +78,20 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearchChange }) => {
           className="w-full px-3 py-2 text-gray-700 bg-gray-200 rounded-md focus:outline-none"
           style={{ textTransform: "none" }}
         />
+      </div>
+      <div className="mb-4">
+        <label className="block text-sm font-medium mb-2">Sucursal</label>
+        <select
+          name="branchName"
+          value={filters.branchName}
+          onChange={handleFilterChange}
+          className="w-full px-3 py-2 text-gray-700 bg-gray-200 rounded-md focus:outline-none"
+        >
+          <option value="">Todas</option>
+          <option value="Yerba Buena">Yerba Buena</option>
+          <option value="Solar">Solar</option>
+          <option value="Centro">Centro</option>
+        </select>
       </div>
       <div className="mb-4">
         <label className="block text-sm font-medium mb-2">Color</label>
@@ -113,11 +135,11 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearchChange }) => {
       </div>
       <div className="mb-4">
         <label className="block text-sm font-medium mb-2">
-          Capacidad de bateria
+          Capacidad de batería
         </label>
         <input
           type="text"
-          name="battery_capacity"
+          name="batteryCapacity"
           value={filters.variant.batteryCapacity}
           onChange={handleFilterChange}
           className="w-full px-3 py-2 text-gray-700 bg-gray-200 rounded-md focus:outline-none"
@@ -133,18 +155,29 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearchChange }) => {
           className="w-full px-3 py-2 text-gray-700 bg-gray-200 rounded-md focus:outline-none"
         />
       </div>
+
       <div className="flex justify-between">
         <button
-          type="reset"
+          type="button"
+          onClick={() => {
+            setFilters({
+              name: "",
+              code: "",
+              variant: {
+                color: "",
+                capacity: "",
+                stock: "",
+                price: "",
+                batteryCapacity: "",
+                state: "",
+                productCodes: "",
+              },
+              branchName: "",
+            });
+          }}
           className="py-2 px-4 bg-gray-500 hover:bg-gray-700 text-white font-bold rounded-md"
         >
-          Resteo
-        </button>
-        <button
-          type="submit"
-          className="py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-md"
-        >
-          Buscar
+          Restablecer
         </button>
       </div>
     </div>

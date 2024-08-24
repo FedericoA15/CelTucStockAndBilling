@@ -28,10 +28,15 @@ const ListInvoice: React.FC = () => {
     fetchData();
   }, [filters, currentPage]);
 
+  const handleSearchChange = (newFilters: FiltersInvoice) => {
+    setFilters(newFilters);
+    setCurrentPage(0);
+  };
+
   return (
     <div className="flex flex-col sm:flex-row">
       <div className="w-3/20"></div>
-      <SearchForm onSearchChangeInvoice={setFilters} />
+      <SearchForm onSearchChangeInvoice={handleSearchChange} />
       <div className="w-full flex flex-col border-solid rounded-md ">
         {data.content.map((item) => (
           <ItemInvoice key={item.id} item={item} />

@@ -11,6 +11,8 @@ import Link from "next/link";
 
 const ReceiptForm: React.FC = () => {
   const id = Cookies.get("id");
+  const role = Cookies.get("role");
+
   const [clientEmail, setClientEmail] = useState("");
 
   const [product, setProduct] = useState<any>();
@@ -368,18 +370,19 @@ const ReceiptForm: React.FC = () => {
             Generar PDF y Guardar
           </button>
         </div>
-        <div className="text-center">
-          <Link href="/voucher/list">
-            <button
-              type="button"
-              className="bg-blue-700 hover:bg-opacity-80 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            >
-              Ver comprobantes
-            </button>
-          </Link>
-        </div>
+        {role == "ADMIN" && (
+          <div className="text-center">
+            <Link href="/voucher/list">
+              <button
+                type="button"
+                className="bg-blue-700 hover:bg-opacity-80 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              >
+                Ver comprobantes
+              </button>
+            </Link>
+          </div>
+        )}
       </form>
-
       {product && (
         <IMEIResultModal
           product={product}

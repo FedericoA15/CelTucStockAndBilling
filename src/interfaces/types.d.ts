@@ -94,6 +94,7 @@ interface Filters {
   name: string;
   code: string;
   variant: VariantFilters;
+  branchName: string;
 }
 
 interface FiltersInvoice {
@@ -230,7 +231,7 @@ interface Voucher {
 interface FiltersVoucher {
   client: string;
   code: string;
-  date: string;
+  createdAt: string;
   equipment: string;
 }
 

@@ -68,6 +68,24 @@ const InvoicePDF: React.FC<InvoicePDFProps> = ({ invoice, barcode, id }) => {
         ))}
         <View style={styles.section}>
           <Text>Codigo: {id}</Text>
+          <Text>------------------------</Text>
+
+          <Text>
+            Documento válido como garantía. La garantía sólo podrá ser reclamada
+            por la persona que aparece en la orden, presentando una
+            identificación oficial. Si la garantía aplica, el cambio del
+            accesorio puede demorar hasta 10 días hábiles dependiendo de la
+            disponibilidad del mismo. Todos accesorios
+            (auriculares-cables-fuentes-periféricos-etc.)cuentan con sesenta
+            (30) días de garantía, el plazo de la misma comienza a contar desde
+            el día que se hace entrega del accesorio/s. Esta garantía NO cubre:
+            Reembolsos/devoluciones; si el accesorio/s supera el plazo de
+            garantía; daños, roturas, golpes, irregularidades y/o vicios
+            aparentes de fácil e inmediata observación que no fueron verificados
+            dentro del plazo de satisfacción de compra; daños por fluidos; daños
+            derivados del uso anormal, o uso contrario al indicado en el manual
+            de uso que incluye el kit de venta. robo o hurto del equipo
+          </Text>
         </View>
       </Page>
     </Document>

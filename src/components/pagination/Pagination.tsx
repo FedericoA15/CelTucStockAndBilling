@@ -1,33 +1,51 @@
-import React, { FC } from 'react';
+import React, { FC } from "react";
 
-export const Pagination: FC<PaginationProps> = ({ totalPages, currentPage, onPageChange }) => {
+export const Pagination: FC<PaginationProps> = ({
+  totalPages,
+  currentPage,
+  onPageChange,
+}) => {
   const pages = Array.from({ length: totalPages }, (_, i) => i);
 
+  const handlePageChange = (page: number) => {
+    onPageChange(page);
+    window.scrollTo({ top: 0, behavior: "smooth" }); // Desplazamiento suave hacia arriba
+  };
+
   return (
-    <div className="flex justify-center mt-4">
+    <div className="flex justify-center mt-4 space-x-2">
       <button
         disabled={currentPage === 0}
-        onClick={() => onPageChange(currentPage - 1)}
-        className="mx-1 px-3 py-2 border-2 border-black bg-white text-black"
+        onClick={() => handlePageChange(currentPage - 1)}
+        className={`pagination-button px-3 py-2 rounded-lg border transition-colors duration-300 ${
+          currentPage === 0
+            ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+            : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
+        }`}
       >
         Anterior
       </button>
       {pages.map((page) => (
         <button
           key={page}
-          className={`mx-1 px-3 py-2 border-2 border-black ${page === currentPage ? 'bg-black text-white' : 'bg-white text-black'}`}
-          onClick={() => onPageChange(page)}
+          className={`pagination-button px-3 py-2 rounded-lg border transition-colors duration-300 ${
+            page === currentPage
+              ? "bg-blue-600 text-white border-blue-600"
+              : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
+          }`}
+          onClick={() => handlePageChange(page)}
         >
           {page + 1}
         </button>
       ))}
-      {/* <div className="mx-1 px-3 py-2 border-2 border-black bg-white text-black">
-        Página {currentPage + 1} de {totalPages}
-      </div> */}
       <button
         disabled={currentPage >= totalPages - 1}
-        onClick={() => onPageChange(currentPage + 1)}
-        className="mx-1 px-3 py-2 border-2 border-black bg-white text-black"
+        onClick={() => handlePageChange(currentPage + 1)}
+        className={`pagination-button px-3 py-2 rounded-lg border transition-colors duration-300 ${
+          currentPage >= totalPages - 1
+            ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+            : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
+        }`}
       >
         Siguiente
       </button>

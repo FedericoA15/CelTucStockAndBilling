@@ -8,8 +8,8 @@ import Link from "next/link";
 
 const ContractForm: React.FC = () => {
   const id = Cookies.get("id");
+  const role = Cookies.get("roles");
   const [clientEmail, setClientEmail] = useState("");
-
   const [formData, setFormData] = useState({
     coupon: "",
     date: new Date().toISOString().split("T")[0],
@@ -339,16 +339,18 @@ const ContractForm: React.FC = () => {
             Generar PDF y Guardar
           </button>
         </div>
-        <div className="text-center">
-          <Link href="/contract/list">
-            <button
-              type="button"
-              className=" bg-blue-700 hover:bg-opacity-80 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            >
-              Ver cupones
-            </button>
-          </Link>
-        </div>
+        {role == "ADMIN" && (
+          <div className="text-center">
+            <Link href="/contract/list">
+              <button
+                type="button"
+                className=" bg-blue-700 hover:bg-opacity-80 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              >
+                Ver cupones
+              </button>
+            </Link>
+          </div>
+        )}
       </form>
     </div>
   );
