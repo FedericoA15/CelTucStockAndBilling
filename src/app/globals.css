@@ -32,3 +32,11 @@ body {
     text-wrap: balance;
   }
 }
+
+.pagination-button {
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.pagination-button:active {
+  transform: scale(0.95);
+}

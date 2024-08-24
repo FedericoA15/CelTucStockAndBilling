@@ -1,6 +1,7 @@
 import { useCart } from "@/utils/cartContext";
 import Link from "next/link";
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 
 const CartModal: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -14,6 +15,12 @@ const CartModal: React.FC = () => {
     setIsModalOpen(false);
   };
 
+  const handleCreateInvoice = () => {
+    if (cart.length === 0) {
+      toast.error("El carrito está vacío. No se puede crear un comprobante.");
+    }
+  };
+
   return (
     <div>
       <button
@@ -25,7 +32,7 @@ const CartModal: React.FC = () => {
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-10">
           <div className="bg-custom-black-2 p-4 rounded-lg w-80 relative">
-            {cart.map((item, index) => (
+            {cart.map((item) => (
               <div
                 className="bg-custom-grey-2 text-white my-2 p-2 rounded flex justify-between items-center"
                 key={item.variant.id}
@@ -55,12 +62,22 @@ const CartModal: React.FC = () => {
               >
                 Cerrar
               </button>
-              <Link
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                href="/invoice/new"
-              >
-                Crear comprobante
-              </Link>
+              {cart.length > 0 ? (
+                <Link
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                  href="/invoice/new"
+                >
+                  Crear comprobante
+                </Link>
+              ) : (
+                <button
+                  className="bg-gray-400 text-white font-bold py-2 px-4 rounded cursor-not-allowed"
+                  onClick={handleCreateInvoice}
+                  disabled
+                >
+                  Crear comprobante
+                </button>
+              )}
             </div>
           </div>
         </div>

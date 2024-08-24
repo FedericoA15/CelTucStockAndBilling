@@ -6,7 +6,7 @@ const SearchForm: React.FC<SearchFormPropsVoucher> = ({
   const [filters, setFilters] = useState<FiltersVoucher>({
     client: "",
     code: "",
-    date: "",
+    createdAt: "",
     equipment: "",
   });
 
@@ -17,6 +17,15 @@ const SearchForm: React.FC<SearchFormPropsVoucher> = ({
   useEffect(() => {
     onSearchChangeVoucher(filters);
   }, [filters]);
+
+  const handleReset = () => {
+    setFilters({
+      client: "",
+      code: "",
+      createdAt: "",
+      equipment: "",
+    });
+  };
 
   return (
     <div className="text-white p-6 rounded-md w-full max-w-sm mx-auto">
@@ -50,18 +59,23 @@ const SearchForm: React.FC<SearchFormPropsVoucher> = ({
           className="w-full px-3 py-2 mb-4 text-gray-700 bg-gray-200 rounded-md focus:outline-none"
         />
       </div>
+      <div className="mb-4">
+        <label className="block text-sm font-medium mb-2">Fecha</label>
+        <input
+          type="date"
+          name="createdAt"
+          value={filters.createdAt}
+          onChange={handleFilterChange}
+          className="w-full px-3 py-2 mb-4 text-gray-700 bg-gray-200 rounded-md focus:outline-none"
+        />
+      </div>
       <div className="flex justify-between">
         <button
-          type="reset"
+          type="button"
+          onClick={handleReset}
           className="py-2 px-4 bg-gray-500 hover:bg-gray-700 text-white font-bold rounded-md"
         >
-          Resteo
-        </button>
-        <button
-          type="submit"
-          className="py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-md"
-        >
-          Buscar
+          Restablecer
         </button>
       </div>
     </div>

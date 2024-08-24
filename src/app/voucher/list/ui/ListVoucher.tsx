@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Pagination } from "@/components/pagination/Pagination";
 import { getVoucherBySales } from "@/actions/voucher/getVoucherBySales";
 import { ItemVoucher } from "./ItemVoucher";
-import SearchForm from "./SearchForm";
+import SearchForm from "@/components/searchFormForVouchers/SearchForm";
 
 const ListVoucher: React.FC = () => {
   const [data, setData] = useState<{ content: Voucher[]; totalPages: number }>({
@@ -14,7 +14,7 @@ const ListVoucher: React.FC = () => {
   const [filters, setFilters] = useState<FiltersVoucher>({
     client: "",
     code: "",
-    date: "",
+    createdAt: "",
     equipment: "",
   });
 
@@ -27,10 +27,15 @@ const ListVoucher: React.FC = () => {
     fetchData();
   }, [filters, currentPage]);
 
+  const handleSearchChange = (newFilters: FiltersVoucher) => {
+    setFilters(newFilters);
+    setCurrentPage(0);
+  };
+
   return (
     <div className="flex flex-col sm:flex-row">
       <div className="w-3/20"></div>
-      <SearchForm onSearchChangeVoucher={setFilters} />
+      <SearchForm onSearchChangeVoucher={handleSearchChange} />
       <div className="w-full flex flex-col border-solid rounded-md">
         {data?.content.map((item) => (
           <ItemVoucher key={item.id} item={item} />

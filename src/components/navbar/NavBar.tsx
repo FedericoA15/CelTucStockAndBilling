@@ -19,7 +19,7 @@ export default function Navbar() {
       <div className="block lg:hidden">
         <button
           onClick={toggleMenu}
-          className="flex items-center px-3 py-2 border rounded text-white border-white hover:text-red-700 hover:border-red-700"
+          className="flex items-center px-3 py-2 border rounded text-white border-white hover:text-blue-700 hover:border-blue-700"
         >
           <svg
             className="fill-current h-3 w-3"
@@ -38,27 +38,27 @@ export default function Navbar() {
       >
         <div className="text-sm lg:flex-grow">
           <Link href="/products">
-            <span className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-red-700 mr-4">
+            <span className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-blue-700 mr-4">
               Productos
             </span>
           </Link>
           <Link href="/invoice">
-            <span className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-red-700 mr-4">
+            <span className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-blue-700 mr-4">
               Comprobantes
             </span>
           </Link>
           <Link href="/voucher">
-            <span className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-red-700 mr-4">
+            <span className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-blue-700 mr-4">
               Comprobantes de equipos
             </span>
           </Link>
           <Link href="/repair">
-            <span className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-red-700 mr-4">
+            <span className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-blue-700 mr-4">
               Comprobantes de reparaciones
             </span>
           </Link>
           <Link href="/contract">
-            <span className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-red-700 mr-4">
+            <span className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-blue-700 mr-4">
               Comprobantes de contratos
             </span>
           </Link>

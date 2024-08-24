@@ -26,6 +26,7 @@ const ListComponent: React.FC = () => {
       state: "",
       productCodes: "",
     },
+    branchName: "",
   });
   const [currentPage, setCurrentPage] = useState(0);
   const [isClient, setIsClient] = useState(false);
@@ -49,13 +50,18 @@ const ListComponent: React.FC = () => {
     setIsClient(true);
   }, []);
 
+  const handleSearchChange = (newFilters: Filters) => {
+    setFilters(newFilters);
+    setCurrentPage(0);
+  };
+
   return (
     <div className="flex flex-col sm:flex-row">
       <div className="w-3/20">
         <div className="flex justify-center items-center">
           <CartModal />
         </div>
-        <SearchForm onSearchChange={setFilters} />
+        <SearchForm onSearchChange={handleSearchChange} />
       </div>
       <div className="w-full flex flex-col border-solid rounded-md bg-custom-black-2">
         {isClient && role === "ADMIN" && (

@@ -3,6 +3,7 @@ import { useCart } from "@/utils/cartContext";
 import Cookies from "js-cookie";
 import { postInvoice } from "@/actions/invoices/postInvoice";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 export const Cart: React.FC = () => {
   const router = useRouter();
@@ -35,13 +36,25 @@ export const Cart: React.FC = () => {
 
   const handleCreateInvoice = async () => {
     if (!clientName) {
-      alert("Por favor, ingrese el nombre del cliente.");
+      toast.error("Por favor, ingrese el nombre del cliente.");
       return;
     }
+
+    for (let i = 0; i < amounts.length; i++) {
+      if (
+        !amounts[i] ||
+        isNaN(parseFloat(amounts[i])) ||
+        parseFloat(amounts[i]) <= 0
+      ) {
+        toast.error(`El monto para el método de pago ${i + 1} no es válido.`);
+        return;
+      }
+    }
+
     setLoading(true);
     const id = Cookies.get("id");
     if (!id) {
-      alert("Usuario no identificado");
+      toast.error("Usuario no identificado");
       setLoading(false);
       return;
     }
@@ -64,8 +77,14 @@ export const Cart: React.FC = () => {
       })),
     };
 
-    postInvoice(invoiceData, router);
-    cleanCart();
+    try {
+      await postInvoice(invoiceData, router);
+      cleanCart();
+    } catch (error) {
+      toast.error("Ocurrió un error al crear la factura.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const uniqueCartItems = Array.from(

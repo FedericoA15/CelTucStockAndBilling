@@ -310,16 +310,18 @@ const RepairForm: React.FC = () => {
             Generar PDF y Guardar
           </button>
         </div>
-        <div className="text-center">
-          <Link href="/repair/list">
-            <button
-              type="button"
-              className="bg-blue-700 hover:bg-opacity-80 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            >
-              Ver comprobantes
-            </button>
-          </Link>
-        </div>
+        {role == "ADMIN" && (
+          <div className="text-center">
+            <Link href="/repair/list">
+              <button
+                type="button"
+                className="bg-blue-700 hover:bg-opacity-80 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              >
+                Ver comprobantes
+              </button>
+            </Link>
+          </div>
+        )}
       </form>
     </div>
   );

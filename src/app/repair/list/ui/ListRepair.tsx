@@ -2,8 +2,8 @@
 import React, { useState, useEffect } from "react";
 import { Pagination } from "@/components/pagination/Pagination";
 import { ItemRepair } from "./ItemRepair";
-import SearchForm from "./SearchForm";
 import { getVoucherByWarranty } from "@/actions/voucher/getVoucherByWarranty";
+import SearchForm from "@/components/searchFormForVouchers/SearchForm";
 
 const ListRepair: React.FC = () => {
   const [data, setData] = useState<{ content: Voucher[]; totalPages: number }>({
@@ -14,7 +14,7 @@ const ListRepair: React.FC = () => {
   const [filters, setFilters] = useState<FiltersVoucher>({
     client: "",
     code: "",
-    date: "",
+    createdAt: "",
     equipment: "",
   });
 
@@ -27,10 +27,15 @@ const ListRepair: React.FC = () => {
     fetchData();
   }, [filters, currentPage]);
 
+  const handleSearchChange = (newFilters: FiltersVoucher) => {
+    setFilters(newFilters);
+    setCurrentPage(0);
+  };
+
   return (
     <div className="flex flex-col sm:flex-row">
       <div className="w-3/20"></div>
-      <SearchForm onSearchChangeVoucher={setFilters} />
+      <SearchForm onSearchChangeVoucher={handleSearchChange} />
       <div className="w-full flex flex-col border-solid rounded-md">
         {data.content.map((item) => (
           <ItemRepair key={item.id} item={item} />
