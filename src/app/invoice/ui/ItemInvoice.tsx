@@ -9,7 +9,6 @@ export const ItemInvoice: React.FC<{ item: Invoice }> = ({ item }) => {
       >
         ID del comprobante: {item.id}
       </Link>
-      <p className="mb-2">Email del vendedor: {item.userEmail}</p>
       <p className="mb-2">Fecha: {item.date.slice(0, 10)}</p>
       <p className="mb-2">Cliente: {item.client}</p>
       {item.invoiceItems.map((invoiceItem, index) => (
