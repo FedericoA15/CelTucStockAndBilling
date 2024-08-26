@@ -3,6 +3,7 @@ import { loginAuth } from "@/actions/auth/auth";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -17,6 +18,7 @@ export default function LoginForm() {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
@@ -47,13 +49,25 @@ export default function LoginForm() {
             onChange={(e) => setUsername(e.target.value)}
             className="block w-full mb-4 p-2 border border-gray-300"
           />
-          <input
-            type="password"
-            placeholder="Contraseña"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="block w-full mb-4 p-2 border border-gray-300"
-          />
+          <div className="relative w-full mb-4">
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Contraseña"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="block w-full p-2 border border-gray-300"
+            />
+            <div
+              className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? (
+                <AiFillEyeInvisible className="text-gray-500" size={24} />
+              ) : (
+                <AiFillEye className="text-gray-500" size={24} />
+              )}
+            </div>
+          </div>
           <button
             type="submit"
             className="block w-full mb-4 p-2 bg-blue-500 hover:bg-blue-700 text-white"
