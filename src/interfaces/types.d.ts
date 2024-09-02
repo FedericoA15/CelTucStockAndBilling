@@ -88,6 +88,7 @@ interface VariantFilters {
   batteryCapacity: string;
   state: string;
   productCodes: string
+  subModel: string
 }
 
 interface Filters {

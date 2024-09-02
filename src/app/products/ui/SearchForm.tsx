@@ -13,6 +13,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearchChange }) => {
       batteryCapacity: "",
       state: "",
       productCodes: "",
+      subModel: "",
     },
     branchName: "",
   });
@@ -94,6 +95,16 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearchChange }) => {
         </select>
       </div>
       <div className="mb-4">
+        <label className="block text-sm font-medium mb-2">Modelo</label>
+        <input
+          type="text"
+          name="subModel"
+          value={filters.variant.subModel}
+          onChange={handleFilterChange}
+          className="w-full px-3 py-2 text-gray-700 bg-gray-200 rounded-md focus:outline-none"
+        />
+      </div>
+      <div className="mb-4">
         <label className="block text-sm font-medium mb-2">Color</label>
         <input
           type="text"
@@ -171,6 +182,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearchChange }) => {
                 batteryCapacity: "",
                 state: "",
                 productCodes: "",
+                subModel: "",
               },
               branchName: "",
             });
