@@ -63,14 +63,33 @@ export const ItemComponent: React.FC<{ item: Item }> = ({ item }) => {
           <table className="min-w-full divide-y divide-gray-600">
             <thead className="bg-gray-700">
               <tr>
-                <th className="px-4 py-2 text-left text-sm font-bold text-white">Código</th>
-                <th className="px-4 py-2 text-left text-sm font-bold text-white">Descripción</th>
-                <th className="px-4 py-2 text-left text-sm font-bold text-white">Precio Lista</th>
-                <th className="px-4 py-2 text-left text-sm font-bold text-white">Precio Contado</th>
-                <th className="px-4 py-2 text-left text-sm font-bold text-white">Precio Lista USD</th>
-                <th className="px-4 py-2 text-left text-sm font-bold text-white">Precio Contado USD</th>
-                <th className="px-4 py-2 text-left text-sm font-bold text-white">Stock</th>
-                <th className="px-4 py-2 text-left text-sm font-bold text-white">Acciones</th>
+                <th className="px-4 py-2 text-left text-sm font-bold text-white">
+                  Modelo
+                </th>
+                <th className="px-4 py-2 text-left text-sm font-bold text-white">
+                  Descripción
+                </th>
+                <th className="px-4 py-2 text-left text-sm font-bold text-white">
+                  Precio Lista
+                </th>
+                <th className="px-4 py-2 text-left text-sm font-bold text-white">
+                  Precio Contado
+                </th>
+                <th className="px-4 py-2 text-left text-sm font-bold text-white">
+                  Precio Lista USD
+                </th>
+                <th className="px-4 py-2 text-left text-sm font-bold text-white">
+                  Precio Contado USD
+                </th>
+                <th className="px-4 py-2 text-left text-sm font-bold text-white">
+                  Stock
+                </th>
+                <th className="px-4 py-2 text-left text-sm font-bold text-white">
+                  Codigo
+                </th>
+                <th className="px-4 py-2 text-left text-sm font-bold text-white">
+                  Acciones
+                </th>
               </tr>
             </thead>
             <tbody className="bg-gray-800 divide-y divide-gray-600">
@@ -78,15 +97,28 @@ export const ItemComponent: React.FC<{ item: Item }> = ({ item }) => {
                 <tr key={variant.id} className="hover:bg-gray-700">
                   <td className="px-4 py-2">{renderValue(variant.subModel)}</td>
                   <td className="px-4 py-2">{renderValue(variant.details)}</td>
-                  <td className="px-4 py-2">ARS {renderValue(variant.priceArs)}</td>
-                  <td className="px-4 py-2">ARS {renderValue(variant.priceArsCounted)}</td>
-                  <td className="px-4 py-2">USD {renderValue(variant.price)}</td>
-                  <td className="px-4 py-2">USD {renderValue(variant.countedPrice)}</td>
+                  <td className="px-4 py-2">
+                    ARS {renderValue(variant.priceArs)}
+                  </td>
+                  <td className="px-4 py-2">
+                    ARS {renderValue(variant.priceArsCounted)}
+                  </td>
+                  <td className="px-4 py-2">
+                    USD {renderValue(variant.price)}
+                  </td>
+                  <td className="px-4 py-2">
+                    USD {renderValue(variant.countedPrice)}
+                  </td>
                   <td className="px-4 py-2">{renderValue(variant.stock)}</td>
+                  <td className="px-4 py-2">
+                    {renderValue(variant.productCodes.join(", "))}
+                  </td>
                   <td className="px-4 py-2 flex space-x-2">
                     <button
                       className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
-                      onClick={() => addToCart({ variant, itemName: item.name })}
+                      onClick={() =>
+                        addToCart({ variant, itemName: item.name })
+                      }
                     >
                       Agregar
                     </button>

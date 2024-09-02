@@ -25,6 +25,7 @@ const ListComponent: React.FC = () => {
       batteryCapacity: "",
       state: "",
       productCodes: "",
+      subModel: "",
     },
     branchName: "",
   });
