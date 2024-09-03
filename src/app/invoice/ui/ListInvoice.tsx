@@ -1,9 +1,9 @@
-// ListComponent.tsx
 "use client";
 import React, { useState, useEffect } from "react";
 import { Pagination } from "@/components/pagination/Pagination";
 import { fetchInvoices } from "@/actions/invoices/getInvoices";
 import { ItemInvoice } from "./ItemInvoice";
+import { downloadExcel } from "@/utils/generateExcel";
 import SearchForm from "./SearchForm";
 
 const ListInvoice: React.FC = () => {
@@ -33,11 +33,21 @@ const ListInvoice: React.FC = () => {
     setCurrentPage(0);
   };
 
+  const handleDownloadExcel = async () => {
+    downloadExcel(filters, currentPage);
+  };
+
   return (
     <div className="flex flex-col sm:flex-row">
       <div className="w-3/20"></div>
       <SearchForm onSearchChangeInvoice={handleSearchChange} />
       <div className="w-full flex flex-col border-solid rounded-md ">
+        <button
+          onClick={handleDownloadExcel}
+          className="mb-4 p-2 bg-blue-500 text-white rounded-md"
+        >
+          Descargar Excel
+        </button>
         {data.content.map((item) => (
           <ItemInvoice key={item.id} item={item} />
         ))}

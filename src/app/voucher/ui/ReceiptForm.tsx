@@ -11,10 +11,8 @@ import Link from "next/link";
 
 const ReceiptForm: React.FC = () => {
   const id = Cookies.get("id");
-  const role = Cookies.get("role");
-
+  const role = Cookies.get("roles");
   const [clientEmail, setClientEmail] = useState("");
-
   const [product, setProduct] = useState<any>();
   const [formData, setFormData] = useState({
     coupon: "",
