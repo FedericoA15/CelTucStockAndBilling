@@ -1,12 +1,24 @@
 import { useState, useEffect } from "react";
 import { putProduct } from "@/actions/products/putProductVariant";
+import {
+  FaTimes,
+  FaPen,
+  FaTag,
+  FaBatteryFull,
+  FaWarehouse,
+  FaDollarSign,
+  FaBox,
+  FaInfoCircle,
+  FaList,
+  FaSlidersH,
+} from "react-icons/fa"; // Iconos añadidos
 
 const EditVariantModal: React.FC<{
   isOpen: boolean;
   onClose: () => void;
   variant: Variant;
 }> = ({ isOpen, onClose, variant }) => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<any>({
     ...variant,
     productCodes: variant.productCodes.join(", "),
   });
@@ -41,95 +53,113 @@ const EditVariantModal: React.FC<{
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-slate-950 bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-custom-black p-8 rounded-lg w-2/3">
-        <h2 className="text-2xl font-bold mb-4">
-          Modificar Variante de producto
-        </h2>
-        <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4">
-          <input
-            name="color"
-            placeholder="Color"
-            value={formData.color}
-            onChange={handleChange}
-            className="p-2 bg-gray-700 text-white rounded"
-          />
-          <input
-            name="batteryCapacity"
-            placeholder="Capacidad de la batería"
-            value={formData.batteryCapacity}
-            onChange={handleChange}
-            className="p-2 bg-gray-700 text-white rounded"
-          />
-          <input
-            name="stock"
-            placeholder="Stock"
-            value={formData.stock}
-            onChange={handleChange}
-            className="p-2 bg-gray-700 text-white rounded"
-          />
-          <input
-            name="price"
-            placeholder="Precio"
-            value={formData.price}
-            onChange={handleChange}
-            className="p-2 bg-gray-700 text-white rounded"
-          />
-          <input
-            name="branchName"
-            placeholder="Sucursal"
-            value={formData.branchName}
-            onChange={handleChange}
-            className="p-2 bg-gray-700 text-white rounded"
-          />
-          <input
-            name="state"
-            placeholder="Estado"
-            value={formData.state}
-            onChange={handleChange}
-            className="p-2 bg-gray-700 text-white rounded"
-          />
-          <input
-            name="details"
-            placeholder="Detalles"
-            value={formData.details}
-            onChange={handleChange}
-            className="p-2 bg-gray-700 text-white rounded"
-          />
-          <input
-            name="capacity"
-            placeholder="Capacidad"
-            value={formData.capacity}
-            onChange={handleChange}
-            className="p-2 bg-gray-700 text-white rounded"
-          />
-          <input
-            name="subModel"
-            placeholder="SubModelo"
-            value={formData.subModel}
-            onChange={handleChange}
-            className="p-2 bg-gray-700 text-white rounded"
-          />
-          <input
-            name="productCodes"
-            placeholder="Ingresa los códigos, separados por comas"
-            value={formData.productCodes}
-            onChange={handleChange}
-            className="col-span-2 p-2 bg-gray-700 text-white rounded"
-          />
-          <button
-            type="submit"
-            className="col-span-2 bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded"
-          >
-            Modificar
-          </button>
-        </form>
+    <div className="fixed inset-0 bg-custom-black-2 bg-opacity-70 flex justify-center items-center z-50">
+      <div className="bg-custom-black p-8 rounded-lg w-full max-w-lg relative shadow-lg">
         <button
           onClick={onClose}
-          className="absolute top-0 right-0 mt-4 mr-4 text-white"
+          className="absolute top-4 right-4 text-custom-white hover:text-custom-grey-2 transition duration-200"
         >
-          X
+          <FaTimes size={20} />
         </button>
+        <h2 className="text-2xl font-bold text-custom-cream mb-6 text-center flex items-center justify-center">
+          <FaPen className="mr-2" /> Modificar Variante de Producto
+        </h2>
+        <form
+          onSubmit={handleSubmit}
+          className="grid grid-cols-1 md:grid-cols-2 gap-4"
+        >
+          {[
+            {
+              name: "color",
+              placeholder: "Color",
+              icon: <FaTag />,
+              label: "Color",
+            },
+            {
+              name: "batteryCapacity",
+              placeholder: "Capacidad de la batería",
+              icon: <FaBatteryFull />,
+              label: "Capacidad de la batería",
+            },
+            {
+              name: "stock",
+              placeholder: "Stock",
+              icon: <FaBox />,
+              label: "Stock",
+            },
+            {
+              name: "price",
+              placeholder: "Precio",
+              icon: <FaDollarSign />,
+              label: "Precio",
+            },
+            {
+              name: "branchName",
+              placeholder: "Sucursal",
+              icon: <FaWarehouse />,
+              label: "Sucursal",
+            },
+            {
+              name: "state",
+              placeholder: "Estado",
+              icon: <FaList />,
+              label: "Estado",
+            },
+            {
+              name: "details",
+              placeholder: "Detalles",
+              icon: <FaInfoCircle />,
+              label: "Detalles",
+            },
+            {
+              name: "capacity",
+              placeholder: "Capacidad",
+              icon: <FaSlidersH />,
+              label: "Capacidad",
+            },
+            {
+              name: "subModel",
+              placeholder: "SubModelo",
+              icon: <FaTag />,
+              label: "SubModelo",
+              fullWidth: true,
+            },
+            {
+              name: "productCodes",
+              placeholder: "Ingresa los códigos, separados por comas",
+              icon: <FaTag />,
+              label: "Códigos de producto",
+              fullWidth: true,
+            },
+          ].map((field) => (
+            <div
+              key={field.name}
+              className={`flex flex-col ${field.fullWidth ? "col-span-2" : ""}`}
+            >
+              <label className="flex items-center text-sm font-semibold text-custom-white mb-1">
+                {field.icon}
+                <span className="ml-2">{field.label}</span>
+              </label>
+              <div className="flex items-center bg-custom-grey-2 rounded border-2 border-custom-grey">
+                <input
+                  name={field.name}
+                  placeholder={field.placeholder}
+                  value={formData[field.name]}
+                  onChange={handleChange}
+                  className={`flex-1 p-2 bg-transparent text-custom-white placeholder-custom-grey-2 focus:outline-none focus:border-custom-blue transition duration-200 ${
+                    field.fullWidth ? "w-full" : ""
+                  }`}
+                />
+              </div>
+            </div>
+          ))}
+          <button
+            type="submit"
+            className="col-span-2 flex items-center justify-center py-2 px-4 bg-custom-green hover:bg-custom-cream text-custom-black font-bold rounded-lg shadow-md transform hover:scale-105 transition duration-300"
+          >
+            <FaPen className="mr-2" /> Modificar
+          </button>
+        </form>
       </div>
     </div>
   );

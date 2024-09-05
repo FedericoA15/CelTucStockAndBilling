@@ -3,6 +3,7 @@ import { putDollar } from "@/actions/dollar/putDollar";
 import axiosInstance from "@/utils/axiosInstance";
 import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
+import { FaDollarSign } from "react-icons/fa";
 
 const FormDollar: React.FC = () => {
   const [dollarValue, setDollarValue] = useState<number | null>(null);
@@ -36,11 +37,15 @@ const FormDollar: React.FC = () => {
   };
 
   return (
-    <div className="p-4 mx-5 my-5 text-white w-full max-w-sm bg-custom-grey-2 shadow-md rounded-lg">
-      <h2 className="text-lg font-bold mb-4">Valor del Dólar</h2>
-      <div className="mb-4">
-        <p className="text-white">
-          Valor actual: {dollarValue !== null ? dollarValue : "Cargando..."}
+    <div className="p-6 mx-4 my-6 text-white w-full max-w-sm bg-custom-grey-2 shadow-lg rounded-lg">
+      <h2 className="text-xl font-bold mb-4 flex items-center">
+        <FaDollarSign className="mr-2 text-custom-cream" />
+        Valor del Dólar
+      </h2>
+      <div className="mb-6">
+        <p className="text-lg">
+          Valor actual:{" "}
+          {dollarValue !== null ? `$${dollarValue}` : "Cargando..."}
         </p>
       </div>
       {isClient && role === "ADMIN" && (
@@ -52,13 +57,13 @@ const FormDollar: React.FC = () => {
             type="number"
             value={newDollarValue}
             onChange={(e) => setNewDollarValue(e.target.value)}
-            className="p-2 border text-black border-gray-300 rounded-md"
+            className="p-3 border border-custom-grey rounded-md text-custom-black focus:border-custom-blue focus:ring-1 focus:ring-custom-blue transition duration-200"
             placeholder="Nuevo valor del dólar"
             required
           />
           <button
             type="submit"
-            className="p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-200"
+            className="py-3 bg-custom-blue text-white rounded-md hover:bg-blue-600 transition duration-200 flex items-center justify-center"
           >
             Actualizar
           </button>
