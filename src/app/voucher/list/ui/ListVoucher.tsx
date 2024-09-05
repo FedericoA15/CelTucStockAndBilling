@@ -33,14 +33,15 @@ const ListVoucher: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col sm:flex-row">
-      <div className="w-3/20"></div>
-      <SearchForm onSearchChangeVoucher={handleSearchChange} />
-      <div className="w-full flex flex-col border-solid rounded-md">
+    <div className="flex flex-col lg:flex-row gap-6 p-6  text-custom-white">
+      <div className="lg:w-1/6 w-full p-4 rounded-lg shadow-lg ">
+        <SearchForm onSearchChangeVoucher={handleSearchChange} />
+      </div>
+      <div className="flex-1 flex flex-col gap-6">
         {data?.content.map((item) => (
           <ItemVoucher key={item.id} item={item} />
         ))}
-        <div className="flex justify-start items-center">
+        <div className="flex justify-start items-center mt-6">
           <Pagination
             totalPages={data?.totalPages}
             currentPage={currentPage}

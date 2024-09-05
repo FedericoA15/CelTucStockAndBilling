@@ -9,17 +9,20 @@ const config: Config = {
   theme: {
     extend: {
       backgroundImage: {
-        'custom-bg': "url('/1.png')",  
-        'custom-bg2': "url('/m3-macbook-pro-wallpaper-8k.png')",  
+        'custom-bg': "url('/1.png')",
+        'custom-bg2': "url('/m3-macbook-pro-wallpaper-8k.png')",
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic": "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       colors: {
-        'custom-black': '#0C0C0C',
-        'custom-black-2': '#171917',
-        'custom-grey': '#444444',
-        'custom-grey-2': '#303030',
-        'custom-cream': '#F2613F',
+        'custom-black': '#121212', // Un tono más oscuro para un fondo profundo
+        'custom-black-2': '#1E1E1E', // Un tono ligeramente más claro para áreas secundarias
+        'custom-grey': '#2C2C2C', // Gris medio para detalles y bordes
+        'custom-grey-2': '#373737', // Gris más claro para contraste sutil
+        'custom-cream': '#F2A64D', // Un tono de crema cálido para acentos
+        'custom-white': '#F5F5F5', // Blanco para texto y detalles importantes
+        'custom-blue': '#4A90E2', // Un azul claro para elementos interactivos
+        'custom-green': '#50E3C2', // Verde para estados positivos o éxito
       },
     },
   },

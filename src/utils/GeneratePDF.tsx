@@ -34,25 +34,37 @@ export const GeneratePDFByReceipt = async (
       });
     };
 
-    const addtionStr = data.addition?.toString() ?? "0";
+    const additionStr = data.addition?.toString() ?? "0";
     const totalStr = data.total?.toString() ?? "0";
+    const couponStr = data.coupon?.toString() ?? "";
+    const dateStr = data.date?.toString() ?? "";
+    const clientStr = data.client?.toString() ?? "";
+    const dniStr = data.DNI?.toString() ?? "";
+    const phoneStr = data.phone?.toString() ?? "";
+    const conceptStr = data.concept?.toString() ?? "";
+    const conditionStr = data.condition?.toString() ?? "";
+    const imeiStr = data.imei?.toString() ?? "";
+    const paymentMethodsStr = data.paymentMethods?.toString() ?? "";
+    const warrantyStr = data.warranty?.toString() ?? "";
+    const obsStr = data.obs?.toString() ?? "";
+    const signatureStr = data.signature?.toString() ?? "";
 
     addText(branchName, 360, 725);
-    addText(data.coupon, 350, 696.024);
-    addText(data.date, 345, 672);
-    addText(data.client, 111, 650);
-    addText(data.dni, 88, 635);
-    addText(data.phone, 287, 635);
-    addText(addtionStr, 126.792, 620.4);
-    addText(data.concept, 67, 595);
-    addText(data.condition, 124, 555);
-    addText(data.imei, 90, 540);
-    addText(data.paymentMethods, 146, 514);
-    addText(data.warranty, 118, 528);
+    addText(couponStr, 350, 696.024);
+    addText(dateStr, 345, 672);
+    addText(clientStr, 111, 650);
+    addText(dniStr, 88, 635);
+    addText(phoneStr, 287, 635);
+    addText(additionStr, 126.792, 620.4);
+    addText(conceptStr, 67, 595);
+    addText(conditionStr, 124, 555);
+    addText(imeiStr, 90, 540);
+    addText(paymentMethodsStr, 146, 514);
+    addText(warrantyStr, 118, 528);
     addText(totalStr, 368, 521);
-    addText(data.obs, 88, 488);
+    addText(obsStr, 88, 488);
 
-    addText(data.signature, 237.456, 530.352, signatureFont);
+    addText(signatureStr, 237.456, 530.352, signatureFont);
 
     const pdfBytes = await pdfDoc.save();
 
@@ -69,7 +81,7 @@ export const GeneratePDFByReceipt = async (
         "emailContent",
         "Gracias por tu compra! Te esperamos pronto CelTuc!"
       );
-      formData.append("pdfName", "Comprobate-Compra.pdf");
+      formData.append("pdfName", "Comprobante-Compra.pdf");
 
       try {
         await axiosInstance.post("/send-pdf-email", formData, {
@@ -118,19 +130,33 @@ export const GeneratePDFByRepair = async (data: any, clientEmail?: string) => {
       });
     };
 
-    addText(data.coupon, 350, 696.024);
-    addText(data.date, 345, 672);
-    addText(data.client, 111, 650);
-    addText(data.equipment, 130, 635);
-    addText(data.failure, 190, 622);
-    addText(data.obs, 88, 583);
-    addText(data.reception, 128, 540);
-    addText(data.budget, 360, 540);
-    addText(data.code, 155, 527);
-    addText(data.sign, 321, 527);
-    addText(data.phone, 85, 515);
-    addText(data.slope, 347, 515);
-    addText(data.dignosis, 176, 486);
+    const couponStr = data.coupon?.toString() ?? "";
+    const dateStr = data.date?.toString() ?? "";
+    const clientStr = data.client?.toString() ?? "";
+    const equipmentStr = data.equipment?.toString() ?? "";
+    const failureStr = data.failure?.toString() ?? "";
+    const obsStr = data.obs?.toString() ?? "";
+    const receptionStr = data.reception?.toString() ?? "";
+    const budgetStr = data.budget?.toString() ?? "";
+    const codeStr = data.code?.toString() ?? "";
+    const signStr = data.sign?.toString() ?? "";
+    const phoneStr = data.phone?.toString() ?? "";
+    const slopeStr = data.slope?.toString() ?? "";
+    const diagnosisStr = data.dignosis?.toString() ?? "";
+
+    addText(couponStr, 350, 696.024);
+    addText(dateStr, 345, 672);
+    addText(clientStr, 111, 650);
+    addText(equipmentStr, 130, 635);
+    addText(failureStr, 190, 622);
+    addText(obsStr, 88, 583);
+    addText(receptionStr, 128, 540);
+    addText(budgetStr, 360, 540);
+    addText(codeStr, 155, 527);
+    addText(signStr, 321, 527);
+    addText(phoneStr, 85, 515);
+    addText(slopeStr, 347, 515);
+    addText(diagnosisStr, 176, 486);
 
     const pdfBytes = await pdfDoc.save();
 
@@ -204,22 +230,38 @@ export const GeneratePDFByContract = async (
       });
     };
 
-    addText(data.coupon, 348, 748);
-    addText(data.date, 348, 723);
-    addText(data.client, 153, 666);
-    addText(data.dni, 83, 654);
-    addText(data.brand, 104, 632);
-    addText(data.model, 110, 617);
-    addText(data.color, 104, 604);
-    addText(data.imei, 104, 591);
-    addText(data.imei2, 104, 578);
-    addText(data.obs, 68, 549);
-    addText(data.reception, 68, 516);
-    addText(data.dniBuyer, 307, 516);
-    addText(data.total, 380, 482);
+    const couponStr = data.coupon?.toString() ?? "";
+    const dateStr = data.date?.toString() ?? "";
+    const clientStr = data.client?.toString() ?? "";
+    const dniStr = data.dni?.toString() ?? "";
+    const brandStr = data.brand?.toString() ?? "";
+    const modelStr = data.model?.toString() ?? "";
+    const colorStr = data.color?.toString() ?? "";
+    const imeiStr = data.imei?.toString() ?? "";
+    const imei2Str = data.imei2?.toString() ?? "";
+    const obsStr = data.obs?.toString() ?? "";
+    const receptionStr = data.reception?.toString() ?? "";
+    const dniBuyerStr = data.dniBuyer?.toString() ?? "";
+    const totalStr = data.total?.toString() ?? "";
+    const signatureBySellerStr = data.signatureBySeller?.toString() ?? "";
+    const signatureStr = data.signature?.toString() ?? "";
 
-    addText(data.signatureBySeller, 107, 314, signatureFont);
-    addText(data.signature, 275, 314, signatureFont);
+    addText(couponStr, 348, 748);
+    addText(dateStr, 348, 723);
+    addText(clientStr, 153, 666);
+    addText(dniStr, 83, 654);
+    addText(brandStr, 104, 632);
+    addText(modelStr, 110, 617);
+    addText(colorStr, 104, 604);
+    addText(imeiStr, 104, 591);
+    addText(imei2Str, 104, 578);
+    addText(obsStr, 68, 549);
+    addText(receptionStr, 68, 516);
+    addText(dniBuyerStr, 307, 516);
+    addText(totalStr, 380, 482);
+
+    addText(signatureBySellerStr, 107, 314, signatureFont);
+    addText(signatureStr, 275, 314, signatureFont);
 
     const pdfBytes = await pdfDoc.save();
 

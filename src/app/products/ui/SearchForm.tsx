@@ -1,7 +1,7 @@
 import React, { useState, ChangeEvent, useEffect } from "react";
+import { FaSearch, FaTimes } from "react-icons/fa";
 
 const SearchForm: React.FC<SearchFormProps> = ({ onSearchChange }) => {
-  const [searchTerm, setSearchTerm] = useState<string>("");
   const [filters, setFilters] = useState<Filters>({
     name: "",
     code: "",
@@ -17,10 +17,6 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearchChange }) => {
     },
     branchName: "",
   });
-
-  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
-  };
 
   const handleFilterChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -45,129 +41,131 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearchChange }) => {
   }, [filters]);
 
   return (
-    <div className="text-white p-6 rounded-md w-full max-w-sm mx-auto">
-      <div className="mb-4">
-        <label className="block text-sm font-medium mb-2">Nombre</label>
-        <input
-          type="text"
-          name="name"
-          value={filters.name}
-          onChange={handleFilterChange}
-          className="w-full px-3 py-2 mb-4 text-gray-700 bg-gray-200 rounded-md focus:outline-none"
-        />
+    <div className="text-white p-6 bg-custom-grey rounded-lg shadow-md w-full max-w-md mx-auto">
+      <h2 className="text-lg font-bold mb-4">Buscar Productos</h2>
+      <div className="space-y-4">
+        <div>
+          <label className="block text-sm font-medium mb-2">Nombre</label>
+          <input
+            type="text"
+            name="name"
+            value={filters.name}
+            onChange={handleFilterChange}
+            className="w-full px-3 py-2 bg-custom-grey-3 text-custom-black rounded-md border border-custom-grey focus:border-custom-blue focus:outline-none"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium mb-2">
+            Código universal
+          </label>
+          <input
+            type="text"
+            name="code"
+            value={filters.code}
+            onChange={handleFilterChange}
+            className="w-full px-3 py-2 bg-custom-grey-3 text-custom-black rounded-md border border-custom-grey focus:border-custom-blue focus:outline-none"
+            style={{ textTransform: "none" }}
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium mb-2">Códigos</label>
+          <input
+            type="text"
+            name="productCodes"
+            value={filters.variant.productCodes}
+            onChange={handleFilterChange}
+            className="w-full px-3 py-2 bg-custom-grey-3 text-custom-black rounded-md border border-custom-grey focus:border-custom-blue focus:outline-none"
+            style={{ textTransform: "none" }}
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium mb-2">Sucursal</label>
+          <select
+            name="branchName"
+            value={filters.branchName}
+            onChange={handleFilterChange}
+            className="w-full px-3 py-2 bg-custom-grey-3 text-custom-black rounded-md border border-custom-grey focus:border-custom-blue focus:outline-none"
+          >
+            <option value="">Todas</option>
+            <option value="Yerba Buena">Yerba Buena</option>
+            <option value="Solar">Solar</option>
+            <option value="Centro">Centro</option>
+          </select>
+        </div>
+        <div>
+          <label className="block text-sm font-medium mb-2">Modelo</label>
+          <input
+            type="text"
+            name="subModel"
+            value={filters.variant.subModel}
+            onChange={handleFilterChange}
+            className="w-full px-3 py-2 bg-custom-grey-3 text-custom-black rounded-md border border-custom-grey focus:border-custom-blue focus:outline-none"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium mb-2">Color</label>
+          <input
+            type="text"
+            name="color"
+            value={filters.variant.color}
+            onChange={handleFilterChange}
+            className="w-full px-3 py-2 bg-custom-grey-3 text-custom-black rounded-md border border-custom-grey focus:border-custom-blue focus:outline-none"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium mb-2">Capacidad</label>
+          <input
+            type="text"
+            name="capacity"
+            value={filters.variant.capacity}
+            onChange={handleFilterChange}
+            className="w-full px-3 py-2 bg-custom-grey-3 text-custom-black rounded-md border border-custom-grey focus:border-custom-blue focus:outline-none"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium mb-2">Stock</label>
+          <input
+            type="text"
+            name="stock"
+            value={filters.variant.stock}
+            onChange={handleFilterChange}
+            className="w-full px-3 py-2 bg-custom-grey-3 text-custom-black rounded-md border border-custom-grey focus:border-custom-blue focus:outline-none"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium mb-2">Precio</label>
+          <input
+            type="text"
+            name="price"
+            value={filters.variant.price}
+            onChange={handleFilterChange}
+            className="w-full px-3 py-2 bg-custom-grey-3 text-custom-black rounded-md border border-custom-grey focus:border-custom-blue focus:outline-none"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium mb-2">
+            Capacidad de batería
+          </label>
+          <input
+            type="text"
+            name="batteryCapacity"
+            value={filters.variant.batteryCapacity}
+            onChange={handleFilterChange}
+            className="w-full px-3 py-2 bg-custom-grey-3 text-custom-black rounded-md border border-custom-grey focus:border-custom-blue focus:outline-none"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium mb-2">Estado</label>
+          <input
+            type="text"
+            name="state"
+            value={filters.variant.state}
+            onChange={handleFilterChange}
+            className="w-full px-3 py-2 bg-custom-grey-3 text-custom-black rounded-md border border-custom-grey focus:border-custom-blue focus:outline-none"
+          />
+        </div>
       </div>
-      <div className="mb-4">
-        <label className="block text-sm font-medium mb-2">
-          Código universal
-        </label>
-        <input
-          type="text"
-          name="code"
-          value={filters.code}
-          onChange={handleFilterChange}
-          className="w-full px-3 py-2 mb-4 text-gray-700 bg-gray-200 rounded-md focus:outline-none"
-          style={{ textTransform: "none" }}
-        />
-      </div>
-      <div className="mb-4">
-        <label className="block text-sm font-medium mb-2">Códigos</label>
-        <input
-          type="text"
-          name="productCodes"
-          value={filters.variant.productCodes}
-          onChange={handleFilterChange}
-          className="w-full px-3 py-2 text-gray-700 bg-gray-200 rounded-md focus:outline-none"
-          style={{ textTransform: "none" }}
-        />
-      </div>
-      <div className="mb-4">
-        <label className="block text-sm font-medium mb-2">Sucursal</label>
-        <select
-          name="branchName"
-          value={filters.branchName}
-          onChange={handleFilterChange}
-          className="w-full px-3 py-2 text-gray-700 bg-gray-200 rounded-md focus:outline-none"
-        >
-          <option value="">Todas</option>
-          <option value="Yerba Buena">Yerba Buena</option>
-          <option value="Solar">Solar</option>
-          <option value="Centro">Centro</option>
-        </select>
-      </div>
-      <div className="mb-4">
-        <label className="block text-sm font-medium mb-2">Modelo</label>
-        <input
-          type="text"
-          name="subModel"
-          value={filters.variant.subModel}
-          onChange={handleFilterChange}
-          className="w-full px-3 py-2 text-gray-700 bg-gray-200 rounded-md focus:outline-none"
-        />
-      </div>
-      <div className="mb-4">
-        <label className="block text-sm font-medium mb-2">Color</label>
-        <input
-          type="text"
-          name="color"
-          value={filters.variant.color}
-          onChange={handleFilterChange}
-          className="w-full px-3 py-2 text-gray-700 bg-gray-200 rounded-md focus:outline-none"
-        />
-      </div>
-      <div className="mb-4">
-        <label className="block text-sm font-medium mb-2">Capacidad</label>
-        <input
-          type="text"
-          name="capacity"
-          value={filters.variant.capacity}
-          onChange={handleFilterChange}
-          className="w-full px-3 py-2 text-gray-700 bg-gray-200 rounded-md focus:outline-none"
-        />
-      </div>
-      <div className="mb-4">
-        <label className="block text-sm font-medium mb-2">Stock</label>
-        <input
-          type="text"
-          name="stock"
-          value={filters.variant.stock}
-          onChange={handleFilterChange}
-          className="w-full px-3 py-2 text-gray-700 bg-gray-200 rounded-md focus:outline-none"
-        />
-      </div>
-      <div className="mb-4">
-        <label className="block text-sm font-medium mb-2">Precio</label>
-        <input
-          type="text"
-          name="price"
-          value={filters.variant.price}
-          onChange={handleFilterChange}
-          className="w-full px-3 py-2 text-gray-700 bg-gray-200 rounded-md focus:outline-none"
-        />
-      </div>
-      <div className="mb-4">
-        <label className="block text-sm font-medium mb-2">
-          Capacidad de batería
-        </label>
-        <input
-          type="text"
-          name="batteryCapacity"
-          value={filters.variant.batteryCapacity}
-          onChange={handleFilterChange}
-          className="w-full px-3 py-2 text-gray-700 bg-gray-200 rounded-md focus:outline-none"
-        />
-      </div>
-      <div className="mb-4">
-        <label className="block text-sm font-medium mb-2">Estado</label>
-        <input
-          type="text"
-          name="state"
-          value={filters.variant.state}
-          onChange={handleFilterChange}
-          className="w-full px-3 py-2 text-gray-700 bg-gray-200 rounded-md focus:outline-none"
-        />
-      </div>
-
-      <div className="flex justify-between">
+      <div className="flex justify-between mt-6">
         <button
           type="button"
           onClick={() => {
@@ -187,9 +185,9 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearchChange }) => {
               branchName: "",
             });
           }}
-          className="py-2 px-4 bg-gray-500 hover:bg-gray-700 text-white font-bold rounded-md"
+          className="py-2 px-4 bg-gray-600 hover:bg-gray-700 text-white font-bold rounded-md flex items-center"
         >
-          Restablecer
+          <FaTimes className="mr-2" /> Restablecer
         </button>
       </div>
     </div>

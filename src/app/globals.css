@@ -17,10 +17,6 @@
   }
 }
 
-input {
-  text-transform: capitalize;
-}
-
 body {
   color: rgb(var(--foreground-rgb));
   background-color: #0C0C0C;

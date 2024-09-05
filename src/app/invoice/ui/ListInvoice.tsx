@@ -6,6 +6,13 @@ import { ItemInvoice } from "./ItemInvoice";
 import { downloadExcel } from "@/utils/generateExcel";
 import Cookies from "js-cookie";
 import SearchForm from "./SearchForm";
+import {
+  FaFileExcel,
+  FaCalendarAlt,
+  FaUser,
+  FaSearch,
+  FaFileInvoice,
+} from "react-icons/fa";
 
 const ListInvoice: React.FC = () => {
   const role = Cookies.get("roles");
@@ -47,13 +54,19 @@ const ListInvoice: React.FC = () => {
         {role == "ADMIN" && (
           <button
             onClick={handleDownloadExcel}
-            className="mb-4 p-2 bg-blue-500 text-white rounded-md"
+            className="mb-4 p-2 bg-blue-500 text-white rounded-md flex items-center gap-2"
           >
+            <FaFileExcel />
             Descargar Excel
           </button>
         )}
         {data.content.map((item) => (
-          <ItemInvoice key={item.id} item={item} />
+          <div
+            key={item.id}
+            className="flex items-center gap-2 p-4  text-custom-white rounded-md mb-4"
+          >
+            <ItemInvoice item={item} />
+          </div>
         ))}
         <div className="flex justify-start items-center">
           <Pagination

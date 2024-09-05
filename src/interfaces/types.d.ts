@@ -241,3 +241,20 @@ interface IMEIResultModalProps {
   onClose: () => void;
   onAddToVoucher: (variant: Item) => void;
 }
+
+interface FormData {
+  color: string;
+  batteryCapacity: string;
+  stock: string;
+  price: string;
+  branchName: string;
+  state: string;
+  details: string;
+  capacity: string;
+  subModel: string;
+  productCodes: string;
+  id?: string;
+  countedPrice?: string;
+  priceArs?: string;
+  priceArsCounted?: string;
+}
