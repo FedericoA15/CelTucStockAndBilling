@@ -18,7 +18,7 @@ const ReceiptForm: React.FC = () => {
     coupon: "",
     date: new Date().toISOString().split("T")[0],
     client: "",
-    dni: "",
+    DNI: "",
     phone: "",
     concept: "",
     condition: "",
@@ -203,14 +203,14 @@ const ReceiptForm: React.FC = () => {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <div>
-            <label htmlFor="dni" className="block font-medium">
+            <label htmlFor="DNI" className="block font-medium">
               DNI
             </label>
             <input
               type="text"
-              id="dni"
-              name="dni"
-              value={formData.dni}
+              id="DNI"
+              name="DNI"
+              value={formData.DNI}
               onChange={handleChange}
               className="mt-1 block w-full text-black border-gray-300 rounded-md shadow-sm"
             />
