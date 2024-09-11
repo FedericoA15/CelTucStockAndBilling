@@ -87,6 +87,9 @@ export const ItemComponent: React.FC<{ item: Item }> = ({ item }) => {
                     Estado
                   </th>
                   <th className="px-4 py-2 text-left text-xs font-semibold text-custom-white uppercase tracking-wider">
+                    Color
+                  </th>
+                  <th className="px-4 py-2 text-left text-xs font-semibold text-custom-white uppercase tracking-wider">
                     Descripción
                   </th>
                   <th className="px-4 py-2 text-left text-xs font-semibold text-custom-white uppercase tracking-wider">
@@ -120,6 +123,9 @@ export const ItemComponent: React.FC<{ item: Item }> = ({ item }) => {
                     </td>
                     <td className="px-4 py-2 text-sm text-custom-white">
                       {renderValue(variant.state)}
+                    </td>
+                    <td className="px-4 py-2 text-sm text-custom-white">
+                      {renderValue(variant.color)}
                     </td>
                     <td className="px-4 py-2 text-sm text-custom-white">
                       {renderValue(variant.details)}
