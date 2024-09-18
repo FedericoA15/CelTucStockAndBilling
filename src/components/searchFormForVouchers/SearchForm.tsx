@@ -10,13 +10,18 @@ const SearchForm: React.FC<SearchFormPropsVoucher> = ({
     equipment: "",
   });
 
+  const [searchTriggered, setSearchTriggered] = useState(false);
+
+  useEffect(() => {
+    if (searchTriggered) {
+      onSearchChangeVoucher(filters);
+      setSearchTriggered(false);
+    }
+  }, [searchTriggered, filters, onSearchChangeVoucher]);
+
   const handleFilterChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFilters({ ...filters, [e.target.name]: e.target.value });
   };
-
-  useEffect(() => {
-    onSearchChangeVoucher(filters);
-  }, [filters]);
 
   const handleReset = () => {
     setFilters({
@@ -40,7 +45,7 @@ const SearchForm: React.FC<SearchFormPropsVoucher> = ({
         />
       </div>
       <div className="mb-4">
-        <label className="block text-sm font-medium mb-2">Codigo</label>
+        <label className="block text-sm font-medium mb-2">Código</label>
         <input
           type="text"
           name="code"
@@ -76,6 +81,13 @@ const SearchForm: React.FC<SearchFormPropsVoucher> = ({
           className="py-2 px-4 bg-gray-500 hover:bg-gray-700 text-white font-bold rounded-md"
         >
           Restablecer
+        </button>
+        <button
+          type="button"
+          onClick={() => setSearchTriggered(true)}
+          className="py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-md"
+        >
+          Buscar
         </button>
       </div>
     </div>

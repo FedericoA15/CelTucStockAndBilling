@@ -18,16 +18,14 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearchChange }) => {
     branchName: "",
   });
 
+  const [searchTriggered, setSearchTriggered] = useState(false);
+
   const handleFilterChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     if (name in filters) {
-      if (name === "branchName") {
-        setFilters({ ...filters, [name]: value });
-      } else {
-        setFilters({ ...filters, [name]: value });
-      }
+      setFilters({ ...filters, [name]: value });
     } else {
       setFilters({
         ...filters,
@@ -37,8 +35,11 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearchChange }) => {
   };
 
   useEffect(() => {
-    onSearchChange(filters);
-  }, [filters]);
+    if (searchTriggered) {
+      onSearchChange(filters);
+      setSearchTriggered(false);
+    }
+  }, [searchTriggered, filters, onSearchChange]);
 
   return (
     <div className="text-white p-6 bg-custom-grey rounded-lg shadow-md w-full max-w-md mx-auto">
@@ -184,10 +185,20 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearchChange }) => {
               },
               branchName: "",
             });
+            setSearchTriggered(false);
           }}
           className="py-2 px-4 bg-gray-600 hover:bg-gray-700 text-white font-bold rounded-md flex items-center"
         >
           <FaTimes className="mr-2" /> Restablecer
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setSearchTriggered(true);
+          }}
+          className="py-2 px-4 bg-custom-blue hover:bg-blue-700 text-white font-bold rounded-md flex items-center ml-4"
+        >
+          <FaSearch className="mr-2" /> Buscar
         </button>
       </div>
     </div>
