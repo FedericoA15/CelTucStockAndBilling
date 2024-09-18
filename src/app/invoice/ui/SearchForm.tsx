@@ -10,9 +10,14 @@ const SearchForm: React.FC<SearchFormPropsInvoice> = ({
     shortId: "",
   });
 
+  const [searchTriggered, setSearchTriggered] = useState(false);
+
   useEffect(() => {
-    onSearchChangeInvoice(filters);
-  }, [filters]);
+    if (searchTriggered) {
+      onSearchChangeInvoice(filters);
+      setSearchTriggered(false);
+    }
+  }, [searchTriggered, filters, onSearchChangeInvoice]);
 
   const handleFilterChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFilters({ ...filters, [e.target.name]: e.target.value });
@@ -20,12 +25,6 @@ const SearchForm: React.FC<SearchFormPropsInvoice> = ({
 
   const handleReset = () => {
     setFilters({
-      client: "",
-      seller: "",
-      createdAt: "",
-      shortId: "",
-    });
-    onSearchChangeInvoice({
       client: "",
       seller: "",
       createdAt: "",
@@ -75,6 +74,13 @@ const SearchForm: React.FC<SearchFormPropsInvoice> = ({
           className="py-2 px-4 bg-gray-500 hover:bg-gray-700 text-white font-bold rounded-md"
         >
           Restablecer
+        </button>
+        <button
+          type="button"
+          onClick={() => setSearchTriggered(true)}
+          className="py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-md"
+        >
+          Buscar
         </button>
       </div>
     </form>
