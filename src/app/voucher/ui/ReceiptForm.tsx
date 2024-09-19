@@ -110,7 +110,7 @@ const ReceiptForm: React.FC = () => {
     const branchName =
       branchNames[formData.branch.id] || "Sucursal desconocida";
 
-    // postVoucher(formDataWithType);
+    postVoucher(formDataWithType);
     GeneratePDFByReceipt(formDataWithType, branchName, clientEmail);
   };
 
