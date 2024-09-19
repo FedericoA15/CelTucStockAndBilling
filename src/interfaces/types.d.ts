@@ -258,3 +258,10 @@ interface FormData {
   priceArs?: string;
   priceArsCounted?: string;
 }
+
+interface FormData {
+  email: string;
+  emailContent: string;
+  emailTitle: string;
+  pdfName: string;
+}

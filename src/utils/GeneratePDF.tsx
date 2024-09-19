@@ -76,21 +76,36 @@ export const GeneratePDFByReceipt = async (
     );
 
     if (clientEmail) {
+      const formData = new FormData();
+      formData.append(
+        "pdf",
+        new Blob([pdfBytes], { type: "application/pdf" }),
+        "Comprobante-Compra.pdf"
+      );
       formData.append("email", clientEmail);
       formData.append(
         "emailContent",
         "Gracias por tu compra! Te esperamos pronto CelTuc!"
       );
+      formData.append("emailTitle", "Comprobante de Compra");
       formData.append("pdfName", "Comprobante-Compra.pdf");
 
       try {
-        await axiosInstance.post("/send-pdf-email", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
+        const response = await fetch("/api/sendmail", {
+          method: "POST",
+          body: formData,
         });
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(
+            `HTTP error! status: ${response.status}, message: ${errorText}`
+          );
+        }
+
         toast.success("¡Correo enviado exitosamente con el PDF adjunto!");
       } catch (error) {
+        console.error("Error al enviar el correo:", error);
         toast.error("Error al enviar el correo con el PDF.");
       }
     }
@@ -166,22 +181,37 @@ export const GeneratePDFByRepair = async (data: any, clientEmail?: string) => {
       new Blob([pdfBytes], { type: "application/pdf" }),
       "Comprobante-Reparacion-Garantia.pdf"
     );
-
     if (clientEmail) {
+      const formData = new FormData();
+      formData.append(
+        "pdf",
+        new Blob([pdfBytes], { type: "application/pdf" }),
+        "Comprobante-Reparacion-Garantia.pdf"
+      );
       formData.append("email", clientEmail);
       formData.append(
         "emailContent",
         "Te entregamos acá tu comprobante de service, estaremos en contacto!"
       );
+      formData.append("emailTitle", "Comprobante de Reparacion");
       formData.append("pdfName", "Comprobante-Reparacion-Garantia.pdf");
+
       try {
-        await axiosInstance.post("/send-pdf-email", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
+        const response = await fetch("/api/sendmail", {
+          method: "POST",
+          body: formData,
         });
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(
+            `HTTP error! status: ${response.status}, message: ${errorText}`
+          );
+        }
+
         toast.success("¡Correo enviado exitosamente con el PDF adjunto!");
       } catch (error) {
+        console.error("Error al enviar el correo:", error);
         toast.error("Error al enviar el correo con el PDF.");
       }
     }
@@ -271,22 +301,37 @@ export const GeneratePDFByContract = async (
       new Blob([pdfBytes], { type: "application/pdf" }),
       "Contrato.pdf"
     );
-
     if (clientEmail) {
+      const formData = new FormData();
+      formData.append(
+        "pdf",
+        new Blob([pdfBytes], { type: "application/pdf" }),
+        "Contrato.pdf"
+      );
       formData.append("email", clientEmail);
       formData.append(
         "emailContent",
         "Te entregamos acá tu contrato, muchas gracias de parte de Celtuc"
       );
+      formData.append("emailTitle", "Comprobante de contrato");
       formData.append("pdfName", "Contrato.pdf");
+
       try {
-        await axiosInstance.post("/send-pdf-email", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
+        const response = await fetch("/api/sendmail", {
+          method: "POST",
+          body: formData,
         });
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(
+            `HTTP error! status: ${response.status}, message: ${errorText}`
+          );
+        }
+
         toast.success("¡Correo enviado exitosamente con el PDF adjunto!");
       } catch (error) {
+        console.error("Error al enviar el correo:", error);
         toast.error("Error al enviar el correo con el PDF.");
       }
     }
