@@ -44,6 +44,41 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearchChange }) => {
   return (
     <div className="text-white p-6 bg-custom-grey rounded-lg shadow-md w-full max-w-md mx-auto">
       <h2 className="text-lg font-bold mb-4">Buscar Productos</h2>
+          <div className="flex justify-between mt-6">
+        <button
+          type="button"
+          onClick={() => {
+            setFilters({
+              name: "",
+              code: "",
+              variant: {
+                color: "",
+                capacity: "",
+                stock: "",
+                price: "",
+                batteryCapacity: "",
+                state: "",
+                productCodes: "",
+                subModel: "",
+              },
+              branchName: "",
+            });
+            setSearchTriggered(false);
+          }}
+          className="py-2 px-4 bg-gray-600 hover:bg-gray-700 text-white font-bold rounded-md flex items-center"
+        >
+          <FaTimes className="mr-2" /> Restablecer
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setSearchTriggered(true);
+          }}
+          className="py-2 px-4 bg-custom-blue hover:bg-blue-700 text-white font-bold rounded-md flex items-center ml-4"
+        >
+          <FaSearch className="mr-2" /> Buscar
+        </button>
+      </div>
       <div className="space-y-4">
         <div>
           <label className="block text-sm font-medium mb-2">Nombre</label>
@@ -166,41 +201,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearchChange }) => {
           />
         </div>
       </div>
-      <div className="flex justify-between mt-6">
-        <button
-          type="button"
-          onClick={() => {
-            setFilters({
-              name: "",
-              code: "",
-              variant: {
-                color: "",
-                capacity: "",
-                stock: "",
-                price: "",
-                batteryCapacity: "",
-                state: "",
-                productCodes: "",
-                subModel: "",
-              },
-              branchName: "",
-            });
-            setSearchTriggered(false);
-          }}
-          className="py-2 px-4 bg-gray-600 hover:bg-gray-700 text-white font-bold rounded-md flex items-center"
-        >
-          <FaTimes className="mr-2" /> Restablecer
-        </button>
-        <button
-          type="button"
-          onClick={() => {
-            setSearchTriggered(true);
-          }}
-          className="py-2 px-4 bg-custom-blue hover:bg-blue-700 text-white font-bold rounded-md flex items-center ml-4"
-        >
-          <FaSearch className="mr-2" /> Buscar
-        </button>
-      </div>
+
     </div>
   );
 };
