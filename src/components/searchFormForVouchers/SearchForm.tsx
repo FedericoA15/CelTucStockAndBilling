@@ -32,8 +32,8 @@ const SearchForm: React.FC<SearchFormPropsVoucher> = ({
       code: "",
       createdAt: "",
       equipment: "",
-      untilDate: "", // Reseteo de untilDate
-      seller: "", // Reseteo de seller
+      untilDate: "", 
+      seller: "", 
     });
   };
 
