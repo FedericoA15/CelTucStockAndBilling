@@ -114,26 +114,28 @@ export const RepairDetails: React.FC<PropsId> = ({ id }) => {
         </p>
       </div>
 
-      <button
-        onClick={handleOpenModal}
-        className="mt-6 w-full sm:w-auto bg-custom-blue hover:bg-custom-blue-dark text-custom-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300 transform hover:scale-105"
-      >
-        Editar Voucher
-      </button>
+      <div>
+        <button
+          onClick={handleOpenModal}
+          className="mt-6 w-full sm:w-auto bg-custom-blue hover:bg-custom-blue-dark text-custom-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300 transform hover:scale-105"
+        >
+          Editar Voucher
+        </button>
 
-      {voucher && (
-        <EditVoucherModal
-          isOpen={isModalOpen}
-          onClose={handleCloseModal}
-          voucher={voucher}
-        />
-      )}
-      <button
-        onClick={handleDownloadPDF}
-        className="mt-8 w-full sm:w-auto bg-custom-blue hover:bg-custom-blue-dark text-custom-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300 transform hover:scale-105"
-      >
-        Descargar PDF
-      </button>
+        {voucher && (
+          <EditVoucherModal
+            isOpen={isModalOpen}
+            onClose={handleCloseModal}
+            voucher={voucher}
+          />
+        )}
+        <button
+          onClick={handleDownloadPDF}
+          className="mt-8 w-full sm:w-auto bg-custom-blue hover:bg-custom-blue-dark text-custom-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300 transform hover:scale-105"
+        >
+          Descargar PDF
+        </button>
+      </div>
     </div>
   );
 };

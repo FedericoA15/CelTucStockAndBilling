@@ -59,6 +59,13 @@ const EditVoucherModal: React.FC<{
             onChange={handleChange}
             className="p-2 bg-gray-700 text-white rounded"
           />
+          <input
+            name="slope"
+            placeholder="Dignostico"
+            value={formData.diagnosis}
+            onChange={handleChange}
+            className="p-2 bg-gray-700 text-white rounded"
+          />
           <button
             type="submit"
             className="col-span-2 bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded"

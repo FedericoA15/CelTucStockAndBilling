@@ -58,7 +58,7 @@ const ListComponent: React.FC = () => {
 
   return (
     <div className="flex flex-col sm:flex-row p-4 text-white shadow-lg rounded-lg">
-      <div className="w-full sm:w-1/4 p-4 bg-custom-grey rounded-lg">
+      <div>
         <CartModal />
         <SearchForm onSearchChange={handleSearchChange} />
       </div>
@@ -68,7 +68,7 @@ const ListComponent: React.FC = () => {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="bg-custom-blue hover text-white py-1 px-2 rounded flex items-center"
+              className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded flex items-center"
               onClick={redirectProduct}
             >
               <FaPlus className="mr-2" /> Nuevo Producto{" "}
