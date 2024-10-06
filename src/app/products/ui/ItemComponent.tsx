@@ -57,7 +57,7 @@ export const ItemComponent: React.FC<{ item: Item }> = ({ item }) => {
               Stock: {renderValue(item.generalStock)}
             </span>
             <span className="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm font-semibold">
-              Código: {renderValue(item.code)}
+              Código : {renderValue(item.code)}
             </span>
           </div>
         </div>
