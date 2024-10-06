@@ -229,11 +229,14 @@ interface Voucher {
   model?: string
 }
 
+
 interface FiltersVoucher {
   client: string;
   code: string;
   createdAt: string;
   equipment: string;
+  untilDate: string;
+  seller: string;
 }
 
 interface IMEIResultModalProps {
