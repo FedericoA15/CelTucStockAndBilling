@@ -16,6 +16,8 @@ const ListRepair: React.FC = () => {
     code: "",
     createdAt: "",
     equipment: "",
+    untilDate: "",
+    seller: "",
   });
 
   useEffect(() => {

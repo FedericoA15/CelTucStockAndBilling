@@ -8,6 +8,8 @@ const SearchForm: React.FC<SearchFormPropsVoucher> = ({
     code: "",
     createdAt: "",
     equipment: "",
+    untilDate: "",
+    seller: "",
   });
 
   const [searchTriggered, setSearchTriggered] = useState(false);
@@ -29,6 +31,8 @@ const SearchForm: React.FC<SearchFormPropsVoucher> = ({
       code: "",
       createdAt: "",
       equipment: "",
+      untilDate: "",
+      seller: "",
     });
   };
 

@@ -16,6 +16,8 @@ const ListVoucher: React.FC = () => {
     code: "",
     createdAt: "",
     equipment: "",
+    untilDate: "",
+    seller: "",
   });
 
   useEffect(() => {
