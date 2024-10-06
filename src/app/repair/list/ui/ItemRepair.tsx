@@ -1,3 +1,4 @@
+import { InfoItem } from "@/components/info/InfoItem";
 import Link from "next/link";
 import {
   FaUser,
@@ -7,52 +8,63 @@ import {
   FaDollarSign,
   FaInfoCircle,
   FaTag,
-  FaBatteryFull,
 } from "react-icons/fa";
 
 export const ItemRepair: React.FC<{ item: Voucher }> = ({ item }) => {
   return (
-    <div className="bg-custom-grey-2 text-custom-white p-6 my-4 rounded-lg shadow-lg transition duration-300 transform hover:scale-105 hover:shadow-2xl">
-      <Link
-        className="font-bold text-2xl mb-6 block hover:text-custom-blue transition duration-200"
-        href={`/repair/${item.id}`}
-      >
-        Código del Voucher: {item.id}
-      </Link>
+    <div className="bg-custom-black-2 rounded-xl shadow-lg overflow-hidden transition duration-300 hover:shadow-xl">
+      <div className="p-6">
+        {/* Título y enlace del voucher */}
+        <Link
+          className="text-2xl font-bold text-white-600 hover:text-blue-400 transition duration-200"
+          href={`/repair/${item.id}`}
+        >
+          Código del Voucher: {item.id}
+        </Link>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
-        <p className="flex items-center gap-2 mb-2">
-          <FaUser className="text-custom-blue" />
-          <span className="font-semibold">Cliente:</span> {item.client}
-        </p>
-        <p className="flex items-center gap-2 mb-2">
-          <FaBox className="text-custom-green" />
-          <span className="font-semibold">Equipo:</span> {item.equipment}
-        </p>
-        <p className="flex items-center gap-2 mb-2">
-          <FaCalendarAlt className="text-custom-cream" />
-          <span className="font-semibold">Fecha:</span> {item.date.slice(0, 10)}
-        </p>
-        <p className="flex items-center gap-2 mb-2">
-          <FaComments className="text-custom-grey" />
-          <span className="font-semibold">Diagnóstico:</span> {item.diagnosis}
-        </p>
-        <p className="flex items-center gap-2 mb-2">
-          <FaDollarSign className="text-custom-blue" />
-          <span className="font-semibold">Presupuesto:</span> USD {item.budget}
-        </p>
-        <p className="flex items-center gap-2 mb-2">
-          <FaTag className="text-custom-cream" />
-          <span className="font-semibold">Seña:</span> {item.sign}
-        </p>
-        <p className="flex items-center gap-2 mb-2">
-          <FaInfoCircle className="text-custom-grey" />
-          <span className="font-semibold">Observaciones:</span> {item.obs}
-        </p>
-        <p className="flex items-center gap-2 mb-2">
-          <FaInfoCircle className="text-custom-grey" />
-          <span className="font-semibold">Pendiente:</span> {item.slope}
-        </p>
+        {/* Información del voucher organizada en dos columnas */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+          <InfoItem
+            icon={<FaUser className="text-custom-blue" />}
+            label="Cliente"
+            value={item.client}
+          />
+          <InfoItem
+            icon={<FaBox className="text-custom-green" />}
+            label="Equipo"
+            value={item.equipment}
+          />
+          <InfoItem
+            icon={<FaCalendarAlt className="text-custom-cream" />}
+            label="Fecha"
+            value={item.date.slice(0, 10)}
+          />
+          <InfoItem
+            icon={<FaComments className="text-custom-grey" />}
+            label="Diagnóstico"
+            value={item.diagnosis}
+          />
+          <InfoItem
+            icon={<FaDollarSign className="text-custom-blue" />}
+            label="Presupuesto"
+            value={`USD ${item.budget}`}
+          />
+          <InfoItem
+            icon={<FaTag className="text-custom-cream" />}
+            label="Seña"
+            value={item.sign}
+          />
+          <InfoItem
+            icon={<FaInfoCircle className="text-custom-grey" />}
+            label="Observaciones"
+            value={item.obs}
+          />
+          <InfoItem
+            icon={<FaInfoCircle className="text-custom-grey" />}
+            label="Pendiente"
+            value={item.slope}
+          />
+        </div>
       </div>
     </div>
   );

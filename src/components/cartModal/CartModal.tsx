@@ -29,7 +29,7 @@ const CartModal: React.FC = () => {
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="bg-custom-blue hover:bg-blue-700 text-white py-2 px-4 rounded-lg flex items-center"
+          className="bg-blue-500 hover:bg-blue-700 text-white py-2 my-4 px-4 rounded-lg flex items-center"
           onClick={openModal}
         >
           <FaCartPlus className="mr-2" /> Comprobante

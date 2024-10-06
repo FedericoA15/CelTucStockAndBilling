@@ -1,6 +1,16 @@
 "use client";
+
 import React, { useState } from "react";
 import Link from "next/link";
+import {
+  Menu,
+  X,
+  Smartphone,
+  FileText,
+  FileCheck,
+  FileSignature,
+  PenTool,
+} from "lucide-react";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -9,61 +19,71 @@ export default function Navbar() {
     setIsOpen(!isOpen);
   };
 
+  const navItems = [
+    { href: "/products", label: "Productos", icon: Smartphone },
+    { href: "/invoice", label: "Comprobantes", icon: FileText },
+    { href: "/voucher", label: "Comprobantes de equipos", icon: FileCheck },
+    { href: "/repair", label: "Comprobantes de reparaciones", icon: PenTool },
+    {
+      href: "/contract",
+      label: "Comprobantes de contratos",
+      icon: FileSignature,
+    },
+  ];
+
   return (
-    <nav className="flex items-center justify-between flex-wrap bg-custom-black p-2">
-      <div className="flex items-center flex-shrink-0 text-white mr-6">
-        <span className="font-semibold text-xl tracking-tight">
-          CelTuc Stock
-        </span>
-      </div>
-      <div className="block lg:hidden">
-        <button
-          onClick={toggleMenu}
-          className="flex items-center px-3 py-2 border rounded text-white border-white hover:text-blue-700 hover:border-blue-700"
-        >
-          <svg
-            className="fill-current h-3 w-3"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <title>Menu</title>
-            <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v15z" />
-          </svg>
-        </button>
-      </div>
-      <div
-        className={`${
-          isOpen ? "block" : "hidden"
-        } w-full block flex-grow lg:flex lg:items-center lg:w-auto`}
-      >
-        <div className="text-sm lg:flex-grow">
-          <Link href="/products">
-            <span className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-blue-700 mr-4">
-              Productos
-            </span>
-          </Link>
-          <Link href="/invoice">
-            <span className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-blue-700 mr-4">
-              Comprobantes
-            </span>
-          </Link>
-          <Link href="/voucher">
-            <span className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-blue-700 mr-4">
-              Comprobantes de equipos
-            </span>
-          </Link>
-          <Link href="/repair">
-            <span className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-blue-700 mr-4">
-              Comprobantes de reparaciones
-            </span>
-          </Link>
-          <Link href="/contract">
-            <span className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-blue-700 mr-4">
-              Comprobantes de contratos
-            </span>
-          </Link>
+    <nav className="bg-custom-black-2 shadow-lg">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          <div className="flex items-center">
+            <Link href="/">
+              <span className="flex-shrink-0 text-white font-bold text-xl">
+                CelTuc Stock
+              </span>
+            </Link>
+          </div>
+          <div className="hidden md:block">
+            <div className="ml-10 flex items-baseline space-x-4">
+              {navItems.map((item) => (
+                <Link key={item.href} href={item.href}>
+                  <span className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition duration-300 ease-in-out flex items-center">
+                    <item.icon className="w-4 h-4 mr-2" />
+                    {item.label}
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </div>
+          <div className="md:hidden">
+            <button
+              onClick={toggleMenu}
+              className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+            >
+              <span className="sr-only">Open main menu</span>
+              {isOpen ? (
+                <X className="block h-6 w-6" aria-hidden="true" />
+              ) : (
+                <Menu className="block h-6 w-6" aria-hidden="true" />
+              )}
+            </button>
+          </div>
         </div>
       </div>
+
+      {isOpen && (
+        <div className="md:hidden">
+          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+            {navItems.map((item) => (
+              <Link key={item.href} href={item.href}>
+                <span className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium transition duration-300 ease-in-out flex items-center">
+                  <item.icon className="w-5 h-5 mr-2" />
+                  {item.label}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
     </nav>
   );
 }
