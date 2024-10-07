@@ -233,12 +233,12 @@ interface Voucher {
 interface FiltersVoucher {
   client: string;
   code: string;
-  createdAt: string;
-  untilDate: string;
-  seller: string;
+  createdAt?: string;
   equipment: string;
+  date: string;
+  branchName: string;
   untilDate: string;
-  seller: string;
+  email: string;
 }
 
 interface IMEIResultModalProps {

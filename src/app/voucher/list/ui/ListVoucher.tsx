@@ -15,9 +15,11 @@ const ListVoucher: React.FC = () => {
     client: "",
     code: "",
     createdAt: "",
+    date: "",
+    branchName: "",
     equipment: "",
     untilDate: "",
-    seller: "",
+    email: "",
   });
 
   useEffect(() => {

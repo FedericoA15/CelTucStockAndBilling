@@ -14,10 +14,11 @@ const ListRepair: React.FC = () => {
   const [filters, setFilters] = useState<FiltersVoucher>({
     client: "",
     code: "",
-    createdAt: "",
+    date: "",
+    branchName: "",
     equipment: "",
     untilDate: "",
-    seller: "",
+    email: "",
   });
 
   useEffect(() => {
