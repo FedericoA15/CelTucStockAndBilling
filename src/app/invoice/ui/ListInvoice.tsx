@@ -65,7 +65,11 @@ const ListInvoice: React.FC = () => {
             key={item.id}
             className="flex items-center gap-2 p-4  text-custom-white rounded-md mb-4"
           >
+<<<<<<< HEAD
             <ItemInvoice item={item} key={item.id} />
+=======
+            <ItemInvoice item={item} key={item.id} /> {/* Asegúrate de pasar la key también al componente */}
+>>>>>>> f9840058ff605bf01cfa1b62d7f4ed52abacb03c
           </div>
         ))}
         <div className="flex justify-start items-center">

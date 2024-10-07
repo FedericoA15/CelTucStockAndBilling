@@ -233,7 +233,13 @@ interface Voucher {
 interface FiltersVoucher {
   client: string;
   code: string;
+<<<<<<< HEAD
   createdAt?: string;
+=======
+  createdAt: string;
+  untilDate: string;
+  seller: string;
+>>>>>>> f9840058ff605bf01cfa1b62d7f4ed52abacb03c
   equipment: string;
   date: string;
   branchName: string;

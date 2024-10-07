@@ -11,6 +11,7 @@ const ListContract: React.FC = () => {
     totalPages: 0,
   });
   const [currentPage, setCurrentPage] = useState(0);
+
   const [filters, setFilters] = useState<FiltersVoucher>({
     client: "",
     code: "",
@@ -18,7 +19,11 @@ const ListContract: React.FC = () => {
     branchName: "",
     equipment: "",
     untilDate: "",
+<<<<<<< HEAD
     email: "",
+=======
+    seller: "",
+>>>>>>> f9840058ff605bf01cfa1b62d7f4ed52abacb03c
   });
 
   useEffect(() => {
