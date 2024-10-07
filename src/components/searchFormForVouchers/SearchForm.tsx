@@ -42,13 +42,8 @@ const SearchForm: React.FC<SearchFormPropsVoucher> = ({
       date: "",
       branchName: "",
       equipment: "",
-<<<<<<< HEAD
       untilDate: "",
       email: "",
-=======
-      untilDate: "", 
-      seller: "", 
->>>>>>> f9840058ff605bf01cfa1b62d7f4ed52abacb03c
     });
   };
 

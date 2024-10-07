@@ -18,11 +18,7 @@ const ListRepair: React.FC = () => {
     branchName: "",
     equipment: "",
     untilDate: "",
-<<<<<<< HEAD
     email: "",
-=======
-    seller: "",
->>>>>>> f9840058ff605bf01cfa1b62d7f4ed52abacb03c
   });
 
   useEffect(() => {
