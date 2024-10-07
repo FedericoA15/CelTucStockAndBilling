@@ -47,10 +47,9 @@ const ListInvoice: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row gap-6 p-6  text-custom-white">
-      <div className="lg:w-1/6 w-full p-4 rounded-lg shadow-lg ">
-        <SearchForm onSearchChangeInvoice={handleSearchChange} />
-      </div>
+    <div className="flex flex-col sm:flex-row">
+      <div className="w-3/20"></div>
+      <SearchForm onSearchChangeInvoice={handleSearchChange} />
       <div className="w-full flex flex-col border-solid rounded-md ">
         {role == "ADMIN" && (
           <button
@@ -62,7 +61,12 @@ const ListInvoice: React.FC = () => {
           </button>
         )}
         {data.content.map((item) => (
-          <ItemInvoice item={item} />
+          <div
+            key={item.id}
+            className="flex items-center gap-2 p-4  text-custom-white rounded-md mb-4"
+          >
+            <ItemInvoice item={item} key={item.id} />
+          </div>
         ))}
         <div className="flex justify-start items-center">
           <Pagination

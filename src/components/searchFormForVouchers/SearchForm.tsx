@@ -1,5 +1,13 @@
 import React, { useState, ChangeEvent, useEffect } from "react";
-import { Search, User, Hash, Smartphone, Calendar, X } from "lucide-react";
+import {
+  Search,
+  User,
+  Hash,
+  Smartphone,
+  Calendar,
+  X,
+  Home,
+} from "lucide-react";
 
 const SearchForm: React.FC<SearchFormPropsVoucher> = ({
   onSearchChangeVoucher,
@@ -7,10 +15,11 @@ const SearchForm: React.FC<SearchFormPropsVoucher> = ({
   const [filters, setFilters] = useState<FiltersVoucher>({
     client: "",
     code: "",
-    createdAt: "",
+    date: "",
+    branchName: "",
     equipment: "",
     untilDate: "",
-    seller: "",
+    email: "",
   });
 
   const [searchTriggered, setSearchTriggered] = useState(false);
@@ -30,10 +39,11 @@ const SearchForm: React.FC<SearchFormPropsVoucher> = ({
     setFilters({
       client: "",
       code: "",
-      createdAt: "",
+      date: "",
+      branchName: "",
       equipment: "",
-      untilDate: "", // Reseteo de untilDate
-      seller: "", // Reseteo de seller
+      untilDate: "",
+      email: "",
     });
   };
 
@@ -72,14 +82,33 @@ const SearchForm: React.FC<SearchFormPropsVoucher> = ({
           </label>
           <input
             type="text"
-            id="seller"
-            name="seller"
-            value={filters.seller}
+            id="email"
+            name="email"
+            value={filters.email}
             onChange={handleFilterChange}
             className="w-full pl-10 pr-3 py-2 text-gray-300 bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out"
-            placeholder="Nombre del vendedor"
+            placeholder="Email del vendedor"
           />
           <User className="absolute left-3 top-9 text-gray-400 h-5 w-5" />
+        </div>
+
+        <div className="relative">
+          <label
+            htmlFor="seller"
+            className="block text-sm font-medium mb-1 text-gray-300"
+          >
+            Sucursal
+          </label>
+          <input
+            type="text"
+            id="branchName"
+            name="branchName"
+            value={filters.branchName}
+            onChange={handleFilterChange}
+            className="w-full pl-10 pr-3 py-2 text-gray-300 bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out"
+            placeholder="Sucursal"
+          />
+          <Home className="absolute left-3 top-9 text-gray-400 h-5 w-5" />
         </div>
 
         {/* Campo Fecha */}
@@ -92,9 +121,9 @@ const SearchForm: React.FC<SearchFormPropsVoucher> = ({
           </label>
           <input
             type="date"
-            id="createdAt"
-            name="createdAt"
-            value={filters.createdAt}
+            id="date"
+            name="date"
+            value={filters.date}
             onChange={handleFilterChange}
             className="w-full pl-10 pr-3 py-2 text-gray-300 bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out"
           />
