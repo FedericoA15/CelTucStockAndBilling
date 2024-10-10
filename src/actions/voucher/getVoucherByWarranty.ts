@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 
 export async function getVoucherByWarranty(filters: object, page: number = 0) {
   try {
-    let url = `/voucher/filter?type=Garantia/Reparacion&page=${page}&size=10`;
+    let url = `/voucher/filter?type=Garantia/Reparacion&page=${page}&size=5`;
     
     for (const [key, value] of Object.entries(filters)) {
       if (typeof value === "string" && value.trim() !== "") {

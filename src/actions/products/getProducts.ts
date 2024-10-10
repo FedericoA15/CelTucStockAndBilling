@@ -1,7 +1,7 @@
 import axiosInstance from "@/utils/axiosInstance";
 
 export async function fetchProducts(filters: Filters, page: number = 0) {
-  let url = `/products/filter?page=${page}&size=10`;
+  let url = `/products/filter?page=${page}&size=5`;
   for (const [key, value] of Object.entries(filters)) {
     if (typeof value === 'string' && value.trim() !== '') {
       if (key === 'branchName') {

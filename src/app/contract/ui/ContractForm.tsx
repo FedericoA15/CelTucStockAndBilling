@@ -20,9 +20,18 @@ const ContractForm: React.FC = () => {
   const id = Cookies.get("id");
   const role = Cookies.get("roles");
   const [clientEmail, setClientEmail] = useState("");
+
+  const getCurrentDate = () => {
+    const today = new Date();
+    const day = String(today.getDate()).padStart(2, "0");
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const year = today.getFullYear();
+    return `${day}-${month}-${year}`;
+  };
+
   const [formData, setFormData] = useState({
     coupon: "",
-    date: new Date().toISOString().split("T")[0],
+    date: getCurrentDate(),
     client: "",
     dni: "",
     brand: "",
@@ -159,12 +168,13 @@ const ContractForm: React.FC = () => {
                       <Calendar className="inline-block w-5 h-5 mr-1" /> FECHA
                     </label>
                     <input
-                      type="date"
+                      type="text"
                       id="date"
                       name="date"
                       value={formData.date}
                       onChange={handleChange}
                       className="w-full py-2 px-3 border border-gray-600 bg-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-white transition duration-300 ease-in-out"
+                      readOnly
                     />
                   </div>
                 </div>
