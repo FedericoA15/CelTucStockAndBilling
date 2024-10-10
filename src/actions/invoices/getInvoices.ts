@@ -1,7 +1,7 @@
 import axiosInstance from "@/utils/axiosInstance";
 
 export async function fetchInvoices(filters: FiltersInvoice, page: number = 0) {
-  let url = `/invoice?page=${page}&size=10`;
+  let url = `/invoice?page=${page}&size=5`;
   for (const [key, value] of Object.entries(filters)) {
     if (typeof value === "string" && value.trim() !== "") {
       url += `&${key}=${encodeURIComponent(value)}`;

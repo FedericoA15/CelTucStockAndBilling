@@ -6,7 +6,7 @@ export const ItemContract: React.FC<{ item: Voucher }> = ({ item }) => {
     <div className="bg-custom-black-2 rounded-xl shadow-lg overflow-hidden transition duration-300 hover:shadow-xl">
       <div className="p-6">
         <Link
-          className="font-bold text-2xl mb-4 block text-white-600 hover:text-blue-400 transition duration-200"
+          className="font-bold text-2xl mb-4 block text-white hover:text-blue-400 transition duration-200"
           href={`/contract/${item.id}`}
         >
           Código del Voucher: {item.id}

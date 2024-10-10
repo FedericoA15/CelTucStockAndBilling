@@ -6,6 +6,7 @@ import {
   FaComments,
   FaDollarSign,
   FaUserTie,
+  FaTag,
 } from "react-icons/fa";
 import { ProductVariant } from "./ProductVariant";
 import { InfoItem } from "@/components/info/InfoItem";
@@ -43,6 +44,11 @@ export const ItemVoucher: React.FC<{ item: Voucher }> = ({ item }) => {
             value={item.paymentMethods}
           />
           <InfoItem icon={<FaUserTie />} label="Vendedor" value={item.user} />
+          <InfoItem
+            icon={<FaTag />}
+            label="Precio"
+            value={`USD ${item.total}`}
+          />
         </div>
       </div>
       <div className="bg-custom-black p-6">
