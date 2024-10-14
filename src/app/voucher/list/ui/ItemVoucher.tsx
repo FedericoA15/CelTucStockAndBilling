@@ -11,6 +11,12 @@ import {
 import { ProductVariant } from "./ProductVariant";
 import { InfoItem } from "@/components/info/InfoItem";
 
+const formatDate = (dateString: string) => {
+  // Extraer las partes de la fecha
+  const [year, month, day] = dateString.split("-");
+  // Retornar la fecha en el formato deseado
+  return `${day}-${month}-${year}`;
+};
 export const ItemVoucher: React.FC<{ item: Voucher }> = ({ item }) => {
   return (
     <div className="bg-custom-black-2 rounded-xl shadow-lg overflow-hidden transition duration-300 hover:shadow-xl">
@@ -31,7 +37,7 @@ export const ItemVoucher: React.FC<{ item: Voucher }> = ({ item }) => {
           <InfoItem
             icon={<FaCalendarAlt />}
             label="Fecha"
-            value={item.date.slice(0, 10)}
+            value={formatDate(item.date)}
           />
           <InfoItem
             icon={<FaComments />}

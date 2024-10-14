@@ -131,7 +131,7 @@ const SearchForm: React.FC<SearchFormPropsVoucher> = ({
         </div>
 
         {/* Campo Fecha Hasta (untilDate) */}
-        {/* <div className="relative">
+        <div className="relative">
           <label
             htmlFor="untilDate"
             className="block text-sm font-medium mb-1 text-gray-300"
@@ -147,7 +147,7 @@ const SearchForm: React.FC<SearchFormPropsVoucher> = ({
             className="w-full pl-10 pr-3 py-2 text-gray-300 bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out"
           />
           <Calendar className="absolute left-3 top-9 text-gray-400 h-5 w-5" />
-        </div> */}
+        </div>
       </div>
 
       <div className="flex justify-between mt-6">
