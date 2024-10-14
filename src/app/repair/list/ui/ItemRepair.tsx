@@ -47,7 +47,7 @@ export const ItemRepair: React.FC<{ item: Voucher }> = ({ item }) => {
           <InfoItem
             icon={<FaDollarSign className="text-custom-blue" />}
             label="Presupuesto"
-            value={`USD ${item.budget}`}
+            value={`${item.budget}`}
           />
           <InfoItem
             icon={<FaTag className="text-custom-cream" />}

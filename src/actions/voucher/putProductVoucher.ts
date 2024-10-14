@@ -3,8 +3,9 @@ import { toast } from "react-toastify";
 
 export async function putProductVoucher(data: Voucher, id: string) {
   try {
+    console.log(data);
     await toast.promise(
-      axiosInstance.put(`/voucher/${id}`, data),
+      axiosInstance.put(`/voucher/repair/${id}`, data),
       {
         pending: "Actualizando comprobante...",
         success: "Comprobante actualizado exitosamente",
