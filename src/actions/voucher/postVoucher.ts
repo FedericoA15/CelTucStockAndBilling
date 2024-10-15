@@ -8,7 +8,6 @@ export async function postVoucher(data: any) {
       const [day, month, year] = data.date.split('-');
       data.date = `${year}-${month}-${day}`;
     }
-    console.log(data.date);
     const response = await toast.promise(
       axiosInstance.post("/voucher", data),
       {

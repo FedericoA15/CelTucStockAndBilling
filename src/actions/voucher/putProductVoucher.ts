@@ -3,7 +3,6 @@ import { toast } from "react-toastify";
 
 export async function putProductVoucher(data: Voucher, id: string) {
   try {
-    console.log(data);
     await toast.promise(
       axiosInstance.put(`/voucher/repair/${id}`, data),
       {
