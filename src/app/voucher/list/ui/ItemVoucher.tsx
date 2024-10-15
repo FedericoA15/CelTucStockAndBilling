@@ -12,9 +12,7 @@ import { ProductVariant } from "./ProductVariant";
 import { InfoItem } from "@/components/info/InfoItem";
 
 const formatDate = (dateString: string) => {
-  // Extraer las partes de la fecha
   const [year, month, day] = dateString.split("-");
-  // Retornar la fecha en el formato deseado
   return `${day}-${month}-${year}`;
 };
 export const ItemVoucher: React.FC<{ item: Voucher }> = ({ item }) => {

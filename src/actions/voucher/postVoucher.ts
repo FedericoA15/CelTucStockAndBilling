@@ -4,6 +4,11 @@ import { useRouter } from 'next/navigation';
 // router: ReturnType<typeof useRouter>
 export async function postVoucher(data: any) {
   try {
+    if (data.date) {
+      const [day, month, year] = data.date.split('-');
+      data.date = `${year}-${month}-${day}`;
+    }
+    console.log(data.date);
     const response = await toast.promise(
       axiosInstance.post("/voucher", data),
       {
