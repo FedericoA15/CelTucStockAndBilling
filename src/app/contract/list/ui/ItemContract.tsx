@@ -1,6 +1,11 @@
 import { InfoItem } from "@/components/info/InfoItem";
 import Link from "next/link";
+import { FaCalendarAlt } from "react-icons/fa";
 
+const formatDate = (dateString: string) => {
+  const [year, month, day] = dateString.split("-");
+  return `${day}-${month}-${year}`;
+};
 export const ItemContract: React.FC<{ item: Voucher }> = ({ item }) => {
   return (
     <div className="bg-custom-black-2 rounded-xl shadow-lg overflow-hidden transition duration-300 hover:shadow-xl">
@@ -28,9 +33,9 @@ export const ItemContract: React.FC<{ item: Voucher }> = ({ item }) => {
             value={item.model}
           />
           <InfoItem
-            icon={<span className="text-custom-cream">📅</span>}
+            icon={<FaCalendarAlt />}
             label="Fecha"
-            value={item.date.slice(0, 10)}
+            value={formatDate(item.date)}
           />
           <InfoItem
             icon={<span className="text-custom-grey">🔑</span>}
