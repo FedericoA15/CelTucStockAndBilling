@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import Cookies from "js-cookie";
 import {
   Menu,
   X,
@@ -10,16 +11,31 @@ import {
   FileCheck,
   FileSignature,
   PenTool,
+  LogOut,
 } from "lucide-react";
 
-export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
+// Define la estructura de los elementos del menú
+interface NavItem {
+  href: string;
+  label: string;
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+}
 
-  const toggleMenu = () => {
+export default function Navbar(): JSX.Element {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const toggleMenu = (): void => {
     setIsOpen(!isOpen);
   };
 
-  const navItems = [
+  const handleLogout = (): void => {
+    Object.keys(Cookies.get()).forEach((cookieName) =>
+      Cookies.remove(cookieName)
+    );
+    window.location.href = "/";
+  };
+
+  const navItems: NavItem[] = [
     { href: "/products", label: "Productos", icon: Smartphone },
     { href: "/invoice", label: "Comprobantes", icon: FileText },
     { href: "/voucher", label: "Comprobantes de equipos", icon: FileCheck },
@@ -42,7 +58,7 @@ export default function Navbar() {
               </span>
             </Link>
           </div>
-          <div className="hidden md:block">
+          <div className="hidden md:flex items-center">
             <div className="ml-10 flex items-baseline space-x-4">
               {navItems.map((item) => (
                 <Link key={item.href} href={item.href}>
@@ -52,6 +68,13 @@ export default function Navbar() {
                   </span>
                 </Link>
               ))}
+              <button
+                onClick={handleLogout}
+                className="text-gray-300 hover:bg-red-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition duration-300 ease-in-out flex items-center"
+              >
+                <LogOut className="w-4 h-4 mr-2" />
+                Cerrar sesión
+              </button>
             </div>
           </div>
           <div className="md:hidden">
@@ -81,6 +104,13 @@ export default function Navbar() {
                 </span>
               </Link>
             ))}
+            <button
+              onClick={handleLogout}
+              className="text-gray-300 hover:bg-red-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium transition duration-300 ease-in-out flex items-center"
+            >
+              <LogOut className="w-5 h-5 mr-2" />
+              Cerrar sesión
+            </button>
           </div>
         </div>
       )}

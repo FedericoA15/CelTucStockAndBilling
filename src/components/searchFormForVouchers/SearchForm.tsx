@@ -7,6 +7,7 @@ import {
   Calendar,
   X,
   Home,
+  Phone,
 } from "lucide-react";
 
 const SearchForm: React.FC<SearchFormPropsVoucher> = ({
@@ -16,6 +17,7 @@ const SearchForm: React.FC<SearchFormPropsVoucher> = ({
     client: "",
     code: "",
     date: "",
+    concept: "",
     branchName: "",
     equipment: "",
     untilDate: "",
@@ -39,6 +41,7 @@ const SearchForm: React.FC<SearchFormPropsVoucher> = ({
     setFilters({
       client: "",
       code: "",
+      concept: "",
       date: "",
       branchName: "",
       equipment: "",
@@ -109,6 +112,25 @@ const SearchForm: React.FC<SearchFormPropsVoucher> = ({
             placeholder="Sucursal"
           />
           <Home className="absolute left-3 top-9 text-gray-400 h-5 w-5" />
+        </div>
+
+        <div className="relative">
+          <label
+            htmlFor="seller"
+            className="block text-sm font-medium mb-1 text-gray-300"
+          >
+            Equipo
+          </label>
+          <input
+            type="text"
+            id="concept"
+            name="concept"
+            value={filters.concept}
+            onChange={handleFilterChange}
+            className="w-full pl-10 pr-3 py-2 text-gray-300 bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out"
+            placeholder="Equipo"
+          />
+          <Phone className="absolute left-3 top-9 text-gray-400 h-5 w-5" />
         </div>
 
         {/* Campo Fecha */}

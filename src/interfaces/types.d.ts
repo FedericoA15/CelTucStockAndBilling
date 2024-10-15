@@ -234,6 +234,7 @@ interface FiltersVoucher {
   client: string;
   code: string;
   createdAt?: string;
+  concept?: string;
   equipment: string;
   date: string;
   branchName: string;

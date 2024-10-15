@@ -17,6 +17,7 @@ const ListVoucher: React.FC = () => {
     createdAt: "",
     date: "",
     branchName: "",
+    concept: "",
     equipment: "",
     untilDate: "",
     email: "",
