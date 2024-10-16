@@ -234,6 +234,7 @@ interface FiltersVoucher {
   client: string;
   code: string;
   createdAt?: string;
+  concept?: string;
   equipment: string;
   date: string;
   branchName: string;
@@ -269,4 +270,12 @@ interface FormData {
   emailContent: string;
   emailTitle: string;
   pdfName: string;
+}
+
+interface TimeSheetProps {
+  onSubmit: (data: {
+    startTime: string;
+    endTime: string;
+    name: string;
+  }) => void;
 }
