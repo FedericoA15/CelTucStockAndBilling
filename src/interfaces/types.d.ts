@@ -271,3 +271,11 @@ interface FormData {
   emailTitle: string;
   pdfName: string;
 }
+
+interface TimeSheetProps {
+  onSubmit: (data: {
+    startTime: string;
+    endTime: string;
+    name: string;
+  }) => void;
+}

@@ -21,7 +21,7 @@ const ListComponent: React.FC = () => {
     variant: {
       color: "",
       capacity: "",
-      stock: "",
+      stock: "true",
       price: "",
       batteryCapacity: "",
       state: "",

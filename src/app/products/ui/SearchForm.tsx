@@ -1,22 +1,6 @@
 import React, { useState, ChangeEvent, useEffect } from "react";
 import { FaSearch, FaTimes, FaChevronDown, FaChevronUp } from "react-icons/fa";
 
-interface Filters {
-  name: string;
-  code: string;
-  variant: {
-    color: string;
-    capacity: string;
-    stock: string;
-    price: string;
-    batteryCapacity: string;
-    state: string;
-    productCodes: string;
-    subModel: string;
-  };
-  branchName: string;
-}
-
 interface SearchFormProps {
   onSearchChange: (filters: Filters) => void;
 }
@@ -28,7 +12,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearchChange }) => {
     variant: {
       color: "",
       capacity: "",
-      stock: "",
+      stock: "true",
       price: "",
       batteryCapacity: "",
       state: "",
@@ -40,6 +24,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearchChange }) => {
 
   const [searchTriggered, setSearchTriggered] = useState(false);
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
+  const [stockFilterActive, setStockFilterActive] = useState(true);
 
   const handleFilterChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -57,10 +42,18 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearchChange }) => {
 
   useEffect(() => {
     if (searchTriggered) {
-      onSearchChange(filters);
+      const updatedFilters = {
+        ...filters,
+        variant: {
+          ...filters.variant,
+          stock: stockFilterActive.toString(),
+        },
+      };
+
+      onSearchChange(updatedFilters);
       setSearchTriggered(false);
     }
-  }, [searchTriggered, filters, onSearchChange]);
+  }, [searchTriggered, filters, onSearchChange, stockFilterActive]);
 
   const resetFilters = () => {
     setFilters({
@@ -69,7 +62,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearchChange }) => {
       variant: {
         color: "",
         capacity: "",
-        stock: "",
+        stock: "true",
         price: "",
         batteryCapacity: "",
         state: "",
@@ -78,7 +71,12 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearchChange }) => {
       },
       branchName: "",
     });
+    setStockFilterActive(true);
     setSearchTriggered(true);
+  };
+
+  const toggleStockFilter = () => {
+    setStockFilterActive(!stockFilterActive);
   };
 
   return (
@@ -155,6 +153,18 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearchChange }) => {
 
         <button
           type="button"
+          onClick={toggleStockFilter}
+          className={`w-full py-2 px-4 ${
+            stockFilterActive ? "bg-green-600" : "bg-gray-700"
+          } hover:bg-blue-600 text-gray-100 font-medium rounded-md flex items-center justify-center transition duration-300 ease-in-out`}
+        >
+          {stockFilterActive
+            ? "Filtro de stock activado"
+            : "Filtro de stock desactivado"}
+        </button>
+
+        <button
+          type="button"
           onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
           className="w-full py-2 px-4 bg-gray-700 hover:bg-gray-600 text-gray-100 font-medium rounded-md flex items-center justify-center transition duration-300 ease-in-out"
         >
@@ -218,10 +228,23 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearchChange }) => {
             </div>
             <div>
               <label className="block text-sm font-medium mb-1">Estado</label>
-              <input
-                type="text"
+              <select
                 name="state"
                 value={filters.variant.state}
+                onChange={handleFilterChange}
+                className="w-full px-3 py-2 bg-gray-700 text-gray-100 rounded-md border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 ease-in-out"
+              >
+                <option value="">Todos</option>
+                <option value="Nuevo">Nuevo</option>
+                <option value="Usado">Usado</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1">Precio</label>
+              <input
+                type="text"
+                name="price"
+                value={filters.variant.price}
                 onChange={handleFilterChange}
                 className="w-full px-3 py-2 bg-gray-700 text-gray-100 rounded-md border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 ease-in-out"
               />
