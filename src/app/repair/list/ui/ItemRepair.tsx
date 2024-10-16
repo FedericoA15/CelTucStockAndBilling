@@ -57,6 +57,11 @@ export const ItemRepair: React.FC<{ item: Voucher }> = ({ item }) => {
             value={item.sign}
           />
           <InfoItem
+            icon={<FaUser className="text-custom-blue" />}
+            label="Recepcion"
+            value={item.reception}
+          />
+          <InfoItem
             icon={<FaInfoCircle className="text-custom-grey" />}
             label="Observaciones"
             value={item.obs}
