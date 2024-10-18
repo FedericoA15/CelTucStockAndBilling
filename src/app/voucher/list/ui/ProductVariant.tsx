@@ -15,25 +15,24 @@ export const ProductVariant: React.FC<{ variant: any }> = ({ variant }) => (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
       <InfoItem
         icon={<FaBatteryFull />}
-        label="Batería"
+        label="Batería: "
         value={variant.batteryCapacity}
       />
       <InfoItem
-        icon={<FaTag />}
-        label="Precio"
-        value={`USD ${variant.price}`}
-      />
-      <InfoItem
         icon={<MdSdStorage />}
-        label="Capacidad"
+        label="Capacidad: "
         value={variant.capacity}
       />
       <InfoItem
         icon={<FaInfoCircle />}
-        label="Detalles"
+        label="Detalles: "
         value={variant.details}
       />
-      <InfoItem icon={<FaCheckCircle />} label="Estado" value={variant.state} />
+      <InfoItem
+        icon={<FaCheckCircle />}
+        label="Estado: "
+        value={variant.state}
+      />
     </div>
   </div>
 );

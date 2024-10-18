@@ -68,8 +68,9 @@ export const ContractDetails: React.FC<PropsId> = ({ id }) => {
           <span className="font-semibold">DNI:</span> {voucher.DNI}
         </p>
         <p className="flex items-center gap-2">
-          <FaPhone className="text-custom-green" />
-          <span className="font-semibold">TEL:</span> {voucher.phone}
+          <FaUser className="text-custom-cream" />
+          <span className="font-semibold">DNI Comprador:</span>{" "}
+          {voucher.dniBuyer}
         </p>
         <p className="flex items-center gap-2">
           <FaMoneyBillWave className="text-custom-blue" />
@@ -77,11 +78,7 @@ export const ContractDetails: React.FC<PropsId> = ({ id }) => {
         </p>
         <p className="flex items-center gap-2">
           <FaMobileAlt className="text-custom-cream" />
-          <span className="font-semibold">Equipo:</span> {voucher.equipment}
-        </p>
-        <p className="flex items-center gap-2">
-          <FaTag className="text-custom-blue" />
-          <span className="font-semibold">Condición:</span> {voucher.condition}
+          <span className="font-semibold">Equipo:</span> {voucher.model}
         </p>
         <p className="flex items-center gap-2">
           <FaTag className="text-custom-cream" />
@@ -94,6 +91,9 @@ export const ContractDetails: React.FC<PropsId> = ({ id }) => {
         <p className="flex items-center gap-2">
           <FaTag className="text-custom-blue" />
           <span className="font-semibold">IMEI 2:</span> {voucher.imei2}
+        </p>
+        <p className="flex items-center gap-2">
+          <span className="font-semibold"> 🏷️Marca:</span> {voucher.brand}
         </p>
         <p className="flex items-center gap-2">
           <FaTag className="text-custom-blue" />
