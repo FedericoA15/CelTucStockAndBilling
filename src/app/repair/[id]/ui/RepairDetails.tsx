@@ -67,6 +67,10 @@ export const RepairDetails: React.FC<PropsId> = ({ id }) => {
           <span className="font-semibold">Cupon:</span> {voucher.coupon}
         </p>
         <p className="flex items-center gap-2">
+          <FaUser className="text-custom-cream" />
+          <span className="font-semibold">Recepcion:</span> {voucher.reception}
+        </p>
+        <p className="flex items-center gap-2">
           <FaCalendarAlt className="text-custom-blue" />
           <span className="font-semibold">Fecha:</span>{" "}
           {voucher.date.slice(0, 10)}
@@ -89,15 +93,15 @@ export const RepairDetails: React.FC<PropsId> = ({ id }) => {
         </p>
         <p className="flex items-center gap-2">
           <FaMoneyBillWave className="text-custom-green" />
-          <span className="font-semibold">Presupuesto:</span> {voucher.budget}
+          <span className="font-semibold">Presupuesto: $</span> {voucher.budget}
         </p>
         <p className="flex items-center gap-2">
           <FaDollarSign className="text-custom-cream" />
-          <span className="font-semibold">Seña:</span> {voucher.sign}
+          <span className="font-semibold">Seña: $</span> {voucher.sign}
         </p>
         <p className="flex items-center gap-2">
           <FaTag className="text-custom-blue" />
-          <span className="font-semibold">Pendiente:</span> {voucher.slope}
+          <span className="font-semibold">Pendiente: $</span> {voucher.slope}
         </p>
         <p className="flex items-center gap-2">
           <FaCode className="text-custom-blue" />

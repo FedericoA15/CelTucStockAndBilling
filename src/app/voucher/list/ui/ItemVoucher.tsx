@@ -29,28 +29,28 @@ export const ItemVoucher: React.FC<{ item: Voucher }> = ({ item }) => {
           <InfoItem icon={<FaUser />} label="Cliente" value={item.client} />
           <InfoItem
             icon={<FaMobileAlt />}
-            label="Equipo"
+            label="Equipo: "
             value={item.concept}
           />
           <InfoItem
             icon={<FaCalendarAlt />}
-            label="Fecha"
+            label="Fecha: "
             value={formatDate(item.date)}
           />
           <InfoItem
             icon={<FaComments />}
-            label="Observaciones"
+            label="Observaciones: "
             value={item.obs}
           />
           <InfoItem
             icon={<FaDollarSign />}
-            label="Método de Pago"
+            label="Método de Pago: "
             value={item.paymentMethods}
           />
           <InfoItem icon={<FaUserTie />} label="Vendedor" value={item.user} />
           <InfoItem
             icon={<FaTag />}
-            label="Precio"
+            label="Precio: "
             value={`USD ${item.total}`}
           />
         </div>

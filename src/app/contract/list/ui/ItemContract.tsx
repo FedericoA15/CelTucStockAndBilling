@@ -8,7 +8,7 @@ const formatDate = (dateString: string) => {
 };
 export const ItemContract: React.FC<{ item: Voucher }> = ({ item }) => {
   return (
-    <div className="bg-custom-black-2 rounded-xl shadow-lg overflow-hidden transition duration-300 hover:shadow-xl">
+    <div className="bg-custom-black-2 rounded-xl shadow-lg overflow-hidden my-3 transition duration-300 hover:shadow-xl">
       <div className="p-6">
         <Link
           className="font-bold text-2xl mb-4 block text-white hover:text-blue-400 transition duration-200"
@@ -19,47 +19,47 @@ export const ItemContract: React.FC<{ item: Voucher }> = ({ item }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
           <InfoItem
             icon={<span className="text-custom-blue">👤</span>}
-            label="Cliente"
+            label="Cliente: "
             value={item.client}
           />
           <InfoItem
             icon={<span className="text-custom-green">🏷️</span>}
-            label="Marca"
+            label="Marca: "
             value={item.brand}
           />
           <InfoItem
             icon={<span className="text-custom-cream">📱</span>}
-            label="Modelo"
+            label="Modelo: "
             value={item.model}
           />
           <InfoItem
             icon={<FaCalendarAlt />}
-            label="Fecha"
+            label="Fecha: "
             value={formatDate(item.date)}
           />
           <InfoItem
             icon={<span className="text-custom-grey">🔑</span>}
-            label="Imei"
+            label="Imei: "
             value={item.imei}
           />
           <InfoItem
             icon={<span className="text-custom-grey">🔑</span>}
-            label="Imei 2"
+            label="Imei 2: "
             value={item.imei2}
           />
           <InfoItem
             icon={<span className="text-custom-blue">👨‍💼</span>}
-            label="Vendedor"
+            label="Vendedor: "
             value={item.reception}
           />
           <InfoItem
             icon={<span className="text-custom-grey">📝</span>}
-            label="Observaciones"
+            label="Observaciones: "
             value={item.obs}
           />
           <InfoItem
             icon={<span className="text-custom-blue">💰</span>}
-            label="Total"
+            label="Total: "
             value={`USD ${item.total}`}
           />
         </div>
