@@ -28,47 +28,47 @@ export const ItemRepair: React.FC<{ item: Voucher }> = ({ item }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
           <InfoItem
             icon={<FaUser className="text-custom-blue" />}
-            label="Cliente"
+            label="Cliente: "
             value={item.client}
           />
           <InfoItem
             icon={<FaBox className="text-custom-green" />}
-            label="Equipo"
+            label="Equipo: "
             value={item.equipment}
           />
           <InfoItem
             icon={<FaCalendarAlt />}
-            label="Fecha"
+            label="Fecha: "
             value={formatDate(item.date)}
           />
           <InfoItem
             icon={<FaComments className="text-custom-grey" />}
-            label="Diagnóstico"
+            label="Diagnóstico: "
             value={item.diagnosis}
           />
           <InfoItem
             icon={<FaDollarSign className="text-custom-blue" />}
-            label="Presupuesto"
+            label="Presupuesto: $"
             value={`${item.budget}`}
           />
           <InfoItem
             icon={<FaTag className="text-custom-cream" />}
-            label="Seña"
+            label="Seña: $"
             value={item.sign}
           />
           <InfoItem
             icon={<FaUser className="text-custom-blue" />}
-            label="Recepcion"
+            label="Recepcion:"
             value={item.reception}
           />
           <InfoItem
             icon={<FaInfoCircle className="text-custom-grey" />}
-            label="Observaciones"
+            label="Observaciones:"
             value={item.obs}
           />
           <InfoItem
             icon={<FaInfoCircle className="text-custom-grey" />}
-            label="Pendiente"
+            label="Pendiente: $"
             value={item.slope}
           />
         </div>

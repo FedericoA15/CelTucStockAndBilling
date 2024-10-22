@@ -43,7 +43,7 @@ const ReceiptForm: React.FC = () => {
     coupon: "",
     date: getCurrentDate(),
     client: "",
-    DNI: "",
+    dni: "",
     phone: "",
     concept: "",
     condition: "",
@@ -260,9 +260,9 @@ const ReceiptForm: React.FC = () => {
                   </label>
                   <input
                     type="text"
-                    id="DNI"
-                    name="DNI"
-                    value={formData.DNI}
+                    id="dni"
+                    name="dni"
+                    value={formData.dni}
                     onChange={handleChange}
                     className="w-full py-2 px-3 border border-gray-600 bg-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-white transition duration-300 ease-in-out"
                     placeholder="Número de DNI"
