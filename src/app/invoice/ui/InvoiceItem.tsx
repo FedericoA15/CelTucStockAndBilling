@@ -6,24 +6,18 @@ export const InvoiceItem: React.FC<{ item: any; index: number }> = ({
   item,
   index,
 }) => (
-  <div className="bg-custom-grey p-4 rounded-lg shadow">
-    <h4 className="font-semibold text-lg mb-2 text-white-600">
-      <FaBox className="inline mr-2 text-custom-green" />
-      Item {index + 1}
-    </h4>
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
-      <InfoItem icon={<FaTag />} label="Producto" value={item.productName} />
-      <InfoItem icon={<FaTag />} label="Cantidad" value={item.quantity} />
-      <InfoItem
-        icon={<FaDollarSign />}
-        label="Precio"
-        value={`USD ${item.price.toFixed(2)}`}
-      />
-      <InfoItem
-        icon={<MdSdStorage />}
-        label="Precio ARS"
-        value={`$ ${item.productVariant.priceArs.toFixed(2)}`}
-      />
+  <div className="grid grid-cols-1 sm:grid-cols-4 p-4 bg-white hover:bg-gray-50">
+    <div className="col-span-1 font-semibold text-gray-700">
+      Item {index + 1}: {item.productName}
+    </div>
+    <div className="col-span-1 text-gray-600 border-l border-gray-300 pl-4">
+      Cantidad: {item.quantity}
+    </div>
+    <div className="col-span-1 text-gray-600 border-l border-gray-300 pl-4">
+      USD {item.price.toFixed(2)}
+    </div>
+    <div className="col-span-1 text-gray-600 border-l border-gray-300 pl-4">
+      ARS ${item.productVariant.priceArs.toFixed(2)}
     </div>
   </div>
 );

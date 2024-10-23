@@ -6,13 +6,7 @@ import { ItemInvoice } from "./ItemInvoice";
 import { downloadExcel } from "@/utils/generateExcel";
 import Cookies from "js-cookie";
 import SearchForm from "./SearchForm";
-import {
-  FaFileExcel,
-  FaCalendarAlt,
-  FaUser,
-  FaSearch,
-  FaFileInvoice,
-} from "react-icons/fa";
+import { FaFileExcel } from "react-icons/fa";
 
 const ListInvoice: React.FC = () => {
   const role = Cookies.get("roles");
@@ -50,25 +44,27 @@ const ListInvoice: React.FC = () => {
     <div className="flex flex-col sm:flex-row">
       <div className="w-3/20"></div>
       <SearchForm onSearchChangeInvoice={handleSearchChange} />
-      <div className="w-full flex flex-col border-solid rounded-md ">
-        {role == "ADMIN" && (
-          <button
-            onClick={handleDownloadExcel}
-            className="mb-4 p-2 bg-blue-500 text-white rounded-md flex items-center gap-2"
-          >
-            <FaFileExcel />
-            Descargar Excel
-          </button>
+      <div className="w-full flex flex-col border-solid rounded-md">
+        {role === "ADMIN" && (
+          <div className="mb-4 flex justify-between">
+            <button
+              onClick={handleDownloadExcel}
+              className="p-2 bg-blue-500 text-white rounded-md flex items-center gap-2"
+            >
+              <FaFileExcel />
+              Descargar Excel
+            </button>
+          </div>
         )}
         {data.content.map((item) => (
           <div
             key={item.id}
-            className="flex items-center gap-2 p-4  text-custom-white rounded-md mb-4"
+            className="flex items-center gap-2 p-4 text-custom-white rounded-md mb-4"
           >
             <ItemInvoice item={item} key={item.id} />
           </div>
         ))}
-        <div className="flex justify-start items-center">
+        <div className="flex justify-center items-center mb-4">
           <Pagination
             totalPages={data.totalPages}
             currentPage={currentPage}

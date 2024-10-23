@@ -1,54 +1,150 @@
-import Afip from '@afipsdk/afip.js';
+// import { NextResponse } from 'next/server';
+// import { soap } from 'soap';
+// import * as fs from 'fs';
+// import * as path from 'path';
 
-export async function POST(req: Request) {
-  try {
-    const { body } = await req.json();
+// const WSAA_WSDL = 'https://wsaahomo.afip.gov.ar/ws/services/LoginCms?wsdl';
+// const WSFE_WSDL = 'https://wsfehomo.afip.gov.ar/wsfev1/service.asmx?WSDL';
+// const CUIT = '20111111112'; // CUIT de prueba
+// const PRIVATE_KEY = fs.readFileSync(path.resolve('certificates/private_key.key'), 'utf8');
+// const CERT = fs.readFileSync(path.resolve('certificates/certificate.crt'), 'utf8');
+
+// // Función para generar el TRA (Ticket de Requerimiento de Acceso)
+// function generateTRA() {
+//     const date = new Date();
+//     const generation = new Date(date.getTime() - (5 * 60000));
+//     const expiration = new Date(date.getTime() + (24 * 60 * 60 * 1000));
     
-    const afip = new Afip({
-      CUIT: process.env.AFIP_CUIT_PRUEBA,
-      production: false, 
-      cert: process.env.AFIP_CERT_PRUEBA,
-      key: process.env.AFIP_KEY_PRUEBA,
-    });
+//     return `<?xml version="1.0" encoding="UTF-8"?>
+//     <loginTicketRequest version="1.0">
+//         <header>
+//             <uniqueId>${Math.floor(date.getTime() / 1000)}</uniqueId>
+//             <generationTime>${generation.toISOString()}</generationTime>
+//             <expirationTime>${expiration.toISOString()}</expirationTime>
+//         </header>
+//         <service>wsfe</service>
+//     </loginTicketRequest>`;
+// }
 
-    const data = {
-      'CantReg'    : 1,          // Cantidad de comprobantes a registrar (en este caso, solo uno).
-      'PtoVta'     : 1,          // Punto de venta desde el que se emite la factura (puede ser 1 u otro número que hayas configurado en AFIP).
-      'CbteTipo'   : 6,          // Tipo de comprobante (Ej: 6 para Factura B. Otros tipos incluyen Factura A, etc.).
-      'Concepto'   : 1,          // Tipo de concepto: 1 para productos, 2 para servicios, 3 para productos y servicios.
-      'DocTipo'    : 99,         // Tipo de documento del receptor: 99 para consumidor final. Otros pueden ser DNI, CUIT, etc.
-      'DocNro'     : 0,          // Número de documento del receptor. Para consumidor final, se coloca 0.
-      'CbteDesde'  : 1,          // Número de comprobante desde (en este caso, es una factura individual, por lo que es 1).
-      'CbteHasta'  : 1,          // Número de comprobante hasta (igualmente, es 1 si es un único comprobante).
-      'CbteFch'    : parseInt((new Date()).toISOString().slice(0,10).replace(/-/g, '')), 
-                                    // Fecha del comprobante en formato AAAAMMDD. Aquí se genera automáticamente la fecha actual.
-      'ImpTotal'   : 121,        // Importe total de la factura (incluyendo impuestos).
-      'ImpTotConc' : 0,          // Importe no gravado (si existe alguna parte del importe que no esté alcanzada por impuestos).
-      'ImpNeto'    : 100,        // Importe neto gravado, es decir, el valor sin incluir IVA.
-      'ImpOpEx'    : 0,          // Importe exento de impuestos (si aplica).
-      'ImpIVA'     : 21,         // Importe del IVA total. Se calcula a partir del `ImpNeto` (en este caso, 21% de 100).
-      'ImpTrib'    : 0,          // Importe de otros tributos (si existen otros impuestos aparte del IVA).
-      'MonId'      : 'PES',      // Identificador de la moneda utilizada. 'PES' para pesos argentinos.
-      'MonCotiz'   : 1,          // Cotización de la moneda, en este caso, 1 porque es en pesos argentinos.
-      'Iva'        : [           // Detalle de la estructura del IVA aplicado.
-        {
-          'Id'       : 5,        // Código del tipo de IVA: 5 representa el 21% (otros códigos incluyen 4 para 10.5%, etc.).
-          'BaseImp'  : 100,      // Base imponible para el cálculo del IVA, es decir, el importe neto gravado (en este caso, 100).
-          'Importe'  : 21        // Importe correspondiente al IVA, calculado como el 21% del `BaseImp`.
-        }
-      ]
-    };
+// // Función para firmar el TRA
+// async function signTRA(tra: any) {
+//     // Aquí iría la lógica de firma usando OpenSSL
+//     // Por simplicidad, este es un ejemplo básico
+//     return tra; // En realidad aquí deberías usar una biblioteca como node-forge
+// }
+
+// // Función para obtener el token y sign
+// async function getTokenAndSign() {
+//     const tra = generateTRA();
+//     const signedTRA = await signTRA(tra);
     
-    const res = await afip.ElectronicBilling.createVoucher(data);
+//     const client = await soap.createClient(WSAA_WSDL);
+//     const result = await client.loginCms({ in0: signedTRA });
+    
+//     const loginCmsReturn = result.loginCmsReturn;
+//     return {
+//         token: loginCmsReturn.token,
+//         sign: loginCmsReturn.sign
+//     };
+// }
 
-    return new Response(JSON.stringify(res), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' },
-    });
-  } catch (error: any) {
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
-  }
-}
+// // Función principal para generar la factura
+// export async function POST(req: Request) {
+//     try {
+//         // 1. Obtener credenciales
+//         const { token, sign } = await getTokenAndSign();
+        
+//         // 2. Crear cliente WSFE
+//         const client = await soap.createClient(WSFE_WSDL);
+        
+//         // 3. Obtener último número de comprobante
+//         const lastVoucherResponse = await client.FECompUltimoAutorizado({
+//             Auth: {
+//                 Token: token,
+//                 Sign: sign,
+//                 Cuit: CUIT
+//             },
+//             PtoVta: 1,
+//             CbteTipo: 1 // 1 = Factura A
+//         });
+        
+//         const lastNumber = lastVoucherResponse.FECompUltimoAutorizadoResult.CbteNro;
+//         const nextNumber = lastNumber + 1;
+
+//         // 4. Datos de la factura
+//         const invoiceData = {
+//             FeCabReq: {
+//                 CantReg: 1,
+//                 PtoVta: 1,
+//                 CbteTipo: 1
+//             },
+//             FeDetReq: {
+//                 FECAEDetRequest: [{
+//                     Concepto: 1, // Productos
+//                     DocTipo: 80, // CUIT
+//                     DocNro: '20222222223', // CUIT del cliente
+//                     CbteDesde: nextNumber,
+//                     CbteHasta: nextNumber,
+//                     CbteFch: new Date().toISOString().split('T')[0].replace(/-/g, ''),
+//                     ImpTotal: 1000.00,
+//                     ImpTotConc: 0,
+//                     ImpNeto: 826.45,
+//                     ImpOpEx: 0,
+//                     ImpIVA: 173.55,
+//                     ImpTrib: 0,
+//                     MonId: 'PES',
+//                     MonCotiz: 1,
+//                     Iva: [{
+//                         Id: 5, // 21%
+//                         BaseImp: 826.45,
+//                         Importe: 173.55
+//                     }]
+//                 }]
+//             }
+//         };
+
+//         // 5. Solicitar CAE
+//         const result = await client.FECAESolicitar({
+//             Auth: {
+//                 Token: token,
+//                 Sign: sign,
+//                 Cuit: CUIT
+//             },
+//             FeReq: invoiceData
+//         });
+
+//         // 6. Procesar respuesta
+//         const response = result.FECAESolicitarResult.FeDetResp.FECAEDetResponse[0];
+        
+//         if (response.Resultado === 'A') {
+//             return NextResponse.json({
+//                 success: true,
+//                 data: {
+//                     cae: response.CAE,
+//                     numeroComprobante: nextNumber,
+//                     vencimientoCAE: response.CAEFchVto,
+//                     resultado: response.Resultado
+//                 }
+//             });
+//         } else {
+//             return NextResponse.json({
+//                 success: false,
+//                 error: {
+//                     mensaje: 'Error al solicitar CAE',
+//                     observaciones: response.Observaciones,
+//                     errores: result.FECAESolicitarResult.Errors
+//                 }
+//             }, { status: 400 });
+//         }
+        
+//     } catch (error) {
+//         console.error('Error en la generación de factura:', error);
+//         return NextResponse.json({
+//             success: false,
+//             error: {
+//                 mensaje: 'Error en el proceso de facturación',
+//                 detalles: error instanceof Error ? error.message : 'Error desconocido'
+//             }
+//         }, { status: 500 });
+//     }
+// }

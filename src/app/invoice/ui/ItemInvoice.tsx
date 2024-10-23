@@ -1,45 +1,45 @@
+import React from "react";
 import Link from "next/link";
 import { FaCalendarAlt, FaUser, FaReceipt, FaDollarSign } from "react-icons/fa";
-
-import { InfoItem } from "@/components/info/InfoItem";
-import { InvoiceItem } from "./InvoiceItem";
 import { PaymentItem } from "./PaymentItem";
 
 export const ItemInvoice: React.FC<{ item: Invoice }> = ({ item }) => {
   return (
-    <div className="bg-custom-black-2 rounded-xl shadow-lg overflow-hidden transition duration-300 hover:shadow-xl">
-      <div className="p-6">
+    <div className="border border-gray-700 bg-custom-black-2 shadow overflow-hidden transition duration-300 hover:shadow-lg rounded-lg flex-1">
+      <div className="grid grid-cols-1 md:grid-cols-3 bg-custom-black-2 border-b border-gray-700">
         <Link
-          className="text-2xl font-bold text-white-600 hover:text-blue-400 transition duration-200"
+          className="p-4 font-bold text-blue-400 hover:text-blue-500 transition duration-200 underline"
           href={`/invoice/${item.id}`}
         >
           <FaReceipt className="inline mr-2" />
           ID del comprobante: {item.id}
         </Link>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-          <InfoItem
-            icon={<FaCalendarAlt />}
-            label="Fecha"
-            value={item.date.slice(0, 10)}
-          />
-          <InfoItem icon={<FaUser />} label="Cliente" value={item.client} />
+        <div className="p-4 border-l border-gray-700 text-white-600">
+          <FaCalendarAlt className="inline mr-2 text-gray-400" />
+          {item.date.slice(0, 10)}
+        </div>
+        <div className="p-4 border-l border-gray-700 text-white-600">
+          <FaUser className="inline mr-2 text-gray-400" />
+          {item.client}
         </div>
       </div>
 
-      <div className="bg-custom-black p-6">
-        <h3 className="text-xl font-semibold mb-4 text-white-600">
+      <div className="mt-4">
+        <h3 className="bg-custom-black text-white-600 font-semibold p-4 border-b border-gray-700">
           Items de la Factura
         </h3>
-        <div className="space-y-4">
+        <div className="divide-y divide-gray-700">
           {item.invoiceItems.map((invoiceItem, index) => (
             <InvoiceItem key={index} item={invoiceItem} index={index} />
           ))}
         </div>
       </div>
 
-      <div className="bg-custom-black p-6 mt-4">
-        <h3 className="text-xl font-semibold mb-4 text-white-600">Pagos</h3>
-        <div className="space-y-4">
+      <div className="mt-4">
+        <h3 className="bg-custom-black text-white-600 font-semibold p-4 border-b border-gray-700">
+          Pagos
+        </h3>
+        <div className="divide-y divide-gray-700">
           {item.payments.map((payment, index) => (
             <PaymentItem key={index} payment={payment} index={index} />
           ))}
@@ -48,3 +48,23 @@ export const ItemInvoice: React.FC<{ item: Invoice }> = ({ item }) => {
     </div>
   );
 };
+
+export const InvoiceItem: React.FC<{ item: any; index: number }> = ({
+  item,
+  index,
+}) => (
+  <div className="grid grid-cols-1 sm:grid-cols-4 p-4 bg-custom-black-2 hover:bg-custom-black">
+    <div className="col-span-1 font-semibold text-white-600">
+      Item {index + 1}: {item.productName}
+    </div>
+    <div className="col-span-1 text-gray-400 border-l border-gray-700 pl-4">
+      Cantidad: {item.quantity}
+    </div>
+    <div className="col-span-1 text-gray-400 border-l border-gray-700 pl-4">
+      USD {item.price.toFixed(2)}
+    </div>
+    <div className="col-span-1 text-gray-400 border-l border-gray-700 pl-4">
+      ARS ${item.productVariant.priceArs.toFixed(2)}
+    </div>
+  </div>
+);
