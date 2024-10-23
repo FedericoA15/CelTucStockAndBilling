@@ -1,6 +1,7 @@
 "use client";
 import { postTimeSheet } from "@/actions/timeSheet/postTimeSheet";
 import React, { useState, useEffect } from "react";
+import Cookies from "js-cookie";
 
 const TimeSheet = () => {
   const [startTime, setStartTime] = useState<string | null>(null);
@@ -31,17 +32,25 @@ const TimeSheet = () => {
   };
 
   const handleSubmit = async () => {
+    if (!name.trim()) {
+      alert("Por favor, completa el nombre.");
+      return;
+    }
+
+    const id = Cookies.get("id");
+
     const timeSheetData = {
+      user: { id },
       startTime,
       endTime,
       name,
     };
-    
+
     try {
-      // await postTimeSheet(timeSheetData);
+      await postTimeSheet(timeSheetData);
       localStorage.removeItem("startTime");
       localStorage.removeItem("endTime");
-      localStorage.removeItem("name");
+      setName("");
       console.log("Datos enviados y eliminados de localStorage");
     } catch (error) {
       console.error("Error al enviar el formulario:", error);
@@ -49,17 +58,17 @@ const TimeSheet = () => {
   };
 
   return (
-    <div className="absolute top-28 right-4 bg-custom-black-2 text-white p-4 rounded-md shadow-lg w-full max-w-md mx-auto lg:right-4">
+    <div className=" top-28 right-0 left-0 mx-auto bg-custom-black-2 text-white p-4 rounded-md shadow-lg w-full max-w-md">
       {!startTime ? (
-        <button 
-          onClick={handleStart} 
+        <button
+          onClick={handleStart}
           className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300"
         >
           Iniciar turno
         </button>
       ) : !endTime ? (
-        <button 
-          onClick={handleEnd} 
+        <button
+          onClick={handleEnd}
           className="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded transition duration-300"
         >
           Finalizar turno

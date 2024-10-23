@@ -5,7 +5,9 @@ interface SearchFormProps {
   onSearchChange: (filters: Filters) => void;
 }
 
-const SearchForm: React.FC<SearchFormProps> = ({ onSearchChange }) => {
+export default function Component(
+  { onSearchChange }: SearchFormProps = { onSearchChange: () => {} }
+) {
   const [filters, setFilters] = useState<Filters>({
     name: "",
     code: "",
@@ -80,21 +82,21 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearchChange }) => {
   };
 
   return (
-    <div className="bg-custom-black-2 text-gray-100 p-6 rounded-lg shadow-lg w-full max-w-md mx-auto">
-      <div className="flex justify-between items-center mb-6">
+    <div className="bg-custom-black-2 text-gray-100 p-4 sm:p-6 rounded-lg shadow-lg w-full max-w-md mx-auto">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 space-y-4 sm:space-y-0">
         <h2 className="text-xl font-bold">Buscar Productos</h2>
-        <div className="flex space-x-2">
+        <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 w-full sm:w-auto m-5">
           <button
             type="button"
             onClick={resetFilters}
-            className="py-2 px-4 bg-red-600 hover:bg-red-700 text-white font-medium rounded-md flex items-center transition duration-300 ease-in-out"
+            className="w-full sm:w-auto py-2 px-4 bg-red-600 hover:bg-red-700 text-white font-medium rounded-md flex items-center justify-center transition duration-300 ease-in-out"
           >
-            <FaTimes className="mr-2" /> Restablecer
+            <FaTimes className="mr-2 " /> Restablecer
           </button>
           <button
             type="button"
             onClick={() => setSearchTriggered(true)}
-            className="py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md flex items-center transition duration-300 ease-in-out"
+            className="w-full sm:w-auto py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md flex items-center justify-center transition duration-300 ease-in-out"
           >
             <FaSearch className="mr-2" /> Buscar
           </button>
@@ -102,28 +104,30 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearchChange }) => {
       </div>
 
       <div className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium mb-1">Nombre</label>
-          <input
-            type="text"
-            name="name"
-            value={filters.name}
-            onChange={handleFilterChange}
-            className="w-full px-3 py-2 bg-gray-700 text-gray-100 rounded-md border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 ease-in-out"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">
-            Código universal
-          </label>
-          <input
-            type="text"
-            name="code"
-            value={filters.code}
-            onChange={handleFilterChange}
-            className="w-full px-3 py-2 bg-gray-700 text-gray-100 rounded-md border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 ease-in-out"
-            style={{ textTransform: "none" }}
-          />
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium mb-1">Nombre</label>
+            <input
+              type="text"
+              name="name"
+              value={filters.name}
+              onChange={handleFilterChange}
+              className="w-full px-3 py-2 bg-gray-700 text-gray-100 rounded-md border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 ease-in-out"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1">
+              Código universal
+            </label>
+            <input
+              type="text"
+              name="code"
+              value={filters.code}
+              onChange={handleFilterChange}
+              className="w-full px-3 py-2 bg-gray-700 text-gray-100 rounded-md border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 ease-in-out"
+              style={{ textTransform: "none" }}
+            />
+          </div>
         </div>
         <div>
           <label className="block text-sm font-medium mb-1">Códigos</label>
@@ -181,79 +185,82 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearchChange }) => {
 
         {showAdvancedFilters && (
           <div className="space-y-4 mt-4 border-t border-gray-700 pt-4">
-            <div>
-              <label className="block text-sm font-medium mb-1">Modelo</label>
-              <input
-                type="text"
-                name="subModel"
-                value={filters.variant.subModel}
-                onChange={handleFilterChange}
-                className="w-full px-3 py-2 bg-gray-700 text-gray-100 rounded-md border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 ease-in-out"
-              />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium mb-1">Modelo</label>
+                <input
+                  type="text"
+                  name="subModel"
+                  value={filters.variant.subModel}
+                  onChange={handleFilterChange}
+                  className="w-full px-3 py-2 bg-gray-700 text-gray-100 rounded-md border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 ease-in-out"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">Color</label>
+                <input
+                  type="text"
+                  name="color"
+                  value={filters.variant.color}
+                  onChange={handleFilterChange}
+                  className="w-full px-3 py-2 bg-gray-700 text-gray-100 rounded-md border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 ease-in-out"
+                />
+              </div>
             </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">Color</label>
-              <input
-                type="text"
-                name="color"
-                value={filters.variant.color}
-                onChange={handleFilterChange}
-                className="w-full px-3 py-2 bg-gray-700 text-gray-100 rounded-md border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 ease-in-out"
-              />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium mb-1">
+                  Capacidad
+                </label>
+                <input
+                  type="text"
+                  name="capacity"
+                  value={filters.variant.capacity}
+                  onChange={handleFilterChange}
+                  className="w-full px-3 py-2 bg-gray-700 text-gray-100 rounded-md border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 ease-in-out"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">
+                  Capacidad de batería
+                </label>
+                <input
+                  type="text"
+                  name="batteryCapacity"
+                  value={filters.variant.batteryCapacity}
+                  onChange={handleFilterChange}
+                  className="w-full px-3 py-2 bg-gray-700 text-gray-100 rounded-md border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 ease-in-out"
+                />
+              </div>
             </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">
-                Capacidad
-              </label>
-              <input
-                type="text"
-                name="capacity"
-                value={filters.variant.capacity}
-                onChange={handleFilterChange}
-                className="w-full px-3 py-2 bg-gray-700 text-gray-100 rounded-md border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 ease-in-out"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium mb-1">
-                Capacidad de batería
-              </label>
-              <input
-                type="text"
-                name="batteryCapacity"
-                value={filters.variant.batteryCapacity}
-                onChange={handleFilterChange}
-                className="w-full px-3 py-2 bg-gray-700 text-gray-100 rounded-md border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 ease-in-out"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">Estado</label>
-              <select
-                name="state"
-                value={filters.variant.state}
-                onChange={handleFilterChange}
-                className="w-full px-3 py-2 bg-gray-700 text-gray-100 rounded-md border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 ease-in-out"
-              >
-                <option value="">Todos</option>
-                <option value="Nuevo">Nuevo</option>
-                <option value="Usado">Usado</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">Precio</label>
-              <input
-                type="text"
-                name="price"
-                value={filters.variant.price}
-                onChange={handleFilterChange}
-                className="w-full px-3 py-2 bg-gray-700 text-gray-100 rounded-md border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 ease-in-out"
-              />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium mb-1">Estado</label>
+                <select
+                  name="state"
+                  value={filters.variant.state}
+                  onChange={handleFilterChange}
+                  className="w-full px-3 py-2 bg-gray-700 text-gray-100 rounded-md border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 ease-in-out"
+                >
+                  <option value="">Todos</option>
+                  <option value="Nuevo">Nuevo</option>
+                  <option value="Usado">Usado</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">Precio</label>
+                <input
+                  type="text"
+                  name="price"
+                  value={filters.variant.price}
+                  onChange={handleFilterChange}
+                  className="w-full px-3 py-2 bg-gray-700 text-gray-100 rounded-md border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 ease-in-out"
+                />
+              </div>
             </div>
           </div>
         )}
       </div>
     </div>
   );
-};
-
-export default SearchForm;
+}
