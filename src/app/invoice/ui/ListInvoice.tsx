@@ -7,6 +7,7 @@ import { downloadExcel } from "@/utils/generateExcel";
 import Cookies from "js-cookie";
 import SearchForm from "./SearchForm";
 import { FaFileExcel } from "react-icons/fa";
+import { generateInvoice } from "@/utils/afipClient";
 
 const ListInvoice: React.FC = () => {
   const role = Cookies.get("roles");
@@ -40,6 +41,19 @@ const ListInvoice: React.FC = () => {
     downloadExcel(filters, currentPage);
   };
 
+  async function generateInvoice() {
+    const response = await fetch("/api/generatedInvoiceByAfip", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        /* Datos necesarios para la factura */
+      }),
+    });
+
+    const data = await response.json();
+    // Manejar la respuesta
+  }
+
   return (
     <div className="flex flex-col sm:flex-row">
       <div className="w-3/20"></div>
@@ -53,6 +67,14 @@ const ListInvoice: React.FC = () => {
             >
               <FaFileExcel />
               Descargar Excel
+            </button>
+
+            <button
+              onClick={generateInvoice}
+              className="p-2 bg-blue-500 text-white rounded-md flex items-center gap-2"
+            >
+              <FaFileExcel />
+              Test AFip
             </button>
           </div>
         )}
