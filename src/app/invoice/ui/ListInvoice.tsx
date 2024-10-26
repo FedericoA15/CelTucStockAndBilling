@@ -42,6 +42,7 @@ const ListInvoice: React.FC = () => {
   };
 
   async function generateInvoice() {
+    // console.log(process.env.NEXT_PUBLIC_CERT);
     const response = await fetch("/api/generatedInvoiceByAfip", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
