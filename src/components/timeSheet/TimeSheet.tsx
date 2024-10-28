@@ -20,13 +20,19 @@ const TimeSheet = () => {
   }, []);
 
   const handleStart = () => {
-    const currentStartTime = new Date().toISOString();
+    const date = new Date();
+    const currentStartTime = new Date(date.setHours(date.getHours() - 3))
+      .toISOString()
+      .slice(0, 19);
     setStartTime(currentStartTime);
     localStorage.setItem("startTime", currentStartTime);
   };
 
   const handleEnd = () => {
-    const currentEndTime = new Date().toISOString();
+    const date = new Date();
+    const currentEndTime = new Date(date.setHours(date.getHours() - 3))
+      .toISOString()
+      .slice(0, 19);
     setEndTime(currentEndTime);
     localStorage.setItem("endTime", currentEndTime);
   };
