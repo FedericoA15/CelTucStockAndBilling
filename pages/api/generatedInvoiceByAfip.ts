@@ -43,8 +43,8 @@ let data: any = {
 
 try {
     const response = await afip.electronicBillingService.createVoucher(data)
-    const salesPoints = await afip.electronicBillingService.getSalesPoints();
-    res.status(200).json(salesPoints);
+    // const salesPoints = await afip.electronicBillingService.getSalesPoints();
+    res.status(200).json(response);
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
