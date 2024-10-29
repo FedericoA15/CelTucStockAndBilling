@@ -245,7 +245,7 @@ interface FiltersVoucher {
 interface IMEIResultModalProps {
   product: any;
   onClose: () => void;
-  onAddToVoucher: (variant: Item) => void;
+  onAddToVoucher: (item: Item | Variant) => void; // Cambia aquí para aceptar ambos tipos
 }
 
 interface FormData {
