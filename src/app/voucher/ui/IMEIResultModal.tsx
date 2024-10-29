@@ -69,17 +69,17 @@ const IMEIResultModal: React.FC<IMEIResultModalProps> = ({
                   <span className="font-semibold">Condición:</span>{" "}
                   {variant.state}
                 </p>
+                <button
+                  onClick={() => onAddToVoucher(variant)}
+                  className="mt-4 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
+                >
+                  Cargar esta Variante al Voucher
+                </button>
               </div>
             ))}
           </div>
         </div>
         <div className="flex justify-end mt-6 space-x-4">
-          <button
-            onClick={() => onAddToVoucher(product)}
-            className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
-          >
-            Cargar al Voucher
-          </button>
           <button
             onClick={onClose}
             className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out"

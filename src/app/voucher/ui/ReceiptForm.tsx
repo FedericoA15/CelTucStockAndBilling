@@ -97,17 +97,15 @@ const ReceiptForm: React.FC = () => {
   };
 
   const handleAddToVoucher = (variant: any) => {
-    if (variant) {
-      setFormData({
-        ...formData,
-        concept: `${product.name} - ${product.variants[0].subModel} - ${product.variants[0].details}`,
-        imei: product.variants[0].productCodes[0],
-        condition: product.variants[0].state,
-        total: product.variants[0].price,
-        addition: product.variants[0].price,
-      });
-      setProduct(null);
-    }
+    setFormData({
+      ...formData,
+      concept: `${product.name} - ${variant.subModel} - ${variant.details}`,
+      imei: variant.productCodes[0],
+      condition: variant.state,
+      total: variant.price,
+      addition: variant.price,
+    });
+    setProduct(null);
   };
 
   const branchNames: { [key: string]: string } = {
@@ -498,13 +496,11 @@ const ReceiptForm: React.FC = () => {
           </div>
         </form>
       </div>
-      {product && (
-        <IMEIResultModal
-          product={product}
-          onClose={handleCloseModal}
-          onAddToVoucher={handleAddToVoucher}
-        />
-      )}
+      <IMEIResultModal
+        product={product}
+        onClose={handleCloseModal}
+        onAddToVoucher={handleAddToVoucher}
+      />
     </div>
   );
 };
