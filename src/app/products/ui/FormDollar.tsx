@@ -48,27 +48,28 @@ const FormDollar: React.FC = () => {
           {dollarValue !== null ? `$${dollarValue}` : "Cargando..."}
         </p>
       </div>
-      {isClient && role === "ADMIN" && (
-        <form
-          onSubmit={handleUpdateDollarValue}
-          className="flex flex-col space-y-4"
-        >
-          <input
-            type="number"
-            value={newDollarValue}
-            onChange={(e) => setNewDollarValue(e.target.value)}
-            className="p-3 border border-custom-grey rounded-md text-custom-black focus:border-custom-blue focus:ring-1 focus:ring-custom-blue transition duration-200"
-            placeholder="Nuevo valor del dólar"
-            required
-          />
-          <button
-            type="submit"
-            className="py-3 bg-custom-blue text-white rounded-md hover:bg-blue-600 transition duration-200 flex items-center justify-center"
+      {(isClient && role === "ADMIN") ||
+        (role === "SUPERADMIN" && (
+          <form
+            onSubmit={handleUpdateDollarValue}
+            className="flex flex-col space-y-4"
           >
-            Actualizar
-          </button>
-        </form>
-      )}
+            <input
+              type="number"
+              value={newDollarValue}
+              onChange={(e) => setNewDollarValue(e.target.value)}
+              className="p-3 border border-custom-grey rounded-md text-custom-black focus:border-custom-blue focus:ring-1 focus:ring-custom-blue transition duration-200"
+              placeholder="Nuevo valor del dólar"
+              required
+            />
+            <button
+              type="submit"
+              className="py-3 bg-custom-blue text-white rounded-md hover:bg-blue-600 transition duration-200 flex items-center justify-center"
+            >
+              Actualizar
+            </button>
+          </form>
+        ))}
     </div>
   );
 };

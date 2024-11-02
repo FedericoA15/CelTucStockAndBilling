@@ -2,14 +2,26 @@ import { useState, useEffect } from "react";
 import { useCart } from "@/utils/cartContext";
 import EditVariantModal from "@/components/editVariant/editVariantModal";
 import Cookies from "js-cookie";
-import { FaEdit, FaCartPlus, FaChevronDown, FaChevronUp } from "react-icons/fa";
+import {
+  FaEdit,
+  FaCartPlus,
+  FaChevronDown,
+  FaChevronUp,
+  FaTrash,
+} from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
+import { deleteProduct } from "@/actions/products/deleteProductVariant";
+import ConfirmDeleteModal from "@/components/modalDeleted/ConfirmDeleteModal";
 
 export const ItemComponent: React.FC<{ item: Item }> = ({ item }) => {
   const [showVariants, setShowVariants] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentVariant, setCurrentVariant] = useState(null);
   const [isClient, setIsClient] = useState(false);
+  const [showActions, setShowActions] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [variantToDelete, setVariantToDelete] = useState<string | null>(null);
+
   const { addToCart } = useCart();
   const role = Cookies.get("roles");
 
@@ -21,6 +33,23 @@ export const ItemComponent: React.FC<{ item: Item }> = ({ item }) => {
   const closeModal = () => {
     setIsModalOpen(false);
     setCurrentVariant(null);
+  };
+
+  const openDeleteModal = (variantId: string) => {
+    setVariantToDelete(variantId);
+    setIsDeleteModalOpen(true);
+  };
+
+  const closeDeleteModal = () => {
+    setIsDeleteModalOpen(false);
+    setVariantToDelete(null);
+  };
+
+  const handleDeleteVariant = (id: string) => {
+    if (variantToDelete) {
+      deleteProduct(variantToDelete);
+      closeDeleteModal();
+    }
   };
 
   useEffect(() => {
@@ -82,7 +111,7 @@ export const ItemComponent: React.FC<{ item: Item }> = ({ item }) => {
                       "Modelo",
                       "Estado",
                       "Color",
-                      "Bateria",
+                      "Batería",
                       "Capacidad",
                       "Descripción",
                       "Precio Lista (ARS)",
@@ -157,14 +186,26 @@ export const ItemComponent: React.FC<{ item: Item }> = ({ item }) => {
                           >
                             <FaCartPlus className="mr-1" /> Agregar
                           </motion.button>
-                          {isClient && role === "ADMIN" && (
+                          {showActions &&
+                            ((isClient && role === "ADMIN") ||
+                              role === "SUPERADMIN") && (
+                              <motion.button
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                className="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-1 px-2 rounded-lg flex items-center transition duration-300 ease-in-out"
+                                onClick={() => openModal(variant)}
+                              >
+                                <FaEdit className="mr-1" /> Modificar
+                              </motion.button>
+                            )}
+                          {showActions && isClient && role === "SUPERADMIN" && (
                             <motion.button
                               whileHover={{ scale: 1.05 }}
                               whileTap={{ scale: 0.95 }}
-                              className="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-1 px-2 rounded-lg flex items-center transition duration-300 ease-in-out"
-                              onClick={() => openModal(variant)}
+                              className="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded-lg flex items-center transition duration-300 ease-in-out"
+                              onClick={() => openDeleteModal(variant.id)}
                             >
-                              <FaEdit className="mr-1" /> Modificar
+                              <FaTrash className="mr-1" /> Borrar
                             </motion.button>
                           )}
                         </div>
@@ -183,6 +224,22 @@ export const ItemComponent: React.FC<{ item: Item }> = ({ item }) => {
           onClose={closeModal}
           variant={currentVariant}
         />
+      )}
+
+      <ConfirmDeleteModal
+        isOpen={isDeleteModalOpen}
+        onClose={closeDeleteModal}
+        onConfirm={handleDeleteVariant}
+      />
+      {(role === "ADMIN" || role === "SUPERADMIN") && (
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="w-full mt-4 bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out"
+          onClick={() => setShowActions(!showActions)}
+        >
+          {showActions ? "Ocultar acciones" : "Más acciones"}
+        </motion.button>
       )}
     </motion.div>
   );

@@ -279,3 +279,10 @@ interface TimeSheetProps {
     name: string;
   }) => void;
 }
+
+interface ConfirmDeleteModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm: (id: string) => void;
+  id: string; 
+}

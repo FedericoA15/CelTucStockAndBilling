@@ -17,20 +17,27 @@ import {
   FaTag,
   FaBatteryFull,
   FaWarehouse,
-  FaBox,
   FaInfoCircle,
 } from "react-icons/fa";
 import { MdSdStorage } from "react-icons/md";
+import Cookies from "js-cookie";
+import ConfirmDeleteModal from "@/components/modalDeleted/ConfirmDeleteModal";
+import { deleteVoucher } from "@/actions/voucher/deleteVoucher";
 
 export const VoucherDetails: React.FC<PropsId> = ({ id }) => {
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [variantIdToDelete, setVariantIdToDelete] = useState<string | null>(
+    null
+  );
   const [voucher, setVoucher] = useState<Voucher | null>(null);
+  const role = Cookies.get("roles");
 
   useEffect(() => {
-    const fetchvoucher = async () => {
+    const fetchVoucher = async () => {
       const fetchedVoucher = await getVoucherById(id);
       setVoucher(fetchedVoucher);
     };
-    fetchvoucher();
+    fetchVoucher();
   }, [id]);
 
   if (!voucher) {
@@ -42,6 +49,22 @@ export const VoucherDetails: React.FC<PropsId> = ({ id }) => {
       </div>
     );
   }
+
+  const openDeleteModal = (variantId: string) => {
+    setVariantIdToDelete(variantId);
+    setIsDeleteModalOpen(true);
+  };
+
+  const closeDeleteModal = () => {
+    setIsDeleteModalOpen(false);
+    setVariantIdToDelete(null);
+  };
+
+  const handleDeleteVariant = () => {
+    deleteVoucher(id);
+    closeDeleteModal();
+    window.history.back();
+  };
 
   const handleDownloadPDF = async () => {
     if (!voucher) return;
@@ -150,13 +173,29 @@ export const VoucherDetails: React.FC<PropsId> = ({ id }) => {
         ))}
       </div>
 
-      {/* Download PDF Button */}
-      <button
-        onClick={handleDownloadPDF}
-        className="mt-8 w-full sm:w-auto bg-custom-blue hover:bg-custom-blue-dark text-custom-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300 transform hover:scale-105"
-      >
-        Descargar PDF
-      </button>
+      <div>
+        {" "}
+        <button
+          onClick={handleDownloadPDF}
+          className="mt-8 w-full sm:w-auto bg-custom-blue hover:bg-custom-blue-dark text-custom-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300 transform hover:scale-105"
+        >
+          Descargar PDF
+        </button>
+        {role === "SUPERADMIN" && (
+          <button
+            onClick={() => openDeleteModal(id)}
+            className="mt-4 mx-5 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded shadow-md transition duration-300 transform hover:scale-105"
+          >
+            Borrar
+          </button>
+        )}
+      </div>
+
+      <ConfirmDeleteModal
+        isOpen={isDeleteModalOpen}
+        onClose={closeDeleteModal}
+        onConfirm={handleDeleteVariant}
+      />
     </div>
   );
 };
