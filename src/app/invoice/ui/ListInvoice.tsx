@@ -58,25 +58,26 @@ const ListInvoice: React.FC = () => {
       <div className="w-3/20"></div>
       <SearchForm onSearchChangeInvoice={handleSearchChange} />
       <div className="w-full flex flex-col border-solid rounded-md">
-        {role === "ADMIN" && (
-          <div className="mb-4 flex justify-between">
-            <button
-              onClick={handleDownloadExcel}
-              className="p-2 bg-blue-500 text-white rounded-md flex items-center gap-2"
-            >
-              <FaFileExcel />
-              Descargar Excel
-            </button>
+        {role === "ADMIN" ||
+          (role === "SUPERADMIN" && (
+            <div className="mb-4 flex justify-between">
+              <button
+                onClick={handleDownloadExcel}
+                className="p-2 bg-blue-500 text-white rounded-md flex items-center gap-2"
+              >
+                <FaFileExcel />
+                Descargar Excel
+              </button>
 
-            {/* <button
+              {/* <button
               onClick={generateInvoice}
               className="p-2 bg-blue-500 text-white rounded-md flex items-center gap-2"
             >
               <FaFileExcel />
               Test AFip
             </button> */}
-          </div>
-        )}
+            </div>
+          ))}
         {data.content.map((item) => (
           <div
             key={item.id}

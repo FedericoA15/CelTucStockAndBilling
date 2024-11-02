@@ -155,6 +155,20 @@ export default function Component(
           </select>
         </div>
 
+        <div>
+          <label className="block text-sm font-medium mb-1">Estado</label>
+          <select
+            name="state"
+            value={filters.variant.state}
+            onChange={handleFilterChange}
+            className="w-full px-3 py-2 bg-gray-700 text-gray-100 rounded-md border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 ease-in-out"
+          >
+            <option value="">Todos</option>
+            <option value="Nuevo">Nuevo</option>
+            <option value="Usado">Usado</option>
+          </select>
+        </div>
+
         <button
           type="button"
           onClick={toggleStockFilter}
@@ -234,19 +248,6 @@ export default function Component(
               </div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium mb-1">Estado</label>
-                <select
-                  name="state"
-                  value={filters.variant.state}
-                  onChange={handleFilterChange}
-                  className="w-full px-3 py-2 bg-gray-700 text-gray-100 rounded-md border border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 ease-in-out"
-                >
-                  <option value="">Todos</option>
-                  <option value="Nuevo">Nuevo</option>
-                  <option value="Usado">Usado</option>
-                </select>
-              </div>
               <div>
                 <label className="block text-sm font-medium mb-1">Precio</label>
                 <input
