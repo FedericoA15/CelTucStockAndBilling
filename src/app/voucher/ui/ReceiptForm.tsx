@@ -99,7 +99,7 @@ const ReceiptForm: React.FC = () => {
   const handleAddToVoucher = (variant: any) => {
     setFormData({
       ...formData,
-      concept: `${product.name} - ${variant.subModel} - ${variant.details}`,
+      concept: `${product.name} - ${variant.subModel} - ${variant.color}`,
       imei: variant.productCodes[0],
       condition: variant.state,
       total: variant.price,

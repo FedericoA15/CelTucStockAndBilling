@@ -21,6 +21,7 @@ export const ItemComponent: React.FC<{ item: Item }> = ({ item }) => {
   const [showActions, setShowActions] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [variantToDelete, setVariantToDelete] = useState<string | null>(null);
+  const [showAllCodes, setShowAllCodes] = useState(false);
 
   const { addToCart } = useCart();
   const role = Cookies.get("roles");
@@ -172,7 +173,20 @@ export const ItemComponent: React.FC<{ item: Item }> = ({ item }) => {
                         {renderValue(variant.branchName)}
                       </td>
                       <td className="px-2 py-4 whitespace-nowrap text-sm text-white">
-                        {renderValue(variant.productCodes.join(", "))}
+                        {renderValue(
+                          showAllCodes
+                            ? variant.productCodes.join(", ")
+                            : variant.productCodes.slice(0, 3).join(", ") +
+                                (variant.productCodes.length > 3 ? "..." : "")
+                        )}
+                        {variant.productCodes.length > 3 && !showAllCodes && (
+                          <button
+                            onClick={() => setShowAllCodes(true)}
+                            className="text-blue-400 underline ml-1"
+                          >
+                            Ver más
+                          </button>
+                        )}
                       </td>
                       <td className="px-2 py-4 whitespace-nowrap text-sm font-medium">
                         <div className="flex space-x-2">
