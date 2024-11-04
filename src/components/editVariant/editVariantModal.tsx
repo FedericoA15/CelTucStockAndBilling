@@ -11,7 +11,7 @@ import {
   FaInfoCircle,
   FaList,
   FaSlidersH,
-} from "react-icons/fa"; // Iconos añadidos
+} from "react-icons/fa";
 
 const EditVariantModal: React.FC<{
   isOpen: boolean;
@@ -92,6 +92,12 @@ const EditVariantModal: React.FC<{
               placeholder: "Precio",
               icon: <FaDollarSign />,
               label: "Precio",
+            },
+            {
+              name: "countedPrice",
+              placeholder: "Precio Contado",
+              icon: <FaDollarSign />,
+              label: "Precio Contado",
             },
             {
               name: "branchName",
