@@ -28,14 +28,13 @@ const EditVariantModal: React.FC<{
   const [formData, setFormData] = useState<any>({
     ...variant,
     productCodes: variant.productCodes.join(", "),
-    branch: variant.branch.id,
   });
 
   useEffect(() => {
     setFormData({
       ...variant,
       productCodes: variant.productCodes.join(", "),
-      branch: "", // Deja vacío para que no haya ninguna sucursal seleccionada por defecto
+      branch: "",
     });
   }, [variant]);
 
