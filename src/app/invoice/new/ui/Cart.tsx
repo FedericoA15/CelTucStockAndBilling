@@ -4,7 +4,7 @@ import { useCart } from "@/utils/cartContext";
 import { postInvoice } from "@/actions/invoices/postInvoice";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
-import { FaDollarSign, FaTrash } from "react-icons/fa";
+import { FaDollarSign, FaPlus, FaShoppingCart, FaTrash } from "react-icons/fa";
 
 export const Cart: React.FC = () => {
   const router = useRouter();
@@ -106,70 +106,100 @@ export const Cart: React.FC = () => {
   ).map((id) => cart.find((item) => item.variant.id === id)!);
 
   return (
-    <form
-      onSubmit={(e) => e.preventDefault()}
-      className="h-screen flex flex-col items-center p-6"
-    >
-      <div className="w-full max-w-4xl bg-custom-grey-2 text-custom-white rounded-lg shadow-lg p-6">
-        <h2 className="text-3xl font-bold mb-6 text-center flex items-center justify-center">
-          <FaDollarSign className="mr-2 text-custom-blue" />
-          Nuevo Comprobante
-        </h2>
-        <div className="overflow-x-auto">
-          <ul className="space-y-4 mb-6">
-            <li className="grid grid-cols-5 gap-4 text-center font-bold text-custom-cream">
-              <p>Producto</p>
-              <p>Precio en USD</p>
-              <p>Precio en ARS</p>
-              <p>Precio en ARS Contado</p>
-              <p>Cantidad</p>
-            </li>
-            {uniqueCartItems.map((item) => (
-              <li
-                key={item.variant.id}
-                className="grid grid-cols-5 gap-4 text-center"
-              >
-                <p>{item.itemName}</p>
-                <p>${item.variant.price.toFixed(2)}</p>
-                <p>${item.variant.priceArs.toFixed(2)}</p>
-                <p>${item.variant.priceArsCounted.toFixed(2)}</p>
-                <p>{productCounts[item.variant.id]}</p>
-              </li>
-            ))}
-          </ul>
+    <div className="min-h-screen bg-gradient-to-b py-8 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto bg-custom-grey rounded-xl shadow-md overflow-hidden">
+        <div className="bg-gradient-to-r from-blue-500 to-indigo-600 p-6">
+          <h2 className="text-3xl font-extrabold text-white flex items-center justify-center">
+            <FaShoppingCart className="mr-4" />
+            Nuevo Comprobante
+          </h2>
         </div>
-        <div className="mt-6">
-          <p className="text-lg font-semibold">
-            Total en USD: ${totalUSD.toFixed(2)}
-          </p>
-          <p className="text-lg font-semibold">
-            Total en ARS: ${totalARS.toFixed(2)}
-          </p>
-          <p className="text-lg font-semibold">
-            Total en ARS (Contado): ${totalARSCounted.toFixed(2)}
-          </p>
-        </div>
+        <div className="p-6">
+          <div className="overflow-x-auto">
+            <table className="min-w-full ">
+              <thead className="bg-custom-black-2">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                    Producto
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                    Precio USD
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                    Precio ARS
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                    Precio ARS Contado
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                    Cantidad
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-custom-black-2 text-white ">
+                {uniqueCartItems.map((item) => (
+                  <tr key={item.variant.id}>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {item.itemName}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      ${item.variant.price.toFixed(2)}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      ${item.variant.priceArs.toFixed(2)}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      ${item.variant.priceArsCounted.toFixed(2)}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {productCounts[item.variant.id]}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
 
-        <div className="mt-6">
-          <label className="block text-sm font-medium text-custom-white mb-2">
-            Nombre del Cliente
-          </label>
-          <input
-            type="text"
-            value={clientName}
-            onChange={(e) => setClientName(e.target.value)}
-            placeholder="Ingrese el nombre del cliente"
-            className="mt-2 p-3 rounded w-full text-black border border-gray-300 focus:border-custom-blue focus:ring-1 focus:ring-custom-blue transition duration-200"
-          />
-        </div>
+          <div className="mt-6 bg-custom-black-2 p-4 rounded-lg">
+            <p className="text-lg font-semibold text-white">
+              Total en USD: ${totalUSD.toFixed(2)}
+            </p>
+            <p className="text-lg font-semibold text-white">
+              Total en ARS: ${totalARS.toFixed(2)}
+            </p>
+            <p className="text-lg font-semibold text-white">
+              Total en ARS (Contado): ${totalARSCounted.toFixed(2)}
+            </p>
+          </div>
 
-        {paymentMethods.map((method, index) => (
-          <div key={index} className="mt-6 flex flex-col space-y-4">
-            <div className="flex items-center space-x-4">
-              <div className="flex-1">
-                <label className="block text-sm font-medium text-custom-white mb-2">
+          <div className="mt-8">
+            <label className="block text-sm font-medium text-white mb-2">
+              Nombre del Cliente
+            </label>
+            <input
+              type="text"
+              value={clientName}
+              onChange={(e) => setClientName(e.target.value)}
+              placeholder="Ingrese el nombre del cliente"
+              className="mt-1 bg-custom-black-2 block w-full border text-white rounded-md shadow-sm py-2 px-3 focus:outline-none sm:text-sm"
+            />
+          </div>
+
+          {paymentMethods.map((method, index) => (
+            <div key={index} className="mt-6 bg-custom-black-2 p-4 rounded-lg">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-medium text-white">
                   Método de Pago {index + 1}
-                </label>
+                </h3>
+                <button
+                  type="button"
+                  onClick={() => handleRemovePaymentMethod(index)}
+                  className="text-red-600 hover:text-red-800 transition duration-200"
+                >
+                  <FaTrash className="text-lg" />
+                </button>
+              </div>
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                 <select
                   value={method}
                   onChange={(e) => {
@@ -177,7 +207,7 @@ export const Cart: React.FC = () => {
                     updatedMethods[index] = e.target.value;
                     setPaymentMethods(updatedMethods);
                   }}
-                  className="p-3 rounded w-full text-black border border-gray-300 focus:border-custom-blue focus:ring-1 focus:ring-custom-blue transition duration-200"
+                  className="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 >
                   <option value="" disabled>
                     Selecciona el método de pago
@@ -186,58 +216,53 @@ export const Cart: React.FC = () => {
                   <option value="efectivo">Efectivo</option>
                   <option value="transferencia">Transferencia</option>
                 </select>
+                <input
+                  type="text"
+                  placeholder="Monto"
+                  value={amounts[index]}
+                  onChange={(e) => {
+                    const updatedAmounts = [...amounts];
+                    updatedAmounts[index] = e.target.value;
+                    setAmounts(updatedAmounts);
+                  }}
+                  className="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                />
+                <input
+                  type="text"
+                  placeholder="Detalles"
+                  value={details[index]}
+                  onChange={(e) => {
+                    const updatedDetails = [...details];
+                    updatedDetails[index] = e.target.value;
+                    setDetails(updatedDetails);
+                  }}
+                  className="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                />
               </div>
-              <button
-                type="button"
-                onClick={() => handleRemovePaymentMethod(index)}
-                className="text-red-600 hover:text-red-800 transition duration-200"
-              >
-                <FaTrash className="text-lg" />
-              </button>
             </div>
-            <input
-              type="text"
-              placeholder="Monto"
-              value={amounts[index]}
-              onChange={(e) => {
-                const updatedAmounts = [...amounts];
-                updatedAmounts[index] = e.target.value;
-                setAmounts(updatedAmounts);
-              }}
-              className="p-3 rounded w-full text-black border border-gray-300 focus:border-custom-blue focus:ring-1 focus:ring-custom-blue transition duration-200"
-            />
-            <input
-              type="text"
-              placeholder="Detalles"
-              value={details[index]}
-              onChange={(e) => {
-                const updatedDetails = [...details];
-                updatedDetails[index] = e.target.value;
-                setDetails(updatedDetails);
-              }}
-              className="p-3 rounded w-full text-black border border-gray-300 focus:border-custom-blue focus:ring-1 focus:ring-custom-blue transition duration-200"
-            />
-          </div>
-        ))}
+          ))}
 
-        <div className="flex justify-between mt-8">
-          <button
-            type="button"
-            onClick={handleAddPaymentMethod}
-            className="bg-custom-blue hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-200"
-          >
-            Agregar método de pago
-          </button>
-          <button
-            type="button"
-            onClick={handleCreateInvoice}
-            className="bg-custom-blue hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-200"
-            disabled={loading}
-          >
-            {loading ? "Creando..." : "Crear factura"}
-          </button>
+          <div className="mt-8 flex justify-between">
+            <button
+              type="button"
+              onClick={handleAddPaymentMethod}
+              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              <FaPlus className="mr-2" />
+              Agregar método de pago
+            </button>
+            <button
+              type="button"
+              onClick={handleCreateInvoice}
+              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+              disabled={loading}
+            >
+              <FaDollarSign className="mr-2" />
+              {loading ? "Creando..." : "Crear factura"}
+            </button>
+          </div>
         </div>
       </div>
-    </form>
+    </div>
   );
 };

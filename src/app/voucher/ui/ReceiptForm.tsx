@@ -481,19 +481,18 @@ const ReceiptForm: React.FC = () => {
               <Save className="w-5 h-5 mr-2" />
               Generar PDF y Guardar
             </button>
-            {role === "ADMIN" ||
-              (role === "SUPERADMIN" && (
-                <Link href="/voucher/list">
-                  <span
-                    className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg focus:outline-none focus:shadow-outline transition duration-300 ease-in-out flex items-center justify-center cursor-pointer"
-                    title="Ver lista de comprobantes"
-                    aria-label="Ver comprobantes"
-                  >
-                    <FileText className="w-5 h-5 mr-2" />
-                    Ver comprobantes
-                  </span>
-                </Link>
-              ))}
+            {(role === "ADMIN" || role === "SUPERADMIN") && (
+              <Link href="/voucher/list">
+                <span
+                  className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg focus:outline-none focus:shadow-outline transition duration-300 ease-in-out flex items-center justify-center cursor-pointer"
+                  title="Ver lista de comprobantes"
+                  aria-label="Ver comprobantes"
+                >
+                  <FileText className="w-5 h-5 mr-2" />
+                  Ver comprobantes
+                </span>
+              </Link>
+            )}
           </div>
         </form>
       </div>

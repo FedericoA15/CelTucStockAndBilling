@@ -13,24 +13,35 @@ import {
   FaSlidersH,
 } from "react-icons/fa";
 
+// Diccionario de nombres de sucursales con sus respectivos IDs
+const branchNames: { [key: string]: string } = {
+  "e692d1b3-71a7-431a-ba8a-36754f2c64a5": "Yerba Buena",
+  "e692d1b3-71a7-431a-ba8a-36754f2c64a9": "Solar",
+  "e692d1b3-71a7-431a-ba8a-36754f2c64a3": "Centro",
+};
+
 const EditVariantModal: React.FC<{
   isOpen: boolean;
   onClose: () => void;
-  variant: Variant;
+  variant: any;
 }> = ({ isOpen, onClose, variant }) => {
   const [formData, setFormData] = useState<any>({
     ...variant,
     productCodes: variant.productCodes.join(", "),
+    branch: variant.branch.id,
   });
 
   useEffect(() => {
     setFormData({
       ...variant,
       productCodes: variant.productCodes.join(", "),
+      branch: "", // Deja vacío para que no haya ninguna sucursal seleccionada por defecto
     });
   }, [variant]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -42,6 +53,7 @@ const EditVariantModal: React.FC<{
       productCodes: formData.productCodes
         .split(",")
         .map((code: string) => code.trim()),
+      branch: { id: formData.branch }, // Enviar en el formato esperado
     };
 
     const response = await putProduct(updatedFormData, variant.id);
@@ -68,6 +80,7 @@ const EditVariantModal: React.FC<{
           onSubmit={handleSubmit}
           className="grid grid-cols-1 md:grid-cols-2 gap-4"
         >
+          {/* Campos del formulario */}
           {[
             {
               name: "color",
@@ -98,12 +111,6 @@ const EditVariantModal: React.FC<{
               placeholder: "Precio Contado",
               icon: <FaDollarSign />,
               label: "Precio Contado",
-            },
-            {
-              name: "branchName",
-              placeholder: "Sucursal",
-              icon: <FaWarehouse />,
-              label: "Sucursal",
             },
             {
               name: "state",
@@ -159,6 +166,28 @@ const EditVariantModal: React.FC<{
               </div>
             </div>
           ))}
+
+          <div className="flex flex-col col-span-2">
+            <label className="flex items-center text-sm font-semibold text-custom-white mb-1">
+              <FaWarehouse />
+              <span className="ml-2">Sucursal</span>
+            </label>
+            <select
+              name="branch"
+              value={formData.branch || ""}
+              onChange={handleChange}
+              className="w-full p-2 bg-custom-grey-2 text-custom-white rounded border-2 border-custom-grey focus:outline-none focus:border-custom-blue transition duration-200"
+            >
+              <option value="" disabled>
+                Selecciona una sucursal
+              </option>
+              {Object.entries(branchNames).map(([id, name]) => (
+                <option key={id} value={id}>
+                  {name}
+                </option>
+              ))}
+            </select>
+          </div>
           <button
             type="submit"
             className="col-span-2 flex items-center justify-center py-2 px-4 bg-custom-green hover:bg-custom-cream text-custom-black font-bold rounded-lg shadow-md transform hover:scale-105 transition duration-300"
