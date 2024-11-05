@@ -1,7 +1,7 @@
 import axiosInstance from "@/utils/axiosInstance";
 import { toast } from "react-toastify";
 
-export async function putProduct(data: Variant, id: string) {
+export async function putProduct(data: any, id: string) {
   try {
     await toast.promise(
       axiosInstance.put(`/products-variant/edit/${id}`, data),

@@ -5,7 +5,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const { puntoDeVenta, tipoDeFactura, concepto, docTipo, docNro, importeNeto, importeIva } = req.body;
 
-  // Si alguno de los parámetros no es proporcionado, devolvemos un error
   if (!puntoDeVenta || !tipoDeFactura || !concepto || !docTipo || !docNro || !importeNeto || !importeIva) {
     return res.status(400).json({ error: 'Faltan parámetros obligatorios' });
   }
