@@ -54,7 +54,6 @@ const InvoicePDF: React.FC<InvoicePDFProps> = ({ invoice, barcode, id }) => {
             <Text>Cantidad: {item.quantity}</Text>
             <Text>Sucursal: {item.productVariant.branchName}</Text>
             <Text>Modelo: {item.productVariant.subModel}</Text>
-            <Text>Precio: ${item.productVariant.priceArs}</Text>
             <Text>------------------------</Text>
           </View>
         ))}

@@ -68,7 +68,6 @@ export const Cart: React.FC = () => {
         return;
       }
 
-      // Validar que el DNI esté presente si el monto es mayor a 50,000
       if (parseFloat(amounts[i]) > 50000 && !dniValues[i]) {
         toast.error(
           `Por favor, ingrese el DNI para el método de pago ${i + 1}.`
