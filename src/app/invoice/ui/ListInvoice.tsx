@@ -72,18 +72,36 @@ const ListInvoice: React.FC = () => {
               Download Excel
             </button>
 
-            <div className="flex gap-2 items-center">
+            <div className="flex gap-4 items-center  p-4 rounded-md shadow-lg">
+              <label className="text-gray-300" htmlFor="date">
+                Seleccionar Fecha:
+              </label>
               <input
+                id="date"
                 type="date"
                 value={selectedDate}
                 onChange={handleDateChange}
-                className="border p-2 rounded"
+                className="p-2 rounded-md border border-gray-600 bg-gray-700 text-gray-200 outline-none focus:ring-2 focus:ring-green-500"
               />
               <button
                 onClick={handleOpenCashClosingModal}
-                className="p-2 bg-green-500 text-white rounded-md"
+                className="flex items-center gap-2 px-4 py-2 bg-green-600 text-gray-100 rounded-md hover:bg-green-500 transition-colors duration-200 shadow-md"
               >
-                Cash Closing
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M5 12h14m-7-7v14"
+                  />
+                </svg>
+                Cierre de Caja
               </button>
             </div>
           </div>
@@ -106,9 +124,8 @@ const ListInvoice: React.FC = () => {
           />
         </div>
 
-        {/* Cash Closing Modal */}
         {isModalOpen && (
-          <Cash onClose={() => setIsModalOpen(false)}>
+          <Cash onClose={() => setIsModalOpen(false)} data={cashClosingData}>
             <h2 className="text-xl font-bold">
               Cash Closing for {selectedDate}
             </h2>
