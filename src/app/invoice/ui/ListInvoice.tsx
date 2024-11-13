@@ -72,7 +72,7 @@ const ListInvoice: React.FC = () => {
               Download Excel
             </button>
 
-            <div className="flex gap-4 items-center  p-4 rounded-md shadow-lg">
+            <div className="flex gap-4 items-center bg-gray-800 p-4 rounded-md shadow-lg">
               <label className="text-gray-300" htmlFor="date">
                 Seleccionar Fecha:
               </label>
