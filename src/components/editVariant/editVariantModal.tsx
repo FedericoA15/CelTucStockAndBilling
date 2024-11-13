@@ -13,7 +13,6 @@ import {
   FaSlidersH,
 } from "react-icons/fa";
 
-// Diccionario de nombres de sucursales con sus respectivos IDs
 const branchNames: { [key: string]: string } = {
   "e692d1b3-71a7-431a-ba8a-36754f2c64a5": "Yerba Buena",
   "e692d1b3-71a7-431a-ba8a-36754f2c64a9": "Solar",
