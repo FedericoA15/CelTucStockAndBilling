@@ -286,3 +286,8 @@ interface ConfirmDeleteModalProps {
   onConfirm: (id: string) => void;
   id: string; 
 }
+
+interface CashProps {
+  children: ReactNode;
+  onClose: () => void;
+}
