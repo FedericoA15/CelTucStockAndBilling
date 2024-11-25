@@ -111,7 +111,7 @@ export const Cart: React.FC = () => {
 
     try {
       // await postInvoice(invoiceData, router);
-      cleanCart();
+      // cleanCart();
       toast.success("Factura creada exitosamente.");
 
       const requiresAFIP = paymentMethods.some((method) =>
