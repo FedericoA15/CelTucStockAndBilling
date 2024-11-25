@@ -68,7 +68,13 @@ export const Cart: React.FC = () => {
         return;
       }
 
-      if (parseFloat(amounts[i]) > 50000 && !dniValues[i]) {
+      if (
+        ["transferencia", "tarjeta"].includes(
+          paymentMethods[i].toLowerCase()
+        ) &&
+        parseFloat(amounts[i]) > 50000 &&
+        !dniValues[i]
+      ) {
         toast.error(
           `Por favor, ingrese el DNI para el método de pago ${i + 1}.`
         );
@@ -104,9 +110,17 @@ export const Cart: React.FC = () => {
     };
 
     try {
-      await postInvoice(invoiceData, router);
+      // await postInvoice(invoiceData, router);
       cleanCart();
       toast.success("Factura creada exitosamente.");
+
+      const requiresAFIP = paymentMethods.some((method) =>
+        ["transferencia", "tarjeta"].includes(method.toLowerCase())
+      );
+
+      if (requiresAFIP) {
+        await handleAfip();
+      }
     } catch (error) {
       toast.error("Ocurrió un error al crear la factura.");
     } finally {
@@ -114,26 +128,25 @@ export const Cart: React.FC = () => {
     }
   };
 
-  console.log(cart);
-  const handleTestAfip = async () => {
-    const afipData = cart.map((item) => ({
-      quantity: productCounts[item.variant.id],
-      price: item.variant.price,
-      branchName: item.variant.branchName,
+  const handleAfip = async () => {
+    const invoiceItems = cart.map((item) => ({
+      branchName: item.variant.branchName, // Nombre de la sucursal o punto de venta
+      price: item.variant.priceArs, // Precio en ARS
+      quantity: productCounts[item.variant.id], // Cantidad
     }));
 
-    const afipPayload = {
-      clientName,
-      totalUSD,
-      totalARS,
-      totalARSCounted,
-      payments: paymentMethods.map((method, index) => ({
-        paymentMethod: method,
-        amount: parseFloat(amounts[index]),
-        dni: dniValues[index] || null,
-      })),
-      products: afipData,
+    const payments = paymentMethods.map((method, index) => ({
+      method: method.toLowerCase(), // Método en minúsculas
+      amount: parseFloat(amounts[index]).toFixed(2), // Monto formateado
+      dni: dniValues[index] || null, // DNI asociado (opcional)
+    }));
+
+    const client = {
+      name: clientName || "Consumidor Final", // Nombre del cliente
+      dni: dniValues.find((dni) => dni) || null, // DNI válido si existe
     };
+
+    const afipPayload = { invoiceItems, payments, client };
 
     try {
       const response = await fetch("/api/generatedInvoiceByAfip", {
@@ -141,15 +154,21 @@ export const Cart: React.FC = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(afipPayload),
       });
+      console.log(afipPayload);
+
       if (response.ok) {
         const data = await response.json();
-        toast.success(data.message);
+        toast.success(
+          data.message || "Factura generada en AFIP correctamente."
+        );
       } else {
         const errorData = await response.json();
-        toast.error(errorData.error || "Error desconocido.");
+        toast.error(
+          errorData.error || "Error desconocido al facturar con AFIP."
+        );
       }
     } catch (error) {
-      toast.error("Ocurrió un error al ejecutar el test de AFIP.");
+      toast.error("Error de conexión con AFIP.");
     }
   };
 
@@ -187,12 +206,12 @@ export const Cart: React.FC = () => {
               className="mt-1 bg-custom-black-2 block w-full border text-white rounded-md shadow-sm py-2 px-3 focus:outline-none sm:text-sm"
             />
           </div>
-          <button
+          {/* <button
             onClick={handleTestAfip}
             className="mt-6 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none"
           >
             Test AFIP
-          </button>
+          </button> */}
 
           {paymentMethods.map((method, index) => (
             <div
@@ -249,25 +268,24 @@ export const Cart: React.FC = () => {
                   className="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 />
               </div>
-
-              {parseFloat(amounts[index]) > 50000 && (
-                <input
-                  type="text"
-                  placeholder="Ingrese su DNI"
-                  value={dniValues[index] || ""}
-                  onChange={(e) =>
-                    setDniValues(
-                      dniValues.map((dni, i) =>
-                        i === index ? e.target.value : dni
+              {["transferencia", "tarjeta"].includes(method.toLowerCase()) &&
+                parseFloat(amounts[index]) > 50000 && (
+                  <input
+                    type="text"
+                    placeholder="Ingrese su DNI"
+                    value={dniValues[index] || ""}
+                    onChange={(e) =>
+                      setDniValues(
+                        dniValues.map((dni, i) =>
+                          i === index ? e.target.value : dni
+                        )
                       )
-                    )
-                  }
-                  className="block w-full mt-4 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                />
-              )}
+                    }
+                    className="block w-full mt-4 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                  />
+                )}
             </div>
           ))}
-
           <button
             onClick={handleAddPaymentMethod}
             className="mt-4 inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none"
@@ -275,7 +293,6 @@ export const Cart: React.FC = () => {
             <FaPlus className="mr-2" />
             Agregar Método de Pago
           </button>
-
           <button
             onClick={handleCreateInvoice}
             disabled={loading}
