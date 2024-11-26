@@ -4,7 +4,17 @@ import { useCart } from "@/utils/cartContext";
 import { postInvoice } from "@/actions/invoices/postInvoice";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
-import { FaDollarSign, FaPlus, FaShoppingCart, FaTrash } from "react-icons/fa";
+import { FaPlus, FaShoppingCart, FaTrash } from "react-icons/fa";
+
+const validateDNI = (dni: string): boolean => {
+  // Remove any spaces or dots
+  const cleanedDNI = dni.replace(/[\s.]/g, "");
+
+  // Check if DNI contains only digits
+  const dniRegex = /^\d{7,8}$/;
+
+  return dniRegex.test(cleanedDNI);
+};
 
 export const Cart: React.FC = () => {
   const router = useRouter();
@@ -68,17 +78,30 @@ export const Cart: React.FC = () => {
         return;
       }
 
+      // Check if payment method requires DNI
       if (
         ["transferencia", "tarjeta"].includes(
           paymentMethods[i].toLowerCase()
         ) &&
-        parseFloat(amounts[i]) > 50000 &&
-        !dniValues[i]
+        parseFloat(amounts[i]) > 50000
       ) {
-        toast.error(
-          `Por favor, ingrese el DNI para el método de pago ${i + 1}.`
-        );
-        return;
+        const dni = dniValues[i]?.trim(); // Elimina espacios en blanco
+
+        // Check if DNI is empty or invalid
+        if (!dni) {
+          toast.error(
+            `Por favor, ingrese un DNI válido para el método de pago ${i + 1}.`
+          );
+          return;
+        }
+
+        // Validate DNI format
+        if (!validateDNI(dni)) {
+          toast.error(
+            `El DNI para el método de pago ${i + 1} no tiene un formato válido.`
+          );
+          return;
+        }
       }
     }
 
@@ -110,16 +133,37 @@ export const Cart: React.FC = () => {
     };
 
     try {
+      // Uncomment these when ready to actually process the invoice
       // await postInvoice(invoiceData, router);
       // cleanCart();
       toast.success("Factura creada exitosamente.");
 
-      const requiresAFIP = paymentMethods.some((method) =>
-        ["transferencia", "tarjeta"].includes(method.toLowerCase())
-      );
+      // Procesa cada método de pago que requiere AFIP.
+      for (const [index, method] of paymentMethods.entries()) {
+        const lowerMethod = method.toLowerCase();
+        if (["transferencia", "tarjeta"].includes(lowerMethod)) {
+          const paymentData = {
+            method,
+            amount: parseFloat(amounts[index]),
+            details: details[index],
+            dni: dniValues[index] || null,
+          };
 
-      if (requiresAFIP) {
-        await handleAfip();
+          try {
+            await handleAfip(paymentData);
+            toast.success(
+              `Declaración en AFIP completada para el método: ${method}.`
+            );
+          } catch (afipError) {
+            console.error(
+              `Error al declarar en AFIP para el método: ${method}`,
+              afipError
+            );
+            toast.error(
+              `Ocurrió un error al declarar en AFIP para el método: ${method}.`
+            );
+          }
+        }
       }
     } catch (error) {
       toast.error("Ocurrió un error al crear la factura.");
@@ -127,34 +171,30 @@ export const Cart: React.FC = () => {
       setLoading(false);
     }
   };
-
-  const handleAfip = async () => {
+  const handleAfip = async (payments: {
+    method: string;
+    amount: number;
+    details: string;
+    dni: string | null;
+  }) => {
     const invoiceItems = cart.map((item) => ({
-      branchName: item.variant.branchName, // Nombre de la sucursal o punto de venta
-      price: item.variant.priceArs, // Precio en ARS
-      quantity: productCounts[item.variant.id], // Cantidad
-    }));
-
-    const payments = paymentMethods.map((method, index) => ({
-      method: method.toLowerCase(), // Método en minúsculas
-      amount: parseFloat(amounts[index]).toFixed(2), // Monto formateado
-      dni: dniValues[index] || null, // DNI asociado (opcional)
+      branchName: item.variant.branchName,
+      price: item.variant.priceArs,
+      quantity: productCounts[item.variant.id],
     }));
 
     const client = {
-      name: clientName || "Consumidor Final", // Nombre del cliente
-      dni: dniValues.find((dni) => dni) || null, // DNI válido si existe
+      name: clientName || "Consumidor Final",
+      dni: payments.dni || null,
     };
 
     const afipPayload = { invoiceItems, payments, client };
-
     try {
       const response = await fetch("/api/generatedInvoiceByAfip", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(afipPayload),
       });
-      console.log(afipPayload);
 
       if (response.ok) {
         const data = await response.json();
@@ -206,13 +246,6 @@ export const Cart: React.FC = () => {
               className="mt-1 bg-custom-black-2 block w-full border text-white rounded-md shadow-sm py-2 px-3 focus:outline-none sm:text-sm"
             />
           </div>
-          {/* <button
-            onClick={handleTestAfip}
-            className="mt-6 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none"
-          >
-            Test AFIP
-          </button> */}
-
           {paymentMethods.map((method, index) => (
             <div
               key={index}
@@ -268,22 +301,21 @@ export const Cart: React.FC = () => {
                   className="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 />
               </div>
-              {["transferencia", "tarjeta"].includes(method.toLowerCase()) &&
-                parseFloat(amounts[index]) > 50000 && (
-                  <input
-                    type="text"
-                    placeholder="Ingrese su DNI"
-                    value={dniValues[index] || ""}
-                    onChange={(e) =>
-                      setDniValues(
-                        dniValues.map((dni, i) =>
-                          i === index ? e.target.value : dni
-                        )
+              {["transferencia", "tarjeta"].includes(method.toLowerCase()) && (
+                <input
+                  type="text"
+                  placeholder="Ingrese su DNI"
+                  value={dniValues[index] || ""}
+                  onChange={(e) =>
+                    setDniValues(
+                      dniValues.map((dni, i) =>
+                        i === index ? e.target.value : dni
                       )
-                    }
-                    className="block w-full mt-4 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                  />
-                )}
+                    )
+                  }
+                  className="block w-full mt-4 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                />
+              )}
             </div>
           ))}
           <button
