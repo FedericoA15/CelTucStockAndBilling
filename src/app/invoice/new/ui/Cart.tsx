@@ -7,12 +7,8 @@ import { toast } from "react-toastify";
 import { FaPlus, FaShoppingCart, FaTrash } from "react-icons/fa";
 
 const validateDNI = (dni: string): boolean => {
-  // Remove any spaces or dots
   const cleanedDNI = dni.replace(/[\s.]/g, "");
-
-  // Check if DNI contains only digits
-  const dniRegex = /^\d{7,8}$/;
-
+  const dniRegex = /^\d{7,8}$/; 
   return dniRegex.test(cleanedDNI);
 };
 
@@ -62,12 +58,34 @@ export const Cart: React.FC = () => {
     setAmounts(updatedAmounts);
   };
 
+  const isFormValid = (): boolean => {
+    if (!clientName.trim()) return false;
+
+    if (
+      amounts.some(
+        (amount) => !amount || isNaN(parseFloat(amount)) || parseFloat(amount) <= 0
+      )
+    ) {
+      return false;
+    }
+
+    for (let i = 0; i < paymentMethods.length; i++) {
+      const method = paymentMethods[i]?.toLowerCase();
+      const dni = dniValues[i]?.trim();
+      if (["tarjeta", "transferencia"].includes(method) && (!dni || !validateDNI(dni))) {
+        return false;
+      }
+    }
+
+    return true;
+  };
+
   const handleCreateInvoice = async () => {
     if (!clientName) {
       toast.error("Por favor, ingrese el nombre del cliente.");
       return;
     }
-
+  
     for (let i = 0; i < amounts.length; i++) {
       if (
         !amounts[i] ||
@@ -77,25 +95,21 @@ export const Cart: React.FC = () => {
         toast.error(`El monto para el método de pago ${i + 1} no es válido.`);
         return;
       }
-
-      // Check if payment method requires DNI
+  
       if (
         ["transferencia", "tarjeta"].includes(
           paymentMethods[i].toLowerCase()
         ) &&
         parseFloat(amounts[i]) > 50000
       ) {
-        const dni = dniValues[i]?.trim(); // Elimina espacios en blanco
-
-        // Check if DNI is empty or invalid
+        const dni = dniValues[i]?.trim();
         if (!dni) {
           toast.error(
             `Por favor, ingrese un DNI válido para el método de pago ${i + 1}.`
           );
           return;
         }
-
-        // Validate DNI format
+  
         if (!validateDNI(dni)) {
           toast.error(
             `El DNI para el método de pago ${i + 1} no tiene un formato válido.`
@@ -104,7 +118,7 @@ export const Cart: React.FC = () => {
         }
       }
     }
-
+  
     setLoading(true);
     const id = Cookies.get("id");
     if (!id) {
@@ -112,7 +126,7 @@ export const Cart: React.FC = () => {
       setLoading(false);
       return;
     }
-
+  
     const invoiceData = {
       user: { id },
       client: clientName,
@@ -131,24 +145,20 @@ export const Cart: React.FC = () => {
         dni: dniValues[index] || null,
       })),
     };
-
+  
     try {
-      // Uncomment these when ready to actually process the invoice
       // await postInvoice(invoiceData, router);
-      // cleanCart();
       toast.success("Factura creada exitosamente.");
-
-      // Procesa cada método de pago que requiere AFIP.
+  
       for (const [index, method] of paymentMethods.entries()) {
-        const lowerMethod = method.toLowerCase();
-        if (["transferencia", "tarjeta"].includes(lowerMethod)) {
+        if (["transferencia", "tarjeta"].includes(method.toLowerCase())) {
           const paymentData = {
             method,
             amount: parseFloat(amounts[index]),
             details: details[index],
             dni: dniValues[index] || null,
           };
-
+  
           try {
             await handleAfip(paymentData);
             toast.success(
@@ -165,12 +175,15 @@ export const Cart: React.FC = () => {
           }
         }
       }
+  
+      // cleanCart();
     } catch (error) {
       toast.error("Ocurrió un error al crear la factura.");
     } finally {
       setLoading(false);
     }
   };
+  
   const handleAfip = async (payments: {
     method: string;
     amount: number;
@@ -182,20 +195,21 @@ export const Cart: React.FC = () => {
       price: item.variant.priceArs,
       quantity: productCounts[item.variant.id],
     }));
-
+  
     const client = {
       name: clientName || "Consumidor Final",
       dni: payments.dni || null,
     };
-
+  
     const afipPayload = { invoiceItems, payments, client };
+  
     try {
       const response = await fetch("/api/generatedInvoiceByAfip", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(afipPayload),
       });
-
+  
       if (response.ok) {
         const data = await response.json();
         toast.success(
@@ -246,6 +260,7 @@ export const Cart: React.FC = () => {
               className="mt-1 bg-custom-black-2 block w-full border text-white rounded-md shadow-sm py-2 px-3 focus:outline-none sm:text-sm"
             />
           </div>
+
           {paymentMethods.map((method, index) => (
             <div
               key={index}
@@ -301,6 +316,7 @@ export const Cart: React.FC = () => {
                   className="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 />
               </div>
+
               {["transferencia", "tarjeta"].includes(method.toLowerCase()) && (
                 <input
                   type="text"
@@ -313,22 +329,32 @@ export const Cart: React.FC = () => {
                       )
                     )
                   }
+                  disabled={method.toLowerCase() === "efectivo"}
                   className="block w-full mt-4 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 />
               )}
             </div>
           ))}
-          <button
-            onClick={handleAddPaymentMethod}
-            className="mt-4 inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none"
-          >
-            <FaPlus className="mr-2" />
-            Agregar Método de Pago
-          </button>
+
+          {paymentMethods.length < 3 && (
+            <button
+              type="button"
+              onClick={handleAddPaymentMethod}
+              className="mt-4 w-full bg-blue-500 text-white py-2 px-4 rounded-md shadow-md hover:bg-blue-600 transition duration-200"
+            >
+              <FaPlus className="mr-2 inline" />
+              Agregar Método de Pago
+            </button>
+          )}
+
           <button
             onClick={handleCreateInvoice}
-            disabled={loading}
-            className="mt-6 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none"
+            disabled={!isFormValid() || loading}
+            className={`mt-6 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm ${
+              !isFormValid() || loading
+                ? "bg-gray-400 cursor-not-allowed"
+                : "text-white bg-green-600 hover:bg-green-700"
+            } focus:outline-none`}
           >
             {loading ? "Creando factura..." : "Crear Factura"}
           </button>
@@ -337,5 +363,3 @@ export const Cart: React.FC = () => {
     </div>
   );
 };
-
-export default Cart;
