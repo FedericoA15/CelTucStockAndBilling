@@ -8,7 +8,7 @@ import { FaPlus, FaShoppingCart, FaTrash } from "react-icons/fa";
 
 const validateDNI = (dni: string): boolean => {
   const cleanedDNI = dni.replace(/[\s.]/g, "");
-  const dniRegex = /^\d{7,8}$/; 
+  const dniRegex = /^\d{7,8}$/;
   return dniRegex.test(cleanedDNI);
 };
 
@@ -63,7 +63,8 @@ export const Cart: React.FC = () => {
 
     if (
       amounts.some(
-        (amount) => !amount || isNaN(parseFloat(amount)) || parseFloat(amount) <= 0
+        (amount) =>
+          !amount || isNaN(parseFloat(amount)) || parseFloat(amount) <= 0
       )
     ) {
       return false;
@@ -72,7 +73,10 @@ export const Cart: React.FC = () => {
     for (let i = 0; i < paymentMethods.length; i++) {
       const method = paymentMethods[i]?.toLowerCase();
       const dni = dniValues[i]?.trim();
-      if (["tarjeta", "transferencia"].includes(method) && (!dni || !validateDNI(dni))) {
+      if (
+        ["tarjeta", "transferencia"].includes(method) &&
+        (!dni || !validateDNI(dni))
+      ) {
         return false;
       }
     }
@@ -85,7 +89,7 @@ export const Cart: React.FC = () => {
       toast.error("Por favor, ingrese el nombre del cliente.");
       return;
     }
-  
+
     for (let i = 0; i < amounts.length; i++) {
       if (
         !amounts[i] ||
@@ -95,7 +99,7 @@ export const Cart: React.FC = () => {
         toast.error(`El monto para el método de pago ${i + 1} no es válido.`);
         return;
       }
-  
+
       if (
         ["transferencia", "tarjeta"].includes(
           paymentMethods[i].toLowerCase()
@@ -109,7 +113,7 @@ export const Cart: React.FC = () => {
           );
           return;
         }
-  
+
         if (!validateDNI(dni)) {
           toast.error(
             `El DNI para el método de pago ${i + 1} no tiene un formato válido.`
@@ -118,7 +122,7 @@ export const Cart: React.FC = () => {
         }
       }
     }
-  
+
     setLoading(true);
     const id = Cookies.get("id");
     if (!id) {
@@ -126,7 +130,7 @@ export const Cart: React.FC = () => {
       setLoading(false);
       return;
     }
-  
+
     const invoiceData = {
       user: { id },
       client: clientName,
@@ -145,86 +149,86 @@ export const Cart: React.FC = () => {
         dni: dniValues[index] || null,
       })),
     };
-  
+
     try {
-      // await postInvoice(invoiceData, router);
+      await postInvoice(invoiceData, router);
       toast.success("Factura creada exitosamente.");
-  
-      for (const [index, method] of paymentMethods.entries()) {
-        if (["transferencia", "tarjeta"].includes(method.toLowerCase())) {
-          const paymentData = {
-            method,
-            amount: parseFloat(amounts[index]),
-            details: details[index],
-            dni: dniValues[index] || null,
-          };
-  
-          try {
-            await handleAfip(paymentData);
-            toast.success(
-              `Declaración en AFIP completada para el método: ${method}.`
-            );
-          } catch (afipError) {
-            console.error(
-              `Error al declarar en AFIP para el método: ${method}`,
-              afipError
-            );
-            toast.error(
-              `Ocurrió un error al declarar en AFIP para el método: ${method}.`
-            );
-          }
-        }
-      }
-  
-      // cleanCart();
+
+      // for (const [index, method] of paymentMethods.entries()) {
+      //   if (["transferencia", "tarjeta"].includes(method.toLowerCase())) {
+      //     const paymentData = {
+      //       method,
+      //       amount: parseFloat(amounts[index]),
+      //       details: details[index],
+      //       dni: dniValues[index] || null,
+      //     };
+
+      //     try {
+      //       await handleAfip(paymentData);
+      //       toast.success(
+      //         `Declaración en AFIP completada para el método: ${method}.`
+      //       );
+      //     } catch (afipError) {
+      //       console.error(
+      //         `Error al declarar en AFIP para el método: ${method}`,
+      //         afipError
+      //       );
+      //       toast.error(
+      //         `Ocurrió un error al declarar en AFIP para el método: ${method}.`
+      //       );
+      //     }
+      //   }
+      // }
+
+      cleanCart();
     } catch (error) {
       toast.error("Ocurrió un error al crear la factura.");
     } finally {
       setLoading(false);
     }
   };
-  
-  const handleAfip = async (payments: {
-    method: string;
-    amount: number;
-    details: string;
-    dni: string | null;
-  }) => {
-    const invoiceItems = cart.map((item) => ({
-      branchName: item.variant.branchName,
-      price: item.variant.priceArs,
-      quantity: productCounts[item.variant.id],
-    }));
-  
-    const client = {
-      name: clientName || "Consumidor Final",
-      dni: payments.dni || null,
-    };
-  
-    const afipPayload = { invoiceItems, payments, client };
-  
-    try {
-      const response = await fetch("/api/generatedInvoiceByAfip", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(afipPayload),
-      });
-  
-      if (response.ok) {
-        const data = await response.json();
-        toast.success(
-          data.message || "Factura generada en AFIP correctamente."
-        );
-      } else {
-        const errorData = await response.json();
-        toast.error(
-          errorData.error || "Error desconocido al facturar con AFIP."
-        );
-      }
-    } catch (error) {
-      toast.error("Error de conexión con AFIP.");
-    }
-  };
+
+  // const handleAfip = async (payments: {
+  //   method: string;
+  //   amount: number;
+  //   details: string;
+  //   dni: string | null;
+  // }) => {
+  //   const invoiceItems = cart.map((item) => ({
+  //     branchName: item.variant.branchName,
+  //     price: item.variant.priceArs,
+  //     quantity: productCounts[item.variant.id],
+  //   }));
+
+  //   const client = {
+  //     name: clientName || "Consumidor Final",
+  //     dni: payments.dni || null,
+  //   };
+
+  //   const afipPayload = { invoiceItems, payments, client };
+
+  //   try {
+  //     const response = await fetch("/api/generatedInvoiceByAfip", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify(afipPayload),
+  //     });
+
+  //     if (response.ok) {
+  //       const data = await response.json();
+  //       toast.success(
+  //         data.message || "Factura generada en AFIP correctamente."
+  //       );
+  //     } else {
+  //       const errorData = await response.json();
+  //       toast.error(
+  //         errorData.error || "Error desconocido al facturar con AFIP."
+  //       );
+  //     }
+  //   } catch (error) {
+  //     toast.error("Error de conexión con AFIP.");
+  //   }
+  // };
 
   return (
     <div className="min-h-screen bg-gradient-to-b py-8 px-4 sm:px-6 lg:px-8">
