@@ -4,7 +4,13 @@ import { useCart } from "@/utils/cartContext";
 import { postInvoice } from "@/actions/invoices/postInvoice";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
-import { FaDollarSign, FaPlus, FaShoppingCart, FaTrash } from "react-icons/fa";
+import { FaPlus, FaShoppingCart, FaTrash } from "react-icons/fa";
+
+const validateDNI = (dni: string): boolean => {
+  const cleanedDNI = dni.replace(/[\s.]/g, "");
+  const dniRegex = /^\d{7,8}$/;
+  return dniRegex.test(cleanedDNI);
+};
 
 export const Cart: React.FC = () => {
   const router = useRouter();
@@ -12,6 +18,7 @@ export const Cart: React.FC = () => {
   const [paymentMethods, setPaymentMethods] = useState<string[]>([""]);
   const [amounts, setAmounts] = useState<string[]>([""]);
   const [details, setDetails] = useState<string[]>([""]);
+  const [dniValues, setDniValues] = useState<string[]>([""]);
   const [clientName, setClientName] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -32,19 +39,49 @@ export const Cart: React.FC = () => {
       setPaymentMethods([...paymentMethods, ""]);
       setAmounts([...amounts, ""]);
       setDetails([...details, ""]);
+      setDniValues([...dniValues, ""]);
     }
   };
 
   const handleRemovePaymentMethod = (index: number) => {
     if (paymentMethods.length > 1) {
-      const updatedMethods = paymentMethods.filter((_, i) => i !== index);
-      const updatedAmounts = amounts.filter((_, i) => i !== index);
-      const updatedDetails = details.filter((_, i) => i !== index);
-
-      setPaymentMethods(updatedMethods);
-      setAmounts(updatedAmounts);
-      setDetails(updatedDetails);
+      setPaymentMethods(paymentMethods.filter((_, i) => i !== index));
+      setAmounts(amounts.filter((_, i) => i !== index));
+      setDetails(details.filter((_, i) => i !== index));
+      setDniValues(dniValues.filter((_, i) => i !== index));
     }
+  };
+
+  const handleAmountChange = (value: string, index: number) => {
+    const updatedAmounts = [...amounts];
+    updatedAmounts[index] = value;
+    setAmounts(updatedAmounts);
+  };
+
+  const isFormValid = (): boolean => {
+    if (!clientName.trim()) return false;
+
+    if (
+      amounts.some(
+        (amount) =>
+          !amount || isNaN(parseFloat(amount)) || parseFloat(amount) <= 0
+      )
+    ) {
+      return false;
+    }
+
+    for (let i = 0; i < paymentMethods.length; i++) {
+      const method = paymentMethods[i]?.toLowerCase();
+      const dni = dniValues[i]?.trim();
+      if (
+        ["tarjeta", "transferencia"].includes(method) &&
+        (!dni || !validateDNI(dni))
+      ) {
+        return false;
+      }
+    }
+
+    return true;
   };
 
   const handleCreateInvoice = async () => {
@@ -61,6 +98,28 @@ export const Cart: React.FC = () => {
       ) {
         toast.error(`El monto para el método de pago ${i + 1} no es válido.`);
         return;
+      }
+
+      if (
+        ["transferencia", "tarjeta"].includes(
+          paymentMethods[i].toLowerCase()
+        ) &&
+        parseFloat(amounts[i]) > 50000
+      ) {
+        const dni = dniValues[i]?.trim();
+        if (!dni) {
+          toast.error(
+            `Por favor, ingrese un DNI válido para el método de pago ${i + 1}.`
+          );
+          return;
+        }
+
+        if (!validateDNI(dni)) {
+          toast.error(
+            `El DNI para el método de pago ${i + 1} no tiene un formato válido.`
+          );
+          return;
+        }
       }
     }
 
@@ -87,13 +146,41 @@ export const Cart: React.FC = () => {
         paymentMethod: method,
         amount: parseFloat(amounts[index]),
         details: details[index],
+        dni: dniValues[index] || null,
       })),
     };
 
     try {
       await postInvoice(invoiceData, router);
-      cleanCart();
       toast.success("Factura creada exitosamente.");
+
+      // for (const [index, method] of paymentMethods.entries()) {
+      //   if (["transferencia", "tarjeta"].includes(method.toLowerCase())) {
+      //     const paymentData = {
+      //       method,
+      //       amount: parseFloat(amounts[index]),
+      //       details: details[index],
+      //       dni: dniValues[index] || null,
+      //     };
+
+      //     try {
+      //       await handleAfip(paymentData);
+      //       toast.success(
+      //         `Declaración en AFIP completada para el método: ${method}.`
+      //       );
+      //     } catch (afipError) {
+      //       console.error(
+      //         `Error al declarar en AFIP para el método: ${method}`,
+      //         afipError
+      //       );
+      //       toast.error(
+      //         `Ocurrió un error al declarar en AFIP para el método: ${method}.`
+      //       );
+      //     }
+      //   }
+      // }
+
+      cleanCart();
     } catch (error) {
       toast.error("Ocurrió un error al crear la factura.");
     } finally {
@@ -101,9 +188,47 @@ export const Cart: React.FC = () => {
     }
   };
 
-  const uniqueCartItems = Array.from(
-    new Set(cart.map((item) => item.variant.id))
-  ).map((id) => cart.find((item) => item.variant.id === id)!);
+  // const handleAfip = async (payments: {
+  //   method: string;
+  //   amount: number;
+  //   details: string;
+  //   dni: string | null;
+  // }) => {
+  //   const invoiceItems = cart.map((item) => ({
+  //     branchName: item.variant.branchName,
+  //     price: item.variant.priceArs,
+  //     quantity: productCounts[item.variant.id],
+  //   }));
+
+  //   const client = {
+  //     name: clientName || "Consumidor Final",
+  //     dni: payments.dni || null,
+  //   };
+
+  //   const afipPayload = { invoiceItems, payments, client };
+
+  //   try {
+  //     const response = await fetch("/api/generatedInvoiceByAfip", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify(afipPayload),
+  //     });
+
+  //     if (response.ok) {
+  //       const data = await response.json();
+  //       toast.success(
+  //         data.message || "Factura generada en AFIP correctamente."
+  //       );
+  //     } else {
+  //       const errorData = await response.json();
+  //       toast.error(
+  //         errorData.error || "Error desconocido al facturar con AFIP."
+  //       );
+  //     }
+  //   } catch (error) {
+  //     toast.error("Error de conexión con AFIP.");
+  //   }
+  // };
 
   return (
     <div className="min-h-screen bg-gradient-to-b py-8 px-4 sm:px-6 lg:px-8">
@@ -115,51 +240,6 @@ export const Cart: React.FC = () => {
           </h2>
         </div>
         <div className="p-6">
-          <div className="overflow-x-auto">
-            <table className="min-w-full ">
-              <thead className="bg-custom-black-2">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
-                    Producto
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
-                    Precio USD
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
-                    Precio ARS
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
-                    Precio ARS Contado
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
-                    Cantidad
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-custom-black-2 text-white ">
-                {uniqueCartItems.map((item) => (
-                  <tr key={item.variant.id}>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      {item.itemName}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      ${item.variant.price.toFixed(2)}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      ${item.variant.priceArs.toFixed(2)}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      ${item.variant.priceArsCounted.toFixed(2)}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      {productCounts[item.variant.id]}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
           <div className="mt-6 bg-custom-black-2 p-4 rounded-lg">
             <p className="text-lg font-semibold text-white">
               Total en USD: ${totalUSD.toFixed(2)}
@@ -186,7 +266,10 @@ export const Cart: React.FC = () => {
           </div>
 
           {paymentMethods.map((method, index) => (
-            <div key={index} className="mt-6 bg-custom-black-2 p-4 rounded-lg">
+            <div
+              key={index}
+              className="mt-6 bg-custom-black-2 p-4 rounded-lg relative"
+            >
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-medium text-white">
                   Método de Pago {index + 1}
@@ -202,65 +285,83 @@ export const Cart: React.FC = () => {
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                 <select
                   value={method}
-                  onChange={(e) => {
-                    const updatedMethods = [...paymentMethods];
-                    updatedMethods[index] = e.target.value;
-                    setPaymentMethods(updatedMethods);
-                  }}
+                  onChange={(e) =>
+                    setPaymentMethods(
+                      paymentMethods.map((m, i) =>
+                        i === index ? e.target.value : m
+                      )
+                    )
+                  }
                   className="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 >
-                  <option value="" disabled>
-                    Selecciona el método de pago
-                  </option>
+                  <option value="">Seleccione método de pago</option>
                   <option value="tarjeta">Tarjeta</option>
-                  <option value="efectivo">Efectivo</option>
                   <option value="transferencia">Transferencia</option>
+                  <option value="efectivo">Efectivo</option>
                 </select>
+
                 <input
                   type="text"
                   placeholder="Monto"
                   value={amounts[index]}
-                  onChange={(e) => {
-                    const updatedAmounts = [...amounts];
-                    updatedAmounts[index] = e.target.value;
-                    setAmounts(updatedAmounts);
-                  }}
+                  onChange={(e) => handleAmountChange(e.target.value, index)}
                   className="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 />
+
                 <input
                   type="text"
                   placeholder="Detalles"
                   value={details[index]}
-                  onChange={(e) => {
-                    const updatedDetails = [...details];
-                    updatedDetails[index] = e.target.value;
-                    setDetails(updatedDetails);
-                  }}
+                  onChange={(e) =>
+                    setDetails(
+                      details.map((d, i) => (i === index ? e.target.value : d))
+                    )
+                  }
                   className="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 />
               </div>
+
+              {["transferencia", "tarjeta"].includes(method.toLowerCase()) && (
+                <input
+                  type="text"
+                  placeholder="Ingrese su DNI"
+                  value={dniValues[index] || ""}
+                  onChange={(e) =>
+                    setDniValues(
+                      dniValues.map((dni, i) =>
+                        i === index ? e.target.value : dni
+                      )
+                    )
+                  }
+                  disabled={method.toLowerCase() === "efectivo"}
+                  className="block w-full mt-4 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                />
+              )}
             </div>
           ))}
 
-          <div className="mt-8 flex justify-between">
+          {paymentMethods.length < 3 && (
             <button
               type="button"
               onClick={handleAddPaymentMethod}
-              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="mt-4 w-full bg-blue-500 text-white py-2 px-4 rounded-md shadow-md hover:bg-blue-600 transition duration-200"
             >
-              <FaPlus className="mr-2" />
-              Agregar método de pago
+              <FaPlus className="mr-2 inline" />
+              Agregar Método de Pago
             </button>
-            <button
-              type="button"
-              onClick={handleCreateInvoice}
-              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-              disabled={loading}
-            >
-              <FaDollarSign className="mr-2" />
-              {loading ? "Creando..." : "Crear factura"}
-            </button>
-          </div>
+          )}
+
+          <button
+            onClick={handleCreateInvoice}
+            disabled={!isFormValid() || loading}
+            className={`mt-6 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm ${
+              !isFormValid() || loading
+                ? "bg-gray-400 cursor-not-allowed"
+                : "text-white bg-green-600 hover:bg-green-700"
+            } focus:outline-none`}
+          >
+            {loading ? "Creando factura..." : "Crear Factura"}
+          </button>
         </div>
       </div>
     </div>

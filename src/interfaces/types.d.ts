@@ -240,6 +240,7 @@ interface FiltersVoucher {
   branchName: string;
   untilDate: string;
   email: string;
+  imei?: string;
 }
 
 interface IMEIResultModalProps {

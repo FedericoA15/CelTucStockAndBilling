@@ -9,7 +9,7 @@ const cert: string |undefined = process.env.NEXT_PUBLIC_CERT;
 const afipConfig: any = {
   key: key,
   cert: cert,
-  cuit: 23427179079, 
+  cuit: 20350940643, 
   production: isProduction,
 };
 

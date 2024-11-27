@@ -8,6 +8,7 @@ import {
   X,
   Home,
   Phone,
+  Code,
 } from "lucide-react";
 
 const SearchForm: React.FC<SearchFormPropsVoucher> = ({
@@ -22,6 +23,7 @@ const SearchForm: React.FC<SearchFormPropsVoucher> = ({
     equipment: "",
     untilDate: "",
     email: "",
+    imei: "",
   });
 
   const [searchTriggered, setSearchTriggered] = useState(false);
@@ -56,7 +58,6 @@ const SearchForm: React.FC<SearchFormPropsVoucher> = ({
         Búsqueda de Comprobantes
       </h2>
       <div className="space-y-4">
-        {/* Campo Cliente */}
         <div className="relative">
           <label
             htmlFor="client"
@@ -131,6 +132,25 @@ const SearchForm: React.FC<SearchFormPropsVoucher> = ({
             placeholder="Equipo"
           />
           <Phone className="absolute left-3 top-9 text-gray-400 h-5 w-5" />
+        </div>
+
+        <div className="relative">
+          <label
+            htmlFor="seller"
+            className="block text-sm font-medium mb-1 text-gray-300"
+          >
+            Imei
+          </label>
+          <input
+            type="text"
+            id="imei"
+            name="imei"
+            value={filters.imei}
+            onChange={handleFilterChange}
+            className="w-full pl-10 pr-3 py-2 text-gray-300 bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out"
+            placeholder="Imei"
+          />
+          <Code className="absolute left-3 top-9 text-gray-400 h-5 w-5" />
         </div>
 
         {/* Campo Fecha */}
