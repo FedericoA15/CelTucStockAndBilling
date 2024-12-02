@@ -30,6 +30,12 @@ const ReceiptForm: React.FC = () => {
   const role = Cookies.get("roles");
   const [clientEmail, setClientEmail] = useState("");
   const [product, setProduct] = useState<any>();
+  const paymentOptions = [
+    "Efectivo",
+    "Tarjeta",
+    "Transferencia",
+    "Transferencia De Terceros",
+  ];
 
   const getCurrentDate = () => {
     const today = new Date();
@@ -43,7 +49,7 @@ const ReceiptForm: React.FC = () => {
     coupon: "",
     date: getCurrentDate(),
     client: "",
-    dni: "",
+    DNI: "",
     phone: "",
     concept: "",
     condition: "",
@@ -135,8 +141,29 @@ const ReceiptForm: React.FC = () => {
     const branchName =
       branchNames[formData.branch.id] || "Sucursal desconocida";
 
-    postVoucher(formDataWithType);
-    GeneratePDFByReceipt(formDataWithType, branchName, clientEmail);
+    // postVoucher(formDataWithType);
+    console.log(formDataWithType.paymentMethods);
+    // GeneratePDFByReceipt(formDataWithType, branchName, clientEmail);
+  };
+
+  const handlePaymentMethodChange = (paymentMethod: string) => {
+    setFormData((prevData) => {
+      const methodsArray = prevData.paymentMethods
+        ? prevData.paymentMethods.split(", ").filter((m) => m !== "")
+        : [];
+
+      const isSelected = methodsArray.includes(paymentMethod);
+
+      // Actualiza la lista de métodos de pago
+      const updatedMethods = isSelected
+        ? methodsArray.filter((method) => method !== paymentMethod)
+        : [...methodsArray, paymentMethod];
+
+      return {
+        ...prevData,
+        paymentMethods: updatedMethods.join(", "), // Actualiza el string separado por comas
+      };
+    });
   };
 
   const handleCloseModal = () => {
@@ -258,9 +285,9 @@ const ReceiptForm: React.FC = () => {
                   </label>
                   <input
                     type="text"
-                    id="dni"
-                    name="dni"
-                    value={formData.dni}
+                    id="DNI"
+                    name="DNI"
+                    value={formData.DNI}
                     onChange={handleChange}
                     className="w-full py-2 px-3 border border-gray-600 bg-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-white transition duration-300 ease-in-out"
                     placeholder="Número de DNI"
@@ -412,7 +439,7 @@ const ReceiptForm: React.FC = () => {
                     placeholder="Período de garantía"
                   />
                 </div>
-                <div>
+                {/* <div>
                   <label
                     htmlFor="paymentMethods"
                     className="block text-sm font-medium text-gray-300 mb-1"
@@ -429,6 +456,34 @@ const ReceiptForm: React.FC = () => {
                     className="w-full py-2 px-3 border border-gray-600 bg-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-white transition duration-300 ease-in-out"
                     placeholder="Método de pago"
                   />
+                </div> */}
+                <div>
+                  <label
+                    htmlFor="paymentMethods"
+                    className="block text-sm font-medium text-gray-300 mb-1"
+                  >
+                    <CreditCard className="inline-block w-5 h-5 mr-1" /> FORMAS
+                    DE PAGO
+                  </label>
+                  {paymentOptions.map((option) => (
+                    <div key={option} className="flex items-center">
+                      <input
+                        type="checkbox"
+                        id={option}
+                        name="paymentMethods"
+                        value={option}
+                        checked={formData.paymentMethods.includes(option)}
+                        onChange={() => handlePaymentMethodChange(option)}
+                        className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                      />
+                      <label
+                        htmlFor={option}
+                        className="ml-2 text-sm text-white"
+                      >
+                        {option}
+                      </label>
+                    </div>
+                  ))}
                 </div>
               </div>
 
