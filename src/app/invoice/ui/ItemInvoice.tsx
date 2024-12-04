@@ -4,13 +4,6 @@ import { PaymentItem } from "./PaymentItem";
 
 export const ItemInvoice: React.FC<{ item: Invoice }> = ({ item }) => {
   return (
-    // <div className="border border-gray-700 bg-custom-black-2 shadow overflow-hidden transition duration-300 hover:shadow-lg rounded-lg flex-1">
-    // <div className="grid grid-cols-1 md:grid-cols-3 bg-custom-black-2 border-b border-gray-700">
-    //   <Link
-    //     className="p-4 font-bold text-blue-400 hover:text-blue-500 transition duration-200 underline"
-    //     href={`/invoice/${item.id}`}
-    //   >
-
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
