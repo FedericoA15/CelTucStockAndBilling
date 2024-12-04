@@ -62,7 +62,7 @@ const ReceiptForm: React.FC = () => {
     total: "",
     branch: { id: "" },
     signature: "",
-    responsible: "", // Para almacenar el responsable seleccionado
+    responsible: "",
     cardValue: "",
     transferValue: "",
   });
