@@ -34,8 +34,9 @@ const ReceiptForm: React.FC = () => {
     "Efectivo",
     "Tarjeta",
     "Transferencia",
-    "Transferencia De Terceros",
+    "Proveedores",
   ];
+  const additionalOptions = ["Felipe", "Gi", "Carlos", "Ezequiel"];
 
   const getCurrentDate = () => {
     const today = new Date();
@@ -61,6 +62,9 @@ const ReceiptForm: React.FC = () => {
     total: "",
     branch: { id: "" },
     signature: "",
+    responsible: "", // Para almacenar el responsable seleccionado
+    cardValue: "",
+    transferValue: "",
   });
 
   useEffect(() => {
@@ -439,24 +443,7 @@ const ReceiptForm: React.FC = () => {
                     placeholder="Período de garantía"
                   />
                 </div>
-                {/* <div>
-                  <label
-                    htmlFor="paymentMethods"
-                    className="block text-sm font-medium text-gray-300 mb-1"
-                  >
-                    <CreditCard className="inline-block w-5 h-5 mr-1" /> FORMA
-                    DE PAGO
-                  </label>
-                  <input
-                    type="text"
-                    id="paymentMethods"
-                    name="paymentMethods"
-                    value={formData.paymentMethods}
-                    onChange={handleChange}
-                    className="w-full py-2 px-3 border border-gray-600 bg-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-white transition duration-300 ease-in-out"
-                    placeholder="Método de pago"
-                  />
-                </div> */}
+
                 <div>
                   <label
                     htmlFor="paymentMethods"
@@ -486,6 +473,89 @@ const ReceiptForm: React.FC = () => {
                   ))}
                 </div>
               </div>
+              {(formData.paymentMethods.includes("Tarjeta") ||
+                formData.paymentMethods.includes("Transferencia")) && (
+                <div className="space-y-4">
+                  {/* Responsable del Pago */}
+                  <div>
+                    <label
+                      htmlFor="responsible"
+                      className="block text-sm font-medium text-gray-300 mb-1"
+                    >
+                      Responsable del Pago
+                    </label>
+                    <select
+                      id="responsible"
+                      name="responsible"
+                      value={formData.responsible}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          responsible: e.target.value,
+                        })
+                      }
+                      className="w-full py-2 px-3 border border-gray-600 bg-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-white transition duration-300 ease-in-out"
+                    >
+                      <option value="">Selecciona un responsable</option>
+                      {additionalOptions.map((option) => (
+                        <option key={option} value={option}>
+                          {option}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Campo de Valor para Tarjeta */}
+                  {formData.paymentMethods.includes("Tarjeta") && (
+                    <div>
+                      <label
+                        htmlFor="cardValue"
+                        className="block text-sm font-medium text-gray-300 mb-1"
+                      >
+                        Valor para Tarjeta
+                      </label>
+                      <input
+                        type="number"
+                        id="cardValue"
+                        name="cardValue"
+                        value={formData.cardValue || ""}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            cardValue: e.target.value,
+                          })
+                        }
+                        className="w-full py-2 px-3 border border-gray-600 bg-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-white transition duration-300 ease-in-out"
+                      />
+                    </div>
+                  )}
+
+                  {/* Campo de Valor para Transferencia */}
+                  {formData.paymentMethods.includes("Transferencia") && (
+                    <div>
+                      <label
+                        htmlFor="transferValue"
+                        className="block text-sm font-medium text-gray-300 mb-1"
+                      >
+                        Valor para Transferencia
+                      </label>
+                      <input
+                        type="number"
+                        id="transferValue"
+                        name="transferValue"
+                        value={formData.transferValue || ""}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            transferValue: e.target.value,
+                          })
+                        }
+                        className="w-full py-2 px-3 border border-gray-600 bg-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-white transition duration-300 ease-in-out"
+                      />
+                    </div>
+                  )}
+                </div>
+              )}
 
               <div>
                 <label
