@@ -41,18 +41,12 @@ const ReceiptForm: React.FC = () => {
 
   const [formData, setFormData] = useState({
     coupon: "",
+    changeValue: "",
     date: getCurrentDate(),
     client: "",
-    DNI: "",
-    phone: "",
     concept: "",
-    condition: "",
-    imei: "",
-    warranty: "",
-    paymentMethods: "",
-    obs: "",
-    addition: "",
     total: "",
+    remaining: "",
     branch: { id: "" },
     signature: "",
   });
@@ -60,7 +54,7 @@ const ReceiptForm: React.FC = () => {
   useEffect(() => {
     async function fetchLastCoupon() {
       try {
-        const lastVoucher = await getLastVoucherByType("Compra");
+        const lastVoucher = await getLastVoucherByType("Seña");
         const lastCoupon = lastVoucher.content[0]?.coupon || 0;
 
         setFormData((prevData) => ({
@@ -87,27 +81,6 @@ const ReceiptForm: React.FC = () => {
     }
   };
 
-  const handleSearch = async (imei: string) => {
-    try {
-      const foundProduct = await getProductByIMEI(imei);
-      setProduct(foundProduct);
-    } catch (error) {
-      console.error("Error al buscar el producto por IMEI:", error);
-    }
-  };
-
-  const handleAddToVoucher = (variant: any) => {
-    setFormData({
-      ...formData,
-      concept: `${product.name} - ${variant.subModel} - ${variant.color}`,
-      imei: variant.productCodes[0],
-      condition: variant.state,
-      total: variant.price,
-      addition: variant.price,
-    });
-    setProduct(null);
-  };
-
   const branchNames: { [key: string]: string } = {
     "e692d1b3-71a7-431a-ba8a-36754f2c64a5": "Yerba Buena",
     "e692d1b3-71a7-431a-ba8a-36754f2c64a9": "Solar",
@@ -123,13 +96,11 @@ const ReceiptForm: React.FC = () => {
       );
       return;
     }
-    const foundProduct = await getProductByIMEI(formData.imei);
 
     const formDataWithType = {
       ...formData,
       type: "Compra",
       user: { id },
-      productVariants: [foundProduct.variants[0]],
     };
 
     const branchName =
@@ -139,9 +110,6 @@ const ReceiptForm: React.FC = () => {
     GeneratePDFByReceipt(formDataWithType, branchName, clientEmail);
   };
 
-  const handleCloseModal = () => {
-    setProduct(null);
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b  py-8 px-4 sm:px-6 lg:px-8">
@@ -152,9 +120,8 @@ const ReceiptForm: React.FC = () => {
         >
           <div className="px-6 py-8">
             <h2 className="text-3xl font-bold text-center text-white mb-8">
-              RECIBO DE COMPRA DE EQUIPO/S
+              Seña
             </h2>
-            <IMEISearchForm onSearch={handleSearch} />
             <div className="space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div>
@@ -248,78 +215,7 @@ const ReceiptForm: React.FC = () => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                <div>
-                  <label
-                    htmlFor="DNI"
-                    className="block text-sm font-medium text-gray-300 mb-1"
-                  >
-                    <FileSignature className="inline-block w-5 h-5 mr-1" /> DNI
-                  </label>
-                  <input
-                    type="text"
-                    id="DNI"
-                    name="DNI"
-                    value={formData.DNI}
-                    onChange={handleChange}
-                    className="w-full py-2 px-3 border border-gray-600 bg-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-white transition duration-300 ease-in-out"
-                    placeholder="Número de DNI"
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="phone"
-                    className="block text-sm font-medium text-gray-300 mb-1"
-                  >
-                    <Phone className="inline-block w-5 h-5 mr-1" /> Nº TEL
-                  </label>
-                  <input
-                    type="text"
-                    id="phone"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    className="w-full py-2 px-3 border border-gray-600 bg-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-white transition duration-300 ease-in-out"
-                    placeholder="Número de teléfono"
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="clientEmail"
-                    className="block text-sm font-medium text-gray-300 mb-1"
-                  >
-                    <Mail className="inline-block w-5 h-5 mr-1" /> Email
-                  </label>
-                  <input
-                    type="email"
-                    id="clientEmail"
-                    name="clientEmail"
-                    value={clientEmail}
-                    onChange={handleChange}
-                    className="w-full py-2 px-3 border border-gray-600 bg-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-white transition duration-300 ease-in-out"
-                    placeholder="correo@ejemplo.com"
-                  />
-                </div>
-              </div>
 
-              <div>
-                <label
-                  htmlFor="addition"
-                  className="block text-sm font-medium text-gray-300 mb-1"
-                >
-                  <DollarSign className="inline-block w-5 h-5 mr-1" /> LA SUMA
-                  DE
-                </label>
-                <input
-                  type="text"
-                  id="addition"
-                  name="addition"
-                  value={formData.addition}
-                  onChange={handleChange}
-                  className="w-full py-2 px-3 border border-gray-600 bg-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-white transition duration-300 ease-in-out"
-                  placeholder="Monto en pesos"
-                />
-              </div>
 
               <div>
                 <label
@@ -340,116 +236,6 @@ const ReceiptForm: React.FC = () => {
                 />
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div>
-                  <label
-                    htmlFor="condition"
-                    className="block text-sm font-medium text-gray-300 mb-1"
-                  >
-                    <Shield className="inline-block w-5 h-5 mr-1" /> CONDICION
-                  </label>
-                  <input
-                    type="text"
-                    id="condition"
-                    name="condition"
-                    value={formData.condition}
-                    onChange={handleChange}
-                    className="w-full py-2 px-3 border border-gray-600 bg-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-white transition duration-300 ease-in-out"
-                    placeholder="Estado del equipo"
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="total"
-                    className="block text-sm font-medium text-gray-300 mb-1"
-                  >
-                    <DollarSign className="inline-block w-5 h-5 mr-1" /> TOTAL $
-                  </label>
-                  <input
-                    type="text"
-                    id="total"
-                    name="total"
-                    value={formData.total}
-                    onChange={handleChange}
-                    className="w-full py-2 px-3 border border-gray-600 bg-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-white transition duration-300 ease-in-out"
-                    placeholder="Monto total"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                <div>
-                  <label
-                    htmlFor="imei"
-                    className="block text-sm font-medium text-gray-300 mb-1"
-                  >
-                    <Smartphone className="inline-block w-5 h-5 mr-1" /> IMEI
-                  </label>
-                  <input
-                    type="text"
-                    id="imei"
-                    name="imei"
-                    value={formData.imei}
-                    onChange={handleChange}
-                    className="w-full py-2 px-3 border border-gray-600 bg-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-white transition duration-300 ease-in-out"
-                    placeholder="Número IMEI"
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="warranty"
-                    className="block text-sm font-medium text-gray-300 mb-1"
-                  >
-                    <Shield className="inline-block w-5 h-5 mr-1" /> GARANTIA
-                  </label>
-                  <input
-                    type="text"
-                    id="warranty"
-                    name="warranty"
-                    value={formData.warranty}
-                    onChange={handleChange}
-                    className="w-full py-2 px-3 border border-gray-600 bg-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-white transition duration-300 ease-in-out"
-                    placeholder="Período de garantía"
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="paymentMethods"
-                    className="block text-sm font-medium text-gray-300 mb-1"
-                  >
-                    <CreditCard className="inline-block w-5 h-5 mr-1" /> FORMA
-                    DE PAGO
-                  </label>
-                  <input
-                    type="text"
-                    id="paymentMethods"
-                    name="paymentMethods"
-                    value={formData.paymentMethods}
-                    onChange={handleChange}
-                    className="w-full py-2 px-3 border border-gray-600 bg-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-white transition duration-300 ease-in-out"
-                    placeholder="Método de pago"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label
-                  htmlFor="obs"
-                  className="block text-sm font-medium text-gray-300 mb-1"
-                >
-                  <FileText className="inline-block w-5 h-5 mr-1" />{" "}
-                  OBSERVACIONES
-                </label>
-                <textarea
-                  id="obs"
-                  name="obs"
-                  value={formData.obs}
-                  onChange={handleChange}
-                  rows={3}
-                  className="w-full py-2 px-3 border border-gray-600 bg-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-white transition duration-300 ease-in-out"
-                  placeholder="Observaciones adicionales"
-                />
-              </div>
 
               <div>
                 <label
@@ -496,11 +282,6 @@ const ReceiptForm: React.FC = () => {
           </div>
         </form>
       </div>
-      <IMEIResultModal
-        product={product}
-        onClose={handleCloseModal}
-        onAddToVoucher={handleAddToVoucher}
-      />
     </div>
   );
 };
