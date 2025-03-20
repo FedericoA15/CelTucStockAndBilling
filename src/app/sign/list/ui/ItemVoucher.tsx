@@ -60,14 +60,6 @@ export const ItemVoucher: React.FC<{ item: Voucher }> = ({ item }) => {
           />
         </div>
       </div>
-      <div className="bg-custom-black p-6">
-        <h3 className="text-xl font-semibold mb-4 text-white-600">Productos</h3>
-        <div className="space-y-4">
-          {item.productVariants.map((productVariant, index) => (
-            <ProductVariant key={index} variant={productVariant} />
-          ))}
-        </div>
-      </div>
     </div>
   );
 };
