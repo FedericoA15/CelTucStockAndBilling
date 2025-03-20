@@ -45,6 +45,11 @@ export default function Navbar(): JSX.Element {
       label: "Comprobantes de contratos",
       icon: FileSignature,
     },
+    {
+      href: "/sign",
+      label: "Comprobantes de señas",
+      icon: FileSignature,
+    },
   ];
 
   return (

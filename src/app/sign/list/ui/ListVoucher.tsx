@@ -1,9 +1,9 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Pagination } from "@/components/pagination/Pagination";
-import { getVoucherBySales } from "@/actions/voucher/getVoucherBySales";
 import { ItemVoucher } from "./ItemVoucher";
 import SearchForm from "@/components/searchFormForVouchers/SearchForm";
+import { getVoucherBySign } from "@/actions/voucher/getVoucherBySign";
 
 const ListVoucher: React.FC = () => {
   const [data, setData] = useState<{ content: Voucher[]; totalPages: number }>({
@@ -23,9 +23,21 @@ const ListVoucher: React.FC = () => {
     email: "",
   });
 
+  // coupon: "",
+  // date: getCurrentDate(),
+  // client: "",
+  // concept: "",
+  // sign: "",
+  // obs: "",
+  // budget: "",
+  // total: "",
+  // slope: "",
+  // branch: { id: "" },
+  // signature: "",
+
   useEffect(() => {
     const fetchData = async () => {
-      const vouchers = await getVoucherBySales(filters, currentPage);
+      const vouchers = await getVoucherBySign(filters, currentPage);
       setData(vouchers);
     };
 

@@ -21,7 +21,7 @@ export const ItemVoucher: React.FC<{ item: Voucher }> = ({ item }) => {
       <div className="p-6">
         <Link
           className="text-2xl font-bold text-white-600 hover:text-blue-400 transition duration-200"
-          href={`/voucher/${item.id}`}
+          href={`/sign/${item.id}`}
         >
           Comprobante: {item.id}
         </Link>
@@ -37,21 +37,26 @@ export const ItemVoucher: React.FC<{ item: Voucher }> = ({ item }) => {
             label="Fecha: "
             value={formatDate(item.date)}
           />
-          <InfoItem
+          {/* <InfoItem
             icon={<FaComments />}
             label="Observaciones: "
             value={item.obs}
-          />
+          /> */}
           <InfoItem
             icon={<FaDollarSign />}
-            label="Método de Pago: "
-            value={item.paymentMethods}
+            label="Abonado: "
+            value={`USD ${item.sign}`}
           />
           <InfoItem icon={<FaUserTie />} label="Vendedor" value={item.user} />
           <InfoItem
             icon={<FaTag />}
             label="Precio: "
             value={`USD ${item.total}`}
+          />
+          <InfoItem
+            icon={<FaTag />}
+            label="Saldo restante: "
+            value={`USD ${item.slope}`}
           />
         </div>
       </div>

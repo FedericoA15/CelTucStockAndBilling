@@ -1,25 +1,17 @@
 "use client";
 import { useEffect, useState } from "react";
 import { getVoucherById } from "@/actions/voucher/getVoucherById";
-import { GeneratePDFByReceipt } from "@/utils/GeneratePDF";
+import { GeneratePDFByReceipt, GeneratePDFBySign } from "@/utils/GeneratePDF";
 import {
   FaCalendarAlt,
   FaUser,
-  FaIdCard,
   FaPhone,
   FaMoneyBillWave,
   FaMobileAlt,
-  FaClipboardCheck,
   FaReceipt,
-  FaBarcode,
-  FaShieldAlt,
-  FaCreditCard,
   FaTag,
-  FaBatteryFull,
-  FaWarehouse,
-  FaInfoCircle,
+  FaDollarSign,
 } from "react-icons/fa";
-import { MdSdStorage } from "react-icons/md";
 import Cookies from "js-cookie";
 import ConfirmDeleteModal from "@/components/modalDeleted/ConfirmDeleteModal";
 import { deleteVoucher } from "@/actions/voucher/deleteVoucher";
@@ -70,7 +62,7 @@ export const VoucherDetails: React.FC<PropsId> = ({ id }) => {
     if (!voucher) return;
 
     try {
-      await GeneratePDFByReceipt(voucher, "");
+      await GeneratePDFBySign(voucher, "");
     } catch (error) {
       console.error("Error al descargar el PDF:", error);
     }
@@ -96,81 +88,27 @@ export const VoucherDetails: React.FC<PropsId> = ({ id }) => {
           <span className="font-semibold">Cliente:</span> {voucher.client}
         </p>
         <p className="flex items-center gap-2">
-          <FaIdCard className="text-custom-cream" />
-          <span className="font-semibold">DNI:</span> {voucher.DNI}
-        </p>
-        <p className="flex items-center gap-2">
           <FaPhone className="text-custom-blue" />
           <span className="font-semibold">Teléfono:</span> {voucher.phone}
         </p>
         <p className="flex items-center gap-2">
           <FaMoneyBillWave className="text-custom-green" />
-          <span className="font-semibold">Suma de:</span> {voucher.total}
+          <span className="font-semibold">Suma dada:</span> {voucher.total} USD
         </p>
         <p className="flex items-center gap-2">
           <FaMobileAlt className="text-custom-blue" />
           <span className="font-semibold">Equipo:</span> {voucher.concept}
         </p>
         <p className="flex items-center gap-2">
-          <FaClipboardCheck className="text-custom-green" />
-          <span className="font-semibold">Condición:</span> {voucher.condition}
-        </p>
-        <p className="flex items-center gap-2">
           <FaTag className="text-custom-cream" />
-          <span className="font-semibold">Total:</span> {voucher.total}
+          <span className="font-semibold">Saldo Restante:</span> {voucher.slope}{" "}
+          USD
         </p>
         <p className="flex items-center gap-2">
-          <FaBarcode className="text-custom-blue" />
-          <span className="font-semibold">IMEI:</span> {voucher.imei}
+          <FaDollarSign className="text-custom-cream" />
+          <span className="font-semibold">Total del equipo:</span>{" "}
+          {voucher.total} USD
         </p>
-        <p className="flex items-center gap-2">
-          <FaShieldAlt className="text-custom-green" />
-          <span className="font-semibold">Garantía:</span> {voucher.warranty}
-        </p>
-        <p className="flex items-center gap-2">
-          <FaCreditCard className="text-custom-blue" />
-          <span className="font-semibold">Forma de pago:</span>{" "}
-          {voucher.paymentMethods}
-        </p>
-      </div>
-
-      {/* Product Variants */}
-      <div className="mt-6">
-        {voucher.productVariants.map((item, index) => (
-          <div
-            key={index}
-            className="p-4 mt-4 bg-custom-grey rounded-md shadow-md transition duration-300 transform hover:scale-105 hover:shadow-lg"
-          >
-            <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
-              <FaMobileAlt className="text-custom-blue" /> Modelo
-            </h3>
-            <p className="flex items-center gap-2 mb-2">
-              <FaMobileAlt className="text-custom-cream" />
-              <span className="font-semibold">Submodelo:</span> {item.subModel}
-            </p>
-            <p className="flex items-center gap-2 mb-2">
-              <FaBatteryFull className="text-custom-green" />
-              <span className="font-semibold">Batería:</span>{" "}
-              {item.batteryCapacity}
-            </p>
-            <p className="flex items-center gap-2 mb-2">
-              <FaTag className="text-custom-blue" />
-              <span className="font-semibold">Precio:</span> USD {item.price}
-            </p>
-            <p className="flex items-center gap-2 mb-2">
-              <MdSdStorage className="text-custom-black" />
-              <span className="font-semibold">Capacidad:</span> {item.capacity}
-            </p>
-            <p className="flex items-center gap-2 mb-2">
-              <FaInfoCircle className="text-custom-blue" />
-              <span className="font-semibold">Detalles:</span> {item.details}
-            </p>
-            <p className="flex items-center gap-2 mb-2">
-              <FaWarehouse className="text-custom-green" />
-              <span className="font-semibold">Sucursal:</span> {item.branchName}
-            </p>
-          </div>
-        ))}
       </div>
 
       <div>

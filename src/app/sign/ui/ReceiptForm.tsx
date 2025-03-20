@@ -3,23 +3,15 @@
 import React, { useState, useEffect } from "react";
 import { getLastVoucherByType } from "@/actions/voucher/getLastVoucherByType";
 import { postVoucher } from "@/actions/voucher/postVoucher";
-import { GeneratePDFByReceipt } from "@/utils/GeneratePDF";
+import { GeneratePDFByReceipt, GeneratePDFBySign } from "@/utils/GeneratePDF";
 import Cookies from "js-cookie";
-import IMEIResultModal from "./IMEIResultModal";
-import { getProductByIMEI } from "@/actions/products/getProductByIMEI";
-import IMEISearchForm from "./IMEISearchForm";
 import Link from "next/link";
 import {
   Save,
   FileText,
   Calendar,
   User,
-  Phone,
-  Mail,
-  DollarSign,
   Smartphone,
-  Shield,
-  CreditCard,
   FileSignature,
   Building,
   Hash,
@@ -29,7 +21,6 @@ const ReceiptForm: React.FC = () => {
   const id = Cookies.get("id");
   const role = Cookies.get("roles");
   const [clientEmail, setClientEmail] = useState("");
-  const [product, setProduct] = useState<any>();
 
   const getCurrentDate = () => {
     const today = new Date();
@@ -41,12 +32,14 @@ const ReceiptForm: React.FC = () => {
 
   const [formData, setFormData] = useState({
     coupon: "",
-    changeValue: "",
     date: getCurrentDate(),
     client: "",
+    phone: "",
+    sign: "",
     concept: "",
-    total: "",
-    remaining: "",
+    obs: "", // valor del dolar
+    total: "", // valor del equipo
+    slope: "",
     branch: { id: "" },
     signature: "",
   });
@@ -54,7 +47,7 @@ const ReceiptForm: React.FC = () => {
   useEffect(() => {
     async function fetchLastCoupon() {
       try {
-        const lastVoucher = await getLastVoucherByType("Seña");
+        const lastVoucher = await getLastVoucherByType("Sena");
         const lastCoupon = lastVoucher.content[0]?.coupon || 0;
 
         setFormData((prevData) => ({
@@ -99,7 +92,7 @@ const ReceiptForm: React.FC = () => {
 
     const formDataWithType = {
       ...formData,
-      type: "Compra",
+      type: "Sena",
       user: { id },
     };
 
@@ -107,9 +100,8 @@ const ReceiptForm: React.FC = () => {
       branchNames[formData.branch.id] || "Sucursal desconocida";
 
     postVoucher(formDataWithType);
-    GeneratePDFByReceipt(formDataWithType, branchName, clientEmail);
+    GeneratePDFBySign(formDataWithType, branchName, clientEmail);
   };
-
 
   return (
     <div className="min-h-screen bg-gradient-to-b  py-8 px-4 sm:px-6 lg:px-8">
@@ -213,17 +205,51 @@ const ReceiptForm: React.FC = () => {
                     placeholder="Nombre del cliente"
                   />
                 </div>
+
+                <div>
+                  <label
+                    htmlFor="phone"
+                    className="block text-sm font-medium text-gray-300 mb-1"
+                  >
+                    <User className="inline-block w-5 h-5 mr-1" /> TEL:
+                  </label>
+                  <input
+                    type="text"
+                    id="phone"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    className="w-full py-2 px-3 border border-gray-600 bg-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-white transition duration-300 ease-in-out"
+                    placeholder="Telefono"
+                  />
+                </div>
               </div>
 
-
-
+              <div>
+                <label
+                  htmlFor="sign"
+                  className="block text-sm font-medium text-gray-300 mb-1"
+                >
+                  <Smartphone className="inline-block w-5 h-5 mr-1" /> LA SUMA
+                  DE:
+                </label>
+                <textarea
+                  id="sign"
+                  name="sign"
+                  value={formData.sign}
+                  onChange={handleChange}
+                  rows={3}
+                  className="w-full py-2 px-3 border border-gray-600 bg-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-white transition duration-300 ease-in-out"
+                  placeholder="Suma de dinero de la seña en dolares"
+                />
+              </div>
               <div>
                 <label
                   htmlFor="concept"
                   className="block text-sm font-medium text-gray-300 mb-1"
                 >
                   <Smartphone className="inline-block w-5 h-5 mr-1" /> EN
-                  CONCEPTO DE LA COMPRA DE EQUIPO/S
+                  CONCEPTO DE
                 </label>
                 <textarea
                   id="concept"
@@ -236,7 +262,43 @@ const ReceiptForm: React.FC = () => {
                 />
               </div>
 
+              <div>
+                <label
+                  htmlFor="total"
+                  className="block text-sm font-medium text-gray-300 mb-1"
+                >
+                  <Smartphone className="inline-block w-5 h-5 mr-1" /> VALOR
+                  TOTAL:
+                </label>
+                <textarea
+                  id="total"
+                  name="total"
+                  value={formData.total}
+                  onChange={handleChange}
+                  rows={3}
+                  className="w-full py-2 px-3 border border-gray-600 bg-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-white transition duration-300 ease-in-out"
+                  placeholder="Total del equipo en dolares"
+                />
+              </div>
 
+              <div>
+                <label
+                  htmlFor="slope"
+                  className="block text-sm font-medium text-gray-300 mb-1"
+                >
+                  <FileSignature className="inline-block w-5 h-5 mr-1" /> TOTAL
+                  $
+                </label>
+                <textarea
+                  id="slope"
+                  name="slope"
+                  value={formData.slope}
+                  onChange={handleChange}
+                  rows={2}
+                  className="w-full py-2 px-3 border border-gray-600 bg-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-white transition duration-300 ease-in-out"
+                  placeholder="Total que falta abonar en dolares"
+                />
+              </div>
               <div>
                 <label
                   htmlFor="signature"
@@ -268,7 +330,7 @@ const ReceiptForm: React.FC = () => {
               Generar PDF y Guardar
             </button>
             {(role === "ADMIN" || role === "SUPERADMIN") && (
-              <Link href="/voucher/list">
+              <Link href="/sign/list">
                 <span
                   className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg focus:outline-none focus:shadow-outline transition duration-300 ease-in-out flex items-center justify-center cursor-pointer"
                   title="Ver lista de comprobantes"

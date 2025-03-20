@@ -17,7 +17,7 @@ export default async function voucherIdPage({ params }: Props) {
   return (
     <div>
       <h2 className="text-white text-5xl text-center py-10">
-        Comprobante de ventas {id}
+        Comprobante de seña {id}
       </h2>
       <BackButton />
       <VoucherDetails id={id} />

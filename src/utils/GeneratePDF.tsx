@@ -1,5 +1,4 @@
-import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
-import axiosInstance from "./axiosInstance";
+import { PDFDocument, StandardFonts, degrees, rgb } from "pdf-lib";
 import { toast } from "react-toastify";
 
 export const GeneratePDFByReceipt = async (
@@ -345,6 +344,115 @@ export const GeneratePDFByContract = async (
     document.body.removeChild(link);
     toast.success("PDF generado y descargado con éxito.");
   } catch (error) {
+    toast.error("Error al generar el PDF. Por favor, inténtalo nuevamente.");
+  }
+};
+
+export const GeneratePDFBySign = async (
+  data: any,
+  branchName: string,
+  clientEmail?: string
+) => {
+  try {
+    const existingPdfBytes = await fetch("/sena.pdf").then((res) =>
+      res.arrayBuffer()
+    );
+    const pdfDoc = await PDFDocument.load(existingPdfBytes);
+    const pages = pdfDoc.getPages();
+    const firstPage = pages[0];
+    const regularFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
+    const signatureFont = await pdfDoc.embedFont(StandardFonts.CourierOblique);
+
+    const addText = (
+      text: string,
+      x: number,
+      y: number,
+      font = regularFont,
+      size = 10,
+      rotate = -90 // Degrees to rotate, 0 = normal, 90 = vertical
+    ) => {
+      firstPage.drawText(text, {
+        x,
+        y,
+        size,
+        font,
+        color: rgb(0, 0, 0),
+        rotate: degrees(rotate), // Convert degrees to radians
+      });
+    };
+
+    // Datos convertidos a string
+    const dateStr = data.date?.toString() ?? "";
+    const couponStr = data.coupon?.toString() ?? "";
+    const clientStr = data.client?.toString() ?? "";
+    const phoneStr = data.phone?.toString() ?? "";
+    const signStr = data.sign?.toString() ?? "";
+    const conceptStr = data.concept?.toString() ?? "";
+    const totalStr = data.total?.toString() ?? "";
+    const signatureStr = data.signature?.toString() ?? "";
+    const slopeStr = data.slope?.toString() ?? "";
+
+    // Ubicación de los datos en el PDF vertical
+    addText(slopeStr, 153, 456); // TOTAL $ (campo en la parte inferior izquierda)
+    addText(clientStr, 266, 810); // RECIBÍ DE:
+    addText(signStr, 243, 782); // LA SUMA DE:
+    addText(conceptStr, 221, 792); // EN CONCEPTO DE:
+    addText(totalStr, 192, 772); // VALOR TOTAL:
+    addText(phoneStr, 266, 473); // TEL:
+    addText(dateStr, 300, 470); // FECHA (en la esquina superior derecha)
+    addText(couponStr, 340, 530); // Nº (número de recibo en la esquina superior derecha)
+
+    // Firma (ubicada en la parte inferior)
+    addText(signatureStr, 147, 675, signatureFont, 12);
+
+    // Guardar PDF modificado
+    const pdfBytes = await pdfDoc.save();
+
+    // Descargar PDF
+    const blob = new Blob([pdfBytes], { type: "application/pdf" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = `Comprobante-Seña.pdf`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    toast.success("PDF generado y descargado con éxito.");
+
+    // Enviar por correo si hay email del cliente
+    if (clientEmail) {
+      const formData = new FormData();
+      formData.append(
+        "pdf",
+        new Blob([pdfBytes], { type: "application/pdf" }),
+        "Comprobante-Seña.pdf"
+      );
+      formData.append("email", clientEmail);
+      formData.append(
+        "emailContent",
+        "Gracias por tu compra! Te esperamos pronto CelTuc!"
+      );
+      formData.append("emailTitle", "Comprobante de Seña");
+      formData.append("pdfName", "Comprobante-Seña.pdf");
+
+      try {
+        const response = await fetch("/api/sendmail", {
+          method: "POST",
+          body: formData,
+        });
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(
+            `HTTP error! status: ${response.status}, message: ${errorText}`
+          );
+        }
+        toast.success("¡Correo enviado exitosamente con el PDF adjunto!");
+      } catch (error) {
+        console.error("Error al enviar el correo:", error);
+        toast.error("Error al enviar el correo con el PDF.");
+      }
+    }
+  } catch (error) {
+    console.error("Error al generar PDF:", error);
     toast.error("Error al generar el PDF. Por favor, inténtalo nuevamente.");
   }
 };
