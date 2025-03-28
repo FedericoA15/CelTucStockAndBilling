@@ -37,7 +37,6 @@ export default function Navbar(): JSX.Element {
 
   const navItems: NavItem[] = [
     { href: "/products", label: "Productos", icon: Smartphone },
-    { href: "/invoice", label: "Comprobantes", icon: FileText },
     { href: "/voucher", label: "Comprobantes de equipos", icon: FileCheck },
     { href: "/repair", label: "Comprobantes de reparaciones", icon: PenTool },
     {
