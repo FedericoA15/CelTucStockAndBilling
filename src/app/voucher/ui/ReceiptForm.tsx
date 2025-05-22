@@ -43,7 +43,7 @@ const ReceiptForm: React.FC = () => {
     coupon: "",
     date: getCurrentDate(),
     client: "",
-    DNI: "",
+    dni: "",
     phone: "",
     concept: "",
     condition: "",
@@ -251,16 +251,16 @@ const ReceiptForm: React.FC = () => {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                 <div>
                   <label
-                    htmlFor="DNI"
+                    htmlFor="dni"
                     className="block text-sm font-medium text-gray-300 mb-1"
                   >
                     <FileSignature className="inline-block w-5 h-5 mr-1" /> DNI
                   </label>
                   <input
                     type="text"
-                    id="DNI"
-                    name="DNI"
-                    value={formData.DNI}
+                    id="dni"
+                    name="dni"
+                    value={formData.dni}
                     onChange={handleChange}
                     className="w-full py-2 px-3 border border-gray-600 bg-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-white transition duration-300 ease-in-out"
                     placeholder="Número de DNI"
