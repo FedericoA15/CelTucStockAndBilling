@@ -375,24 +375,6 @@ const RepairForm: React.FC = () => {
                   className="w-full py-2 px-3 border border-gray-600 bg-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-white transition duration-300 ease-in-out"
                 />
               </div>
-
-              <div>
-                <label
-                  htmlFor="dignosis"
-                  className="block text-sm font-medium text-gray-300 mb-1"
-                >
-                  <FileText className="inline-block w-5 h-5 mr-1" /> DIAGNOSTICO
-                  TECNICO
-                </label>
-                <textarea
-                  id="dignosis"
-                  name="dignosis"
-                  value={formData.dignosis}
-                  onChange={handleChange}
-                  rows={3}
-                  className="w-full py-2 px-3 border border-gray-600 bg-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-white transition duration-300 ease-in-out"
-                />
-              </div>
             </div>
           </div>
 

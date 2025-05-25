@@ -48,22 +48,23 @@ export const GeneratePDFByReceipt = async (
     const warrantyStr = data.warranty?.toString() ?? "";
     const obsStr = data.obs?.toString() ?? "";
     const slopeStr = data.slope?.toString() ?? "";
+    const additionNew = additionStr + " USD";
 
-    addText(branchName, cmToPt(3.5), cmToPt(19.1));
+    addText(branchName, cmToPt(3.5), cmToPt(19.08));
     addText(couponStr, cmToPt(9.3), cmToPt(26.6));
-    addText(dateStr, cmToPt(9.4), cmToPt(25.8));
-    addText(clientStr, cmToPt(3.7), cmToPt(24.9));
+    addText(dateStr, cmToPt(9.4), cmToPt(25.75));
+    addText(clientStr, cmToPt(3.7), cmToPt(24.8));
     addText(dniStr, cmToPt(2.7), cmToPt(24.3));
-    addText(phoneStr, cmToPt(9.7), cmToPt(24.3));
-    addText(additionStr, cmToPt(4.1), cmToPt(23.8));
+    addText(phoneStr, cmToPt(9.8), cmToPt(24.3));
+    addText(additionNew, cmToPt(4.1), cmToPt(23.87));
     addText(conceptStr, cmToPt(2.1), cmToPt(22.9));
     addText(batteryCapacityStr, cmToPt(3.7), cmToPt(20.5));
     addText(imeiStr, cmToPt(3.2), cmToPt(20));
-    addText(paymentMethodsStr, cmToPt(4.4), cmToPt(21.9));
-    addText(warrantyStr, cmToPt(3.6), cmToPt(19.5));
-    addText(totalStr, cmToPt(9.7), cmToPt(19.7));
+    addText(paymentMethodsStr, cmToPt(4.4), cmToPt(21.93));
+    addText(warrantyStr, cmToPt(3.6), cmToPt(19.56));
+    addText(totalStr, cmToPt(10.9), cmToPt(19.7));
     addText(obsStr, cmToPt(2.7), cmToPt(18.6));
-    addText(slopeStr, cmToPt(6.6), cmToPt(21.5));
+    addText(slopeStr, cmToPt(6.6), cmToPt(21.47));
 
     const pdfBytes = await pdfDoc.save();
 
@@ -147,7 +148,6 @@ export const GeneratePDFByRepair = async (
         color: rgb(0, 0, 0),
       });
     };
-
     const couponStr = data.coupon?.toString() ?? "";
     const dateStr = data.date?.toString() ?? "";
     const clientStr = data.client?.toString() ?? "";
@@ -159,24 +159,24 @@ export const GeneratePDFByRepair = async (
     const budgetStr = data.budget?.toString() ?? "";
     const codeStr = data.code?.toString() ?? "";
     const phoneStr = data.phone?.toString() ?? "";
-    const diagnosisStr = data.dignosis?.toString() ?? "";
+    const diagnosisStr = data.diagnosis?.toString() ?? "";
     const budget = data.budget ?? 0;
     const cash = Math.round((budget * 0.85) / 1000) * 1000;
     const cashStr = cash.toString();
 
-    addText(couponStr, cmToPt(9.3), cmToPt(26.6));
-    addText(dateStr, cmToPt(9.4), cmToPt(25.7));
-    addText(clientStr, cmToPt(3.7), cmToPt(24.9));
+    addText(couponStr, cmToPt(9.36), cmToPt(26.64));
+    addText(dateStr, cmToPt(9.4), cmToPt(25.78));
+    addText(clientStr, cmToPt(3.7), cmToPt(24.82));
     addText(equipmentStr, cmToPt(4.3), cmToPt(24.35));
-    addText(failureStr, cmToPt(2.8), cmToPt(23.4));
-    addText(obsStr, cmToPt(3.1), cmToPt(20.57));
+    addText(failureStr, cmToPt(2), cmToPt(23.4));
+    addText(obsStr, cmToPt(2.83), cmToPt(17.89));
     addText(receptionStr, cmToPt(3.8), cmToPt(20.3));
-    addText(branchStr, cmToPt(3.4), cmToPt(19.8));
-    addText(budgetStr, cmToPt(11.0), cmToPt(19.32));
-    addText(cashStr, cmToPt(13.0), cmToPt(19.32));
-    addText(codeStr, cmToPt(4.5), cmToPt(19.3));
-    addText(phoneStr, cmToPt(2.6), cmToPt(18.9));
-    addText(diagnosisStr, cmToPt(6.22), cmToPt(17.13));
+    addText(branchStr, cmToPt(3.45), cmToPt(19.8));
+    addText(budgetStr, cmToPt(11.15), cmToPt(19.32));
+    addText(cashStr, cmToPt(13.26), cmToPt(19.35));
+    addText(codeStr, cmToPt(4.5), cmToPt(19.33));
+    addText(phoneStr, cmToPt(2.6), cmToPt(18.88));
+    addText(diagnosisStr, cmToPt(2), cmToPt(22.24));
 
     const pdfBytes = await pdfDoc.save();
 
