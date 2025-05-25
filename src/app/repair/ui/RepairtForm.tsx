@@ -20,6 +20,11 @@ const RepairForm: React.FC = () => {
   const id = Cookies.get("id");
   const role = Cookies.get("roles");
   const [clientEmail, setClientEmail] = useState("");
+  const branchNames: { [key: string]: string } = {
+    "e692d1b3-71a7-431a-ba8a-36754f2c64a5": "Yerba Buena",
+    "e692d1b3-71a7-431a-ba8a-36754f2c64a9": "Solar",
+    "e692d1b3-71a7-431a-ba8a-36754f2c64a3": "Centro",
+  };
 
   const getCurrentDate = () => {
     const today = new Date();
@@ -91,8 +96,11 @@ const RepairForm: React.FC = () => {
         id: id,
       },
     };
+
+    const branchName =
+      branchNames[formData.branch.id] || "Sucursal desconocida";
     postVoucher(formDataWithType);
-    GeneratePDFByRepair(formData, clientEmail);
+    GeneratePDFByRepair(formData, branchName, clientEmail);
   };
 
   return (
@@ -271,7 +279,7 @@ const RepairForm: React.FC = () => {
                     PRESUPUESTO
                   </label>
                   <input
-                    type="text"
+                    type="number"
                     id="budget"
                     name="budget"
                     value={formData.budget}
@@ -299,7 +307,7 @@ const RepairForm: React.FC = () => {
                     className="w-full py-2 px-3 border border-gray-600 bg-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-white transition duration-300 ease-in-out"
                   />
                 </div>
-                <div>
+                {/* <div>
                   <label
                     htmlFor="sign"
                     className="block text-sm font-medium text-gray-300 mb-1"
@@ -314,8 +322,8 @@ const RepairForm: React.FC = () => {
                     onChange={handleChange}
                     className="w-full py-2 px-3 border border-gray-600 bg-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-white transition duration-300 ease-in-out"
                   />
-                </div>
-                <div>
+                </div> */}
+                {/* " <div>
                   <label
                     htmlFor="slope"
                     className="block text-sm font-medium text-gray-300 mb-1"
@@ -331,7 +339,7 @@ const RepairForm: React.FC = () => {
                     onChange={handleChange}
                     className="w-full py-2 px-3 border border-gray-600 bg-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-white transition duration-300 ease-in-out"
                   />
-                </div>
+                </div>" */}
               </div>
 
               <div>

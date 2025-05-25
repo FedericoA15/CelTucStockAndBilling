@@ -17,7 +17,7 @@ import {
 import { GeneratePDFByRepair } from "@/utils/GeneratePDF";
 
 export const RepairDetails: React.FC<PropsId> = ({ id }) => {
-  const [voucher, setVoucher] = useState<Voucher | null>(null);
+  const [voucher, setVoucher] = useState<any | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
@@ -50,7 +50,7 @@ export const RepairDetails: React.FC<PropsId> = ({ id }) => {
     if (!voucher) return;
 
     try {
-      await GeneratePDFByRepair(voucher, "");
+      await GeneratePDFByRepair(voucher, voucher.branch);
     } catch (error) {
       console.error("Error al descargar el PDF:", error);
     }

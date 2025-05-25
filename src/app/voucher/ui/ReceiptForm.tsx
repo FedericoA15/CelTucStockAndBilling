@@ -49,12 +49,13 @@ const ReceiptForm: React.FC = () => {
     condition: "",
     imei: "",
     warranty: "",
+    batteryCapacity: "",
     paymentMethods: "",
     obs: "",
     addition: "",
     total: "",
     branch: { id: "" },
-    signature: "",
+    slope: "",
   });
 
   useEffect(() => {
@@ -99,9 +100,10 @@ const ReceiptForm: React.FC = () => {
   const handleAddToVoucher = (variant: any) => {
     setFormData({
       ...formData,
-      concept: `${product.name} - ${variant.subModel} - ${variant.color}`,
+      concept: `${product.name} - ${variant.subModel} - ${variant.color} - ${variant.state}`,
       imei: variant.productCodes[0],
       condition: variant.state,
+      batteryCapacity: variant.batteryCapacity,
       total: variant.price,
       addition: variant.price,
     });
@@ -431,7 +433,24 @@ const ReceiptForm: React.FC = () => {
                   />
                 </div>
               </div>
-
+              <div>
+                <label
+                  htmlFor="slope"
+                  className="block text-sm font-medium text-gray-300 mb-1"
+                >
+                  <FileSignature className="inline-block w-5 h-5 mr-1" />{" "}
+                  Entrega como forma de pago
+                </label>
+                <textarea
+                  id="slope"
+                  name="slope"
+                  value={formData.slope}
+                  onChange={handleChange}
+                  rows={2}
+                  className="w-full py-2 px-3 border border-gray-600 bg-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-white transition duration-300 ease-in-out"
+                  placeholder="Entrega como forma de pago"
+                />
+              </div>
               <div>
                 <label
                   htmlFor="obs"
@@ -448,24 +467,6 @@ const ReceiptForm: React.FC = () => {
                   rows={3}
                   className="w-full py-2 px-3 border border-gray-600 bg-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-white transition duration-300 ease-in-out"
                   placeholder="Observaciones adicionales"
-                />
-              </div>
-
-              <div>
-                <label
-                  htmlFor="signature"
-                  className="block text-sm font-medium text-gray-300 mb-1"
-                >
-                  <FileSignature className="inline-block w-5 h-5 mr-1" /> Firma
-                </label>
-                <textarea
-                  id="signature"
-                  name="signature"
-                  value={formData.signature}
-                  onChange={handleChange}
-                  rows={2}
-                  className="w-full py-2 px-3 border border-gray-600 bg-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-white transition duration-300 ease-in-out"
-                  placeholder="Firma digital o número de identificación"
                 />
               </div>
             </div>

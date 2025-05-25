@@ -18,6 +18,7 @@ import {
   FaBatteryFull,
   FaWarehouse,
   FaInfoCircle,
+  FaHome,
 } from "react-icons/fa";
 import { MdSdStorage } from "react-icons/md";
 import Cookies from "js-cookie";
@@ -29,7 +30,7 @@ export const VoucherDetails: React.FC<PropsId> = ({ id }) => {
   const [variantIdToDelete, setVariantIdToDelete] = useState<string | null>(
     null
   );
-  const [voucher, setVoucher] = useState<Voucher | null>(null);
+  const [voucher, setVoucher] = useState<any | null>(null);
   const role = Cookies.get("roles");
 
   useEffect(() => {
@@ -70,7 +71,24 @@ export const VoucherDetails: React.FC<PropsId> = ({ id }) => {
     if (!voucher) return;
 
     try {
-      await GeneratePDFByReceipt(voucher, "");
+      const voucherByPdf = {
+        coupon: voucher.coupon,
+        date: voucher.date,
+        client: voucher.client,
+        dni: voucher.DNI,
+        phone: voucher.phone,
+        concept: voucher.concept,
+        condition: voucher.condition,
+        imei: voucher.imei,
+        warranty: voucher.warranty,
+        batteryCapacity: voucher.productVariants[0].batteryCapacity,
+        paymentMethods: voucher.paymentMethods,
+        obs: voucher.obs,
+        addition: voucher.addition,
+        total: voucher.total,
+        slope: voucher.slope,
+      };
+      await GeneratePDFByReceipt(voucherByPdf, voucher.branch);
     } catch (error) {
       console.error("Error al descargar el PDF:", error);
     }
@@ -132,11 +150,19 @@ export const VoucherDetails: React.FC<PropsId> = ({ id }) => {
           <span className="font-semibold">Forma de pago:</span>{" "}
           {voucher.paymentMethods}
         </p>
+        <p className="flex items-center gap-2">
+          <FaMobileAlt className="text-custom-blue" />
+          <span className="font-semibold">Entrega:</span> {voucher.slope}
+        </p>
+        <p className="flex items-center gap-2">
+          <FaHome className="text-custom-blue" />
+          <span className="font-semibold">Sucursal:</span> {voucher.branch}
+        </p>
       </div>
 
       {/* Product Variants */}
       <div className="mt-6">
-        {voucher.productVariants.map((item, index) => (
+        {voucher.productVariants.map((item: any, index: any) => (
           <div
             key={index}
             className="p-4 mt-4 bg-custom-grey rounded-md shadow-md transition duration-300 transform hover:scale-105 hover:shadow-lg"

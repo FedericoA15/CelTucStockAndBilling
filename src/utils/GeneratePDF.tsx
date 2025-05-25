@@ -1,13 +1,15 @@
 import { PDFDocument, StandardFonts, degrees, rgb } from "pdf-lib";
 import { toast } from "react-toastify";
 
+const cmToPt = (cm: any): any => cm * 28.3465;
+
 export const GeneratePDFByReceipt = async (
   data: any,
   branchName: string,
   clientEmail?: string
 ) => {
   try {
-    const existingPdfBytes = await fetch("/compra.pdf").then((res) =>
+    const existingPdfBytes = await fetch("/newCompra.pdf").then((res) =>
       res.arrayBuffer()
     );
     const pdfDoc = await PDFDocument.load(existingPdfBytes);
@@ -16,7 +18,6 @@ export const GeneratePDFByReceipt = async (
     const firstPage = pages[0];
 
     const regularFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
-    const signatureFont = await pdfDoc.embedFont(StandardFonts.CourierOblique);
 
     const addText = (
       text: string,
@@ -41,29 +42,28 @@ export const GeneratePDFByReceipt = async (
     const dniStr = data.dni?.toString() ?? "";
     const phoneStr = data.phone?.toString() ?? "";
     const conceptStr = data.concept?.toString() ?? "";
-    const conditionStr = data.condition?.toString() ?? "";
+    const batteryCapacityStr = data.batteryCapacity?.toString() ?? "";
     const imeiStr = data.imei?.toString() ?? "";
     const paymentMethodsStr = data.paymentMethods?.toString() ?? "";
     const warrantyStr = data.warranty?.toString() ?? "";
     const obsStr = data.obs?.toString() ?? "";
-    const signatureStr = data.signature?.toString() ?? "";
+    const slopeStr = data.slope?.toString() ?? "";
 
-    addText(branchName, 360, 725);
-    addText(couponStr, 350, 696.024);
-    addText(dateStr, 345, 672);
-    addText(clientStr, 111, 650);
-    addText(dniStr, 88, 635);
-    addText(phoneStr, 287, 635);
-    addText(additionStr, 126.792, 620.4);
-    addText(conceptStr, 67, 595);
-    addText(conditionStr, 124, 555);
-    addText(imeiStr, 90, 540);
-    addText(paymentMethodsStr, 146, 514);
-    addText(warrantyStr, 118, 528);
-    addText(totalStr, 368, 521);
-    addText(obsStr, 88, 488);
-
-    addText(signatureStr, 237.456, 530.352, signatureFont);
+    addText(branchName, cmToPt(3.5), cmToPt(19.1));
+    addText(couponStr, cmToPt(9.3), cmToPt(26.6));
+    addText(dateStr, cmToPt(9.4), cmToPt(25.8));
+    addText(clientStr, cmToPt(3.7), cmToPt(24.9));
+    addText(dniStr, cmToPt(2.7), cmToPt(24.3));
+    addText(phoneStr, cmToPt(9.7), cmToPt(24.3));
+    addText(additionStr, cmToPt(4.1), cmToPt(23.8));
+    addText(conceptStr, cmToPt(2.1), cmToPt(22.9));
+    addText(batteryCapacityStr, cmToPt(3.7), cmToPt(20.5));
+    addText(imeiStr, cmToPt(3.2), cmToPt(20));
+    addText(paymentMethodsStr, cmToPt(4.4), cmToPt(21.9));
+    addText(warrantyStr, cmToPt(3.6), cmToPt(19.5));
+    addText(totalStr, cmToPt(9.7), cmToPt(19.7));
+    addText(obsStr, cmToPt(2.7), cmToPt(18.6));
+    addText(slopeStr, cmToPt(6.6), cmToPt(21.5));
 
     const pdfBytes = await pdfDoc.save();
 
@@ -122,9 +122,13 @@ export const GeneratePDFByReceipt = async (
   }
 };
 
-export const GeneratePDFByRepair = async (data: any, clientEmail?: string) => {
+export const GeneratePDFByRepair = async (
+  data: any,
+  branchName: string,
+  clientEmail?: string
+) => {
   try {
-    const existingPdfBytes = await fetch("/reparacion.pdf").then((res) =>
+    const existingPdfBytes = await fetch("/newReparacion.pdf").then((res) =>
       res.arrayBuffer()
     );
     const pdfDoc = await PDFDocument.load(existingPdfBytes);
@@ -151,26 +155,28 @@ export const GeneratePDFByRepair = async (data: any, clientEmail?: string) => {
     const failureStr = data.failure?.toString() ?? "";
     const obsStr = data.obs?.toString() ?? "";
     const receptionStr = data.reception?.toString() ?? "";
+    const branchStr = branchName?.toString() ?? "";
     const budgetStr = data.budget?.toString() ?? "";
     const codeStr = data.code?.toString() ?? "";
-    const signStr = data.sign?.toString() ?? "";
     const phoneStr = data.phone?.toString() ?? "";
-    const slopeStr = data.slope?.toString() ?? "";
     const diagnosisStr = data.dignosis?.toString() ?? "";
+    const budget = data.budget ?? 0;
+    const cash = Math.round((budget * 0.85) / 1000) * 1000;
+    const cashStr = cash.toString();
 
-    addText(couponStr, 350, 696.024);
-    addText(dateStr, 345, 672);
-    addText(clientStr, 111, 650);
-    addText(equipmentStr, 130, 635);
-    addText(failureStr, 190, 622);
-    addText(obsStr, 88, 583);
-    addText(receptionStr, 128, 540);
-    addText(budgetStr, 360, 540);
-    addText(codeStr, 155, 527);
-    addText(signStr, 321, 527);
-    addText(phoneStr, 85, 515);
-    addText(slopeStr, 347, 515);
-    addText(diagnosisStr, 176, 486);
+    addText(couponStr, cmToPt(9.3), cmToPt(26.6));
+    addText(dateStr, cmToPt(9.4), cmToPt(25.7));
+    addText(clientStr, cmToPt(3.7), cmToPt(24.9));
+    addText(equipmentStr, cmToPt(4.3), cmToPt(24.35));
+    addText(failureStr, cmToPt(2.8), cmToPt(23.4));
+    addText(obsStr, cmToPt(3.1), cmToPt(20.57));
+    addText(receptionStr, cmToPt(3.8), cmToPt(20.3));
+    addText(branchStr, cmToPt(3.4), cmToPt(19.8));
+    addText(budgetStr, cmToPt(11.0), cmToPt(19.32));
+    addText(cashStr, cmToPt(13.0), cmToPt(19.32));
+    addText(codeStr, cmToPt(4.5), cmToPt(19.3));
+    addText(phoneStr, cmToPt(2.6), cmToPt(18.9));
+    addText(diagnosisStr, cmToPt(6.22), cmToPt(17.13));
 
     const pdfBytes = await pdfDoc.save();
 
