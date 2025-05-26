@@ -43,6 +43,7 @@ const RepairForm: React.FC = () => {
     obs: "",
     reception: "",
     budget: "",
+    warranty: "",
     code: "",
     sign: "",
     phone: "",
@@ -275,14 +276,30 @@ const RepairForm: React.FC = () => {
                     htmlFor="budget"
                     className="block text-sm font-medium text-gray-300 mb-1"
                   >
-                    <CreditCard className="inline-block w-5 h-5 mr-1" />{" "}
-                    PRESUPUESTO
+                    <CreditCard className="inline-block w-5 h-5 mr-1" /> LISTA
                   </label>
                   <input
                     type="number"
                     id="budget"
                     name="budget"
                     value={formData.budget}
+                    onChange={handleChange}
+                    className="w-full py-2 px-3 border border-gray-600 bg-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-white transition duration-300 ease-in-out"
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="budget"
+                    className="block text-sm font-medium text-gray-300 mb-1"
+                  >
+                    <CreditCard className="inline-block w-5 h-5 mr-1" />{" "}
+                    EFECTIVO
+                  </label>
+                  <input
+                    type="number"
+                    id="warranty"
+                    name="warranty"
+                    value={formData.warranty}
                     onChange={handleChange}
                     className="w-full py-2 px-3 border border-gray-600 bg-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-white transition duration-300 ease-in-out"
                   />

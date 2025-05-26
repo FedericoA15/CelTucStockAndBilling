@@ -2,6 +2,7 @@ import { PDFDocument, StandardFonts, degrees, rgb } from "pdf-lib";
 import { toast } from "react-toastify";
 
 const cmToPt = (cm: any): any => cm * 28.3465;
+const inToPt = (inch: any): any => inch * 72;
 
 export const GeneratePDFByReceipt = async (
   data: any,
@@ -56,13 +57,13 @@ export const GeneratePDFByReceipt = async (
     addText(clientStr, cmToPt(3.7), cmToPt(24.8));
     addText(dniStr, cmToPt(2.7), cmToPt(24.3));
     addText(phoneStr, cmToPt(9.8), cmToPt(24.3));
-    addText(additionNew, cmToPt(4.1), cmToPt(23.87));
+    addText(additionNew, cmToPt(4.1), cmToPt(23.84));
     addText(conceptStr, cmToPt(2.1), cmToPt(22.9));
     addText(batteryCapacityStr, cmToPt(3.7), cmToPt(20.5));
     addText(imeiStr, cmToPt(3.2), cmToPt(20));
     addText(paymentMethodsStr, cmToPt(4.4), cmToPt(21.93));
     addText(warrantyStr, cmToPt(3.6), cmToPt(19.56));
-    addText(totalStr, cmToPt(10.9), cmToPt(19.7));
+    addText(totalStr, cmToPt(10.83), cmToPt(19.76));
     addText(obsStr, cmToPt(2.7), cmToPt(18.6));
     addText(slopeStr, cmToPt(6.6), cmToPt(21.47));
 
@@ -160,9 +161,7 @@ export const GeneratePDFByRepair = async (
     const codeStr = data.code?.toString() ?? "";
     const phoneStr = data.phone?.toString() ?? "";
     const diagnosisStr = data.diagnosis?.toString() ?? "";
-    const budget = data.budget ?? 0;
-    const cash = Math.round((budget * 0.85) / 1000) * 1000;
-    const cashStr = cash.toString();
+    const cashStr = data.warranty?.toString() ?? "";
 
     addText(couponStr, cmToPt(9.36), cmToPt(26.64));
     addText(dateStr, cmToPt(9.4), cmToPt(25.78));
@@ -360,7 +359,7 @@ export const GeneratePDFBySign = async (
   clientEmail?: string
 ) => {
   try {
-    const existingPdfBytes = await fetch("/sena.pdf").then((res) =>
+    const existingPdfBytes = await fetch("/newsena.pdf").then((res) =>
       res.arrayBuffer()
     );
     const pdfDoc = await PDFDocument.load(existingPdfBytes);
@@ -374,8 +373,8 @@ export const GeneratePDFBySign = async (
       x: number,
       y: number,
       font = regularFont,
-      size = 10,
-      rotate = -90 // Degrees to rotate, 0 = normal, 90 = vertical
+      size = 10
+      // rotate = -90 // Degrees to rotate, 0 = normal, 90 = vertical
     ) => {
       firstPage.drawText(text, {
         x,
@@ -383,7 +382,7 @@ export const GeneratePDFBySign = async (
         size,
         font,
         color: rgb(0, 0, 0),
-        rotate: degrees(rotate), // Convert degrees to radians
+        // rotate: degrees(rotate), // Convert degrees to radians
       });
     };
 
@@ -394,22 +393,29 @@ export const GeneratePDFBySign = async (
     const phoneStr = data.phone?.toString() ?? "";
     const signStr = data.sign?.toString() ?? "";
     const conceptStr = data.concept?.toString() ?? "";
+
+    const changeStr = data.obs?.toString() ?? "";
+
     const totalStr = data.total?.toString() ?? "";
     const signatureStr = data.signature?.toString() ?? "";
     const slopeStr = data.slope?.toString() ?? "";
+    const dniStr = data.dni?.toString() ?? "";
 
-    // Ubicación de los datos en el PDF vertical
-    addText(slopeStr, 153, 456); // TOTAL $ (campo en la parte inferior izquierda)
-    addText(clientStr, 266, 810); // RECIBÍ DE:
-    addText(signStr, 243, 782); // LA SUMA DE:
-    addText(conceptStr, 221, 792); // EN CONCEPTO DE:
-    addText(totalStr, 192, 772); // VALOR TOTAL:
-    addText(phoneStr, 266, 473); // TEL:
-    addText(dateStr, 300, 470); // FECHA (en la esquina superior derecha)
-    addText(couponStr, 340, 530); // Nº (número de recibo en la esquina superior derecha)
+    addText(couponStr, inToPt(4.95), inToPt(10.19)); // Nº (número de recibo en la esquina superior derecha)
+    addText(dateStr, inToPt(4.79), inToPt(9.95)); // FECHA (en la esquina superior derecha)
+    addText(clientStr, inToPt(1.47), inToPt(9.67)); // RECIBÍ DE:
+    addText(dniStr, inToPt(4.5), inToPt(9.67)); // DNI:
+    addText(phoneStr, inToPt(1.21), inToPt(9.39)); // TEL:
+    addText(conceptStr, inToPt(3.25), inToPt(9.39)); // EN CONCEPTO DE:
+    addText(signStr, inToPt(1.65), inToPt(9.26)); // LA SUMA DE:
+    addText(changeStr, inToPt(2.04), inToPt(8.99)); // CAMBIO:
+    addText(totalStr, inToPt(1.69), inToPt(8.79)); // VALOR TOTAL:
+    addText(branchName, inToPt(1.52), inToPt(8.58)); // sucursal
+
+    addText(slopeStr, inToPt(5.0), inToPt(8.78)); // SALDO USD $ (campo en la parte inferior izquierda)
 
     // Firma (ubicada en la parte inferior)
-    addText(signatureStr, 147, 675, signatureFont, 12);
+    addText(signatureStr, inToPt(3.62), inToPt(8.42), signatureFont);
 
     // Guardar PDF modificado
     const pdfBytes = await pdfDoc.save();

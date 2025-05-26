@@ -71,23 +71,30 @@ export const VoucherDetails: React.FC<PropsId> = ({ id }) => {
     if (!voucher) return;
 
     try {
+      // Eliminar el último segmento luego del último guion
+      const cleanConcept = voucher.concept
+        ?.split("-")
+        .slice(0, -1)
+        .join("-")
+        .trim();
+
       const voucherByPdf = {
         coupon: voucher.coupon,
         date: voucher.date,
         client: voucher.client,
         dni: voucher.DNI,
         phone: voucher.phone,
-        concept: voucher.concept,
-        condition: voucher.condition,
+        concept: cleanConcept,
         imei: voucher.imei,
         warranty: voucher.warranty,
-        batteryCapacity: voucher.productVariants[0].batteryCapacity,
+        batteryCapacity: voucher.condition,
         paymentMethods: voucher.paymentMethods,
         obs: voucher.obs,
         addition: voucher.addition,
         total: voucher.total,
         slope: voucher.slope,
       };
+
       await GeneratePDFByReceipt(voucherByPdf, voucher.branch);
     } catch (error) {
       console.error("Error al descargar el PDF:", error);

@@ -34,6 +34,7 @@ const ReceiptForm: React.FC = () => {
     coupon: "",
     date: getCurrentDate(),
     client: "",
+    dni: "",
     phone: "",
     sign: "",
     concept: "",
@@ -223,6 +224,23 @@ const ReceiptForm: React.FC = () => {
                     placeholder="Telefono"
                   />
                 </div>
+                <div>
+                  <label
+                    htmlFor="dni"
+                    className="block text-sm font-medium text-gray-300 mb-1"
+                  >
+                    <User className="inline-block w-5 h-5 mr-1" /> DNI:
+                  </label>
+                  <input
+                    type="text"
+                    id="dni"
+                    name="dni"
+                    value={formData.dni}
+                    onChange={handleChange}
+                    className="w-full py-2 px-3 border border-gray-600 bg-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-white transition duration-300 ease-in-out"
+                    placeholder="Dni"
+                  />
+                </div>
               </div>
 
               <div>
@@ -261,7 +279,24 @@ const ReceiptForm: React.FC = () => {
                   placeholder="Descripción del equipo"
                 />
               </div>
-
+              <div>
+                <label
+                  htmlFor="obs"
+                  className="block text-sm font-medium text-gray-300 mb-1"
+                >
+                  <Smartphone className="inline-block w-5 h-5 mr-1" /> VALOR DEL
+                  CAMBIO:
+                </label>
+                <textarea
+                  id="obs"
+                  name="obs"
+                  value={formData.obs}
+                  onChange={handleChange}
+                  rows={3}
+                  className="w-full py-2 px-3 border border-gray-600 bg-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-white transition duration-300 ease-in-out"
+                  placeholder="Valor del cambio"
+                />
+              </div>
               <div>
                 <label
                   htmlFor="total"

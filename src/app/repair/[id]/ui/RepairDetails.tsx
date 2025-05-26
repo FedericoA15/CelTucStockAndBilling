@@ -93,7 +93,11 @@ export const RepairDetails: React.FC<PropsId> = ({ id }) => {
         </p>
         <p className="flex items-center gap-2">
           <FaMoneyBillWave className="text-custom-green" />
-          <span className="font-semibold">Presupuesto: $</span> {voucher.budget}
+          <span className="font-semibold">Lista: $</span> {voucher.budget}
+        </p>
+        <p className="flex items-center gap-2">
+          <FaMoneyBillWave className="text-custom-green" />
+          <span className="font-semibold">Contado: $</span> {voucher.warranty}
         </p>
         <p className="flex items-center gap-2">
           <FaDollarSign className="text-custom-cream" />

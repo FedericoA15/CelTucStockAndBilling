@@ -21,7 +21,7 @@ export const VoucherDetails: React.FC<PropsId> = ({ id }) => {
   const [variantIdToDelete, setVariantIdToDelete] = useState<string | null>(
     null
   );
-  const [voucher, setVoucher] = useState<Voucher | null>(null);
+  const [voucher, setVoucher] = useState<any | null>(null);
   const role = Cookies.get("roles");
 
   useEffect(() => {
@@ -62,7 +62,7 @@ export const VoucherDetails: React.FC<PropsId> = ({ id }) => {
     if (!voucher) return;
 
     try {
-      await GeneratePDFBySign(voucher, "");
+      await GeneratePDFBySign(voucher, voucher.branch);
     } catch (error) {
       console.error("Error al descargar el PDF:", error);
     }
@@ -93,7 +93,13 @@ export const VoucherDetails: React.FC<PropsId> = ({ id }) => {
         </p>
         <p className="flex items-center gap-2">
           <FaMoneyBillWave className="text-custom-green" />
-          <span className="font-semibold">Suma dada:</span> {voucher.total} USD
+          <span className="font-semibold">Suma entregada:</span> {voucher.total}{" "}
+          USD
+        </p>
+        <p className="flex items-center gap-2">
+          <FaMoneyBillWave className="text-custom-green" />
+          <span className="font-semibold">Valor del cambio:</span> {voucher.obs}{" "}
+          USD
         </p>
         <p className="flex items-center gap-2">
           <FaMobileAlt className="text-custom-blue" />
