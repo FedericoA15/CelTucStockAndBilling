@@ -401,13 +401,15 @@ export const GeneratePDFBySign = async (
     const slopeStr = data.slope?.toString() ?? "";
     const dniStr = data.dni?.toString() ?? "";
 
+    const newSing = "USD " + signStr;
+
     addText(couponStr, inToPt(4.95), inToPt(10.19)); // Nº (número de recibo en la esquina superior derecha)
     addText(dateStr, inToPt(4.79), inToPt(9.95)); // FECHA (en la esquina superior derecha)
     addText(clientStr, inToPt(1.47), inToPt(9.67)); // RECIBÍ DE:
     addText(dniStr, inToPt(4.5), inToPt(9.67)); // DNI:
     addText(phoneStr, inToPt(1.21), inToPt(9.39)); // TEL:
     addText(conceptStr, inToPt(3.25), inToPt(9.39)); // EN CONCEPTO DE:
-    addText(signStr, inToPt(1.65), inToPt(9.26)); // LA SUMA DE:
+    addText(newSing, inToPt(1.65), inToPt(9.26)); // LA SUMA DE:
     addText(changeStr, inToPt(2.04), inToPt(8.99)); // CAMBIO:
     addText(totalStr, inToPt(1.69), inToPt(8.79)); // VALOR TOTAL:
     addText(branchName, inToPt(1.52), inToPt(8.58)); // sucursal
