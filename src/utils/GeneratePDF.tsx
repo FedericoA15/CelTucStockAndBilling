@@ -279,6 +279,7 @@ export const GeneratePDFByContract = async (
     const totalStr = data.total?.toString() ?? ""; // total
     // const signatureBySellerStr = data.signatureBySeller?.toString() ?? "";
     const signatureStr = data.signature?.toString() ?? "";
+    const newTotal = totalStr + " USD";
 
     addText(couponStr, inToPt(5), inToPt(9.7));
     addText(dateStr, inToPt(5), inToPt(9.35));
@@ -292,7 +293,7 @@ export const GeneratePDFByContract = async (
     addText(obsStr, inToPt(1.01), inToPt(6.77));
     addText(receptionStr, inToPt(0.95), inToPt(6.3));
     addText(dniBuyerStr, inToPt(4.53), inToPt(6.3));
-    addText(totalStr, inToPt(5.51), inToPt(5.81));
+    addText(newTotal, inToPt(5.51), inToPt(5.81));
 
     // addText(signatureBySellerStr, inToPt(2), inToPt(2.7), signatureFont);
     addText(signatureStr, inToPt(4.24), inToPt(2.7), signatureFont);
@@ -359,7 +360,7 @@ export const GeneratePDFBySign = async (
   clientEmail?: string
 ) => {
   try {
-    const existingPdfBytes = await fetch("/sena2.pdf").then((res) =>
+    const existingPdfBytes = await fetch("/newsena2.pdf").then((res) =>
       res.arrayBuffer()
     );
     const pdfDoc = await PDFDocument.load(existingPdfBytes);
@@ -409,7 +410,7 @@ export const GeneratePDFBySign = async (
     addText(dniStr, inToPt(4.5), inToPt(9.67)); // DNI:
     addText(phoneStr, inToPt(1.16), inToPt(9.39)); // TEL:
     addText(conceptStr, inToPt(3.1), inToPt(9.39)); // EN CONCEPTO DE:
-    addText(newSing, inToPt(1.65), inToPt(9.26)); // LA SUMA DE:
+    addText(newSing, inToPt(1.65), inToPt(9.24)); // LA SUMA DE:
     addText(changeStr, inToPt(2.04), inToPt(8.99)); // CAMBIO:
     addText(totalStr, inToPt(1.69), inToPt(8.79)); // VALOR TOTAL:
     addText(branchName, inToPt(1.52), inToPt(8.58)); // sucursal
