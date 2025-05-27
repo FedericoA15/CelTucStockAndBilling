@@ -238,7 +238,7 @@ export const GeneratePDFByContract = async (
   clientEmail?: string
 ) => {
   try {
-    const existingPdfBytes = await fetch("/compraUsados.pdf").then((res) =>
+    const existingPdfBytes = await fetch("/contrato.pdf").then((res) =>
       res.arrayBuffer()
     );
     const pdfDoc = await PDFDocument.load(existingPdfBytes);
@@ -264,38 +264,38 @@ export const GeneratePDFByContract = async (
       });
     };
 
-    const couponStr = data.coupon?.toString() ?? "";
-    const dateStr = data.date?.toString() ?? "";
-    const clientStr = data.client?.toString() ?? "";
-    const dniStr = data.DNI?.toString() ?? "";
-    const brandStr = data.brand?.toString() ?? "";
-    const modelStr = data.model?.toString() ?? "";
-    const colorStr = data.color?.toString() ?? "";
-    const imeiStr = data.imei?.toString() ?? "";
-    const imei2Str = data.imei2?.toString() ?? "";
-    const obsStr = data.obs?.toString() ?? "";
-    const receptionStr = data.reception?.toString() ?? "";
-    const dniBuyerStr = data.dniBuyer?.toString() ?? "";
-    const totalStr = data.total?.toString() ?? "";
-    const signatureBySellerStr = data.signatureBySeller?.toString() ?? "";
+    const couponStr = data.coupon?.toString() ?? ""; // numero cupon
+    const dateStr = data.date?.toString() ?? ""; // fecha
+    const clientStr = data.client?.toString() ?? ""; // cliente
+    const dniStr = data.DNI?.toString() ?? ""; // dni
+    const brandStr = data.brand?.toString() ?? ""; // marca
+    const modelStr = data.model?.toString() ?? ""; // modelo
+    const colorStr = data.color?.toString() ?? ""; // color
+    const imeiStr = data.imei?.toString() ?? ""; // imei1
+    const imei2Str = data.imei2?.toString() ?? ""; //imei2
+    const obsStr = data.obs?.toString() ?? ""; // obs
+    const receptionStr = data.reception?.toString() ?? ""; //comprador
+    const dniBuyerStr = data.dniBuyer?.toString() ?? ""; //dni comprador
+    const totalStr = data.total?.toString() ?? ""; // total
+    // const signatureBySellerStr = data.signatureBySeller?.toString() ?? "";
     const signatureStr = data.signature?.toString() ?? "";
 
-    addText(couponStr, 348, 748);
-    addText(dateStr, 348, 723);
-    addText(clientStr, 153, 666);
-    addText(dniStr, 83, 654);
-    addText(brandStr, 104, 632);
-    addText(modelStr, 110, 617);
-    addText(colorStr, 104, 604);
-    addText(imeiStr, 104, 591);
-    addText(imei2Str, 104, 578);
-    addText(obsStr, 68, 549);
-    addText(receptionStr, 68, 516);
-    addText(dniBuyerStr, 307, 516);
-    addText(totalStr, 380, 482);
+    addText(couponStr, inToPt(5), inToPt(9.7));
+    addText(dateStr, inToPt(5), inToPt(9.35));
+    addText(clientStr, inToPt(2.1), inToPt(8.57));
+    addText(dniStr, inToPt(1.21), inToPt(8.38));
+    addText(brandStr, inToPt(1.4), inToPt(7.89));
+    addText(modelStr, inToPt(1.5), inToPt(7.7));
+    addText(colorStr, inToPt(1.38), inToPt(7.52));
+    addText(imeiStr, inToPt(1.38), inToPt(7.33));
+    addText(imei2Str, inToPt(1.38), inToPt(7.14));
+    addText(obsStr, inToPt(1.01), inToPt(6.77));
+    addText(receptionStr, inToPt(0.95), inToPt(6.3));
+    addText(dniBuyerStr, inToPt(4.53), inToPt(6.3));
+    addText(totalStr, inToPt(5.51), inToPt(5.81));
 
-    addText(signatureBySellerStr, 107, 314, signatureFont);
-    addText(signatureStr, 275, 314, signatureFont);
+    // addText(signatureBySellerStr, inToPt(2), inToPt(2.7), signatureFont);
+    addText(signatureStr, inToPt(4.24), inToPt(2.7), signatureFont);
 
     const pdfBytes = await pdfDoc.save();
 
@@ -359,7 +359,7 @@ export const GeneratePDFBySign = async (
   clientEmail?: string
 ) => {
   try {
-    const existingPdfBytes = await fetch("/newsena.pdf").then((res) =>
+    const existingPdfBytes = await fetch("/sena2.pdf").then((res) =>
       res.arrayBuffer()
     );
     const pdfDoc = await PDFDocument.load(existingPdfBytes);
@@ -403,12 +403,12 @@ export const GeneratePDFBySign = async (
 
     const newSing = "USD " + signStr;
 
-    addText(couponStr, inToPt(4.95), inToPt(10.19)); // Nº (número de recibo en la esquina superior derecha)
+    addText(couponStr, inToPt(4.65), inToPt(10.19)); // Nº (número de recibo en la esquina superior derecha)
     addText(dateStr, inToPt(4.79), inToPt(9.95)); // FECHA (en la esquina superior derecha)
     addText(clientStr, inToPt(1.47), inToPt(9.67)); // RECIBÍ DE:
     addText(dniStr, inToPt(4.5), inToPt(9.67)); // DNI:
-    addText(phoneStr, inToPt(1.21), inToPt(9.39)); // TEL:
-    addText(conceptStr, inToPt(3.25), inToPt(9.39)); // EN CONCEPTO DE:
+    addText(phoneStr, inToPt(1.16), inToPt(9.39)); // TEL:
+    addText(conceptStr, inToPt(3.1), inToPt(9.39)); // EN CONCEPTO DE:
     addText(newSing, inToPt(1.65), inToPt(9.26)); // LA SUMA DE:
     addText(changeStr, inToPt(2.04), inToPt(8.99)); // CAMBIO:
     addText(totalStr, inToPt(1.69), inToPt(8.79)); // VALOR TOTAL:

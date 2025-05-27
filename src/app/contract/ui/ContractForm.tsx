@@ -32,20 +32,20 @@ const ContractForm: React.FC = () => {
   const [formData, setFormData] = useState({
     coupon: "",
     date: getCurrentDate(),
-    client: "",
-    dni: "",
-    brand: "",
-    model: "",
-    color: "",
-    imei: "",
-    imei2: "",
-    obs: "",
-    reception: "",
-    dniBuyer: "",
-    total: "",
+    client: "Federico Almeida",
+    dni: "42717907",
+    brand: "Apple",
+    model: "15 Pro Max",
+    color: "Blue Titanium",
+    imei: "12345678912345",
+    imei2: "12345678912345",
+    obs: "cambio de tapa trasera",
+    reception: "Federico",
+    dniBuyer: "42717907",
+    total: "2000",
     branch: { id: "" },
-    signature: "",
-    signatureBySeller: "",
+    signature: "Comprador",
+    // signatureBySeller: "Vendedor",
   });
 
   useEffect(() => {
@@ -387,7 +387,7 @@ const ContractForm: React.FC = () => {
                 />
               </div>
 
-              <div>
+              {/* <div>
                 <label
                   htmlFor="signatureBySeller"
                   className="block text-sm font-medium text-gray-300 mb-1"
@@ -403,7 +403,7 @@ const ContractForm: React.FC = () => {
                   onChange={handleChange}
                   className="w-full py-2 px-3 border border-gray-600 bg-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-white transition duration-300 ease-in-out"
                 />
-              </div>
+              </div> */}
 
               <div>
                 <label

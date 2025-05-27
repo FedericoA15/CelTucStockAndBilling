@@ -61,8 +61,13 @@ export const VoucherDetails: React.FC<PropsId> = ({ id }) => {
   const handleDownloadPDF = async () => {
     if (!voucher) return;
 
+    const voucherByPdf = {
+      ...voucher,
+      dni: voucher.DNI,
+    };
+
     try {
-      await GeneratePDFBySign(voucher, voucher.branch);
+      await GeneratePDFBySign(voucherByPdf, voucher.branch);
     } catch (error) {
       console.error("Error al descargar el PDF:", error);
     }
